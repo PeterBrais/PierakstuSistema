@@ -8,7 +8,7 @@ $resault = $user->GetAllUsers();
 
 while($row = $resault->fetch_assoc())
 {
-	echo "id: ".$row['idfsdgsdgfsd'];
+	echo "id: ".$row['id'];
 }
 
 ?>
