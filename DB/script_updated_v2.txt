@@ -1,0 +1,106 @@
+CREATE TABLE users (
+	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	username VARCHAR(50) NOT NULL,
+	password VARCHAR(1000) NOT NULL,
+	role CHAR(2) NOT NULL DEFAULT 'p',
+	active BIT NOT NULL DEFAULT 1,
+	created DATE NOT NULL
+);
+
+CREATE TABLE employees (
+	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(50) NOT NULL,
+    last_name VARCHAR(50) NOT NULL,
+    working_from VARCHAR(10) NULL,
+    working_to VARCHAR(10) NULL,
+    place VARCHAR(12) NOT NULL
+);
+
+CREATE TABLE positions (
+	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	position VARCHAR(40) NOT NULL
+);
+
+CREATE TABLE employees_positions (
+	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	employee_id INT NOT NULL,
+    position_id INT NOT NULL,
+    FOREIGN KEY (employee_id) REFERENCES employees(id),
+	FOREIGN KEY (position_id) REFERENCES positions(id)
+);
+
+CREATE TABLE times (
+	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	date DATE NOT NULL,
+	vacation CHAR(2) NULL DEFAULT '0',
+	sick_leave CHAR(2) NULL DEFAULT '0',
+	nonattendace CHAR(2) NULL DEFAULT '0',
+	pregnancy CHAR(2) NULL DEFAULT '0',
+	employee_id INT NOT NULL,
+    FOREIGN KEY (employee_id) REFERENCES employees(id)
+);
+
+CREATE TABLE working_times (
+	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	date DATE NOT NULL,
+	working_hours INT NULL,
+	overtime_hours INT NULL,
+	holiday_hours INT NULL,
+	employee_id INT NOT NULL,
+    FOREIGN KEY (employee_id) REFERENCES employees(id)
+);
+
+CREATE TABLE sawmill_productions (
+	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	date DATE NOT NULL,
+	time_from VARCHAR(10) NOT NULL,
+	time_to VARCHAR(10) NOT NULL,
+	invoice INT NOT NULL,
+	beem_count INT NOT NULL,
+	beem_capacity DECIMAL(12,3),
+	lumber_count INT NOT NULL,
+	lumber_capacity DECIMAL(12,3),
+	percentage INT NOT NULL,
+	note VARCHAR(255) NULL,
+    UNIQUE (invoice)
+);
+
+CREATE TABLE sawmill_maintenance (
+	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	time INT NOT NULL,
+	note VARCHAR(255) NOT NULL,
+	mill_production_id INT NOT NULL,
+    FOREIGN KEY (mill_production_id) REFERENCES sawmill_productions(id)
+);
+
+CREATE TABLE employees_sawmill_productions (
+	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	employee_id INT NOT NULL,
+    sawmill_id INT NOT NULL,
+    FOREIGN KEY (employee_id) REFERENCES employees(id),
+    FOREIGN KEY (sawmill_id) REFERENCES sawmill_productions(id)
+);
+
+CREATE TABLE sorting_productions (
+	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	date DATE NOT NULL,
+	time_from VARCHAR(10) NOT NULL,
+	time_to VARCHAR(10) NOT NULL,
+	invoice INT NOT NULL,
+	count INT NOT NULL,
+	thickness INT NOT NULL,
+	width INT NOT NULL,
+	length INT NOT NULL,
+	defect_count INT NOT NULL,
+	capacity DECIMAL(12,3) NOT NULL,
+	volume_per_piece DECIMAL(5,5) NOT NULL,
+	UNIQUE (invoice)
+);
+
+CREATE TABLE employees_sorting_productions (
+	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	employee_id INT NOT NULL,
+    sorting_id INT NOT NULL,
+    FOREIGN KEY (employee_id) REFERENCES employees(id),
+    FOREIGN KEY (sorting_id) REFERENCES sorting_productions(id)
+);

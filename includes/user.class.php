@@ -15,8 +15,8 @@ class User
 	function GetAllUsers()
 	{
 		$sql = "SELECT * FROM users";
-		$resault = $this->conn->query($sql);
-		return $resault;
+		$result = $this->conn->query($sql);
+		return $result;
 	}
 
 	function Delete()
@@ -26,7 +26,7 @@ class User
 
 	function Save()
 	{
-		
+
 	}
 
 	function Update()
