@@ -1,0 +1,33 @@
+body{
+	background-color: lightgrey;
+}
+
+.nav-bg{
+	background-color: #588e00;
+}
+
+.navbar-nav .nav-item a {
+	color: #ffd200;
+}
+.navbar-nav .nav-item {
+	padding-left: 5px;
+	padding-right: 5px;
+}
+
+.navbar-nav .nav-item a:hover {
+	color: #ffffff;
+	background-color: #63980b;
+}
+.row {
+	margin-top: 20px;
+}
+
+.user-name{
+	display: inline-block;
+	font-weight: 600;
+	color: #000;
+	text-align: center;
+	vertical-align: middle;
+	white-space: nowrap;
+	padding: 6px 12px;
+}

@@ -1,16 +1,16 @@
 <?php
 
-$servername = "localhost";
-$username = "root";
-$password = "";
-$database = "pieraksts";
+$DBServer = "localhost";
+$DBUser = "root";
+$DBPassword = "";
+$DBName = "pieraksts";
 
 //Izveido savienojumu ar datubāzi
-$conn = new mysqli($servername, $username, $password, $database);
+$conn = new mysqli($DBServer, $DBUser, $DBPassword, $DBName);
 
-if(!$conn)
+if(mysqli_connect_errno())
 {
-	die("Connection failed!".mysqli_error());
+	die("Savienojums ar datubāzi neizdevās!");
 }
 
 ?>

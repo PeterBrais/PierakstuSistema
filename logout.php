@@ -1,6 +1,10 @@
 <?php
-	session_start();
-	session_destroy();
 
-	header("Location: ./index.php");
+	session_start();
+
+	if(isset($_SESSION['id']))
+	{
+		include_once "includes/user.class.php";
+		User::Logout();
+	}
 ?>

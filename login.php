@@ -1,23 +1,30 @@
 <?php
+
 	session_start();
 
-	include "includes/config.php";
-
-	$username = $_POST['uid'];
-	$password = $_POST['pwd'];
-
-	$sql = "SELECT * FROM users WHERE username = '$username' AND password = '$password'";
-
-	$result = $conn->query($sql);
-
-	if(!$row = $result->fetch_assoc())
+	if(isset($_POST['usr']) && isset($_POST['pwd']))
 	{
-		echo "Lietoājvārds vai parole nav pareiza!";
+		$username = htmlspecialchars($_POST['usr']);
+		$password = htmlspecialchars($_POST['pwd']);
+
+		if(empty($username) || empty($password))
+		{
+			$_SESSION['error'] = "Aizpildiet visus laukus!";
+			header("Location: /");
+			exit();
+		}
+		else
+		{
+			include_once "includes/user.class.php";
+
+			$user = new User();
+			$user->Login($username, $password);
+		}
 	}
 	else
 	{
-		$_SESSION['id'] = $row['id'];
+		header("Location: /");
+		exit();
 	}
-	
-	header("Location: ./index.php");
+
 ?>
