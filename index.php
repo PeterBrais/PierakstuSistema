@@ -7,7 +7,9 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-md-12">
-				<?php include "message.php"; ?>
+				<!-- Shows error message -->
+				<?php include "message.php"; ?>	
+
 				<div class="card">
 					<div class="card-body">
 						<?php
@@ -17,19 +19,19 @@
 								<h4 class="card-title text-center">Autorizācija</h4>
 								<form action="login" method="POST">
 									<div class="form-group row">
-										<label class="col-md-2 col-form-label">Lietotājvārds</label>
+										<label class="col-md-2 offset-md-1 col-form-label">Lietotājvārds</label>
 										<div class="col-md-5">
 											<input class="form-control" type="text" name="usr" placeholder="Lietotājvārds">
 										</div>
 									</div>
 									<div class="form-group row">
-										<label class="col-md-2 col-form-label">Parole</label>
+										<label class="col-md-2 offset-md-1 col-form-label">Parole</label>
 										<div class="col-md-5">
 											<input class="form-control" type="password" name="pwd" placeholder="********">
 										</div>
 									</div>
 									<div class="form-group row">
-										<div class="col-md-3 offset-md-2">
+										<div class="col-md-3 offset-md-3">
 											<button class="btn btn-success" type="submit" name="submit">Pieslēgties</button>
 										</div>
 									</div>

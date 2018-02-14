@@ -35,12 +35,12 @@ session_start();
 							if(isset($_SESSION['id']))
 							{
 						?>
-						<li class="nav-item">
-							<a class="nav-link" href="/">Sākums</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="signup">Jauns lietotājs</a>
-						</li>
+								<li class="nav-item">
+									<a class="nav-link" href="/">Sākums</a>
+								</li>
+								<li class="nav-item">
+									<a class="nav-link" href="signup">Jauns lietotājs</a>
+								</li>
 						<?php
 							}
 						?>

@@ -15,7 +15,6 @@ class User
 	{
 		global $conn;
 		$this->conn = $conn;
-		$this->role = "p";
 		$this->active = 1;
 		$this->created = date("Y-m-d");
 	}
@@ -23,17 +22,17 @@ class User
 	function Login($username, $password)
 	{
 		$sql = $this->conn->prepare("SELECT * FROM users WHERE username=?");
-		$sql->bind_param('s', $username); //Binds parameter, transforms to string
+		$sql->bind_param('s', $username); 	//Binds parameter, transforms to string
 		$sql->execute();
-		$result = $sql->get_result();
+		$result = $sql->get_result();		//Gets all reasults
 
-		$resultCheck = mysqli_num_rows($result);
+		$resultCheck = mysqli_num_rows($result);	//Counts all rows
 
-		if($resultCheck == 0)
+		if($resultCheck == 0)				//No such username found
 		{
-			$_SESSION['error'] = "Nepareizs lietotājvārds un/vai parole!";
+			$_SESSION['error'] = "Nepareizs lietotājvārds vai/un parole!";
 			header("Location: /");
-			exit();
+			exit();		//Does not continues to read following code
 		}
 
 		$row = mysqli_fetch_assoc($result);
@@ -43,7 +42,7 @@ class User
 
 		if($hashedPasswordCheck == false)
 		{
-			$_SESSION['error'] = "Nepareizs lietotājvārds un/vai parole!";
+			$_SESSION['error'] = "Nepareizs lietotājvārds vai/un parole!";
 			header("Location: /");
 			exit();
 		}
@@ -61,12 +60,12 @@ class User
 	public static function Logout()
 	{
 		session_unset();	//Unseting all SESSION variables
-		session_destroy();
+		session_destroy();	//Destroys session
 		header("Location: /");
 		exit();
 	}
 
-	public static function Exists($username)	//If username exists
+	public static function Exists($username)	//Returns true if username in DB already exists
 	{
 		global $conn;
 

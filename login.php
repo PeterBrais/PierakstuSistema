@@ -9,7 +9,7 @@
 
 		if(empty($username) || empty($password))
 		{
-			$_SESSION['error'] = "Aizpildiet visus laukus!";
+			$_SESSION['error'] = "Lūdzu aizpildiet visus laukus!";
 			header("Location: /");
 			exit();
 		}
