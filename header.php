@@ -9,6 +9,11 @@ session_start();
 	<title>Pierakstu sistēma</title>
 	<link rel="stylesheet" type="text/css" href="public/css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="public/css/mix.css">
+	
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="public/js/bootstrap.min.js"></script>
+
+      
 </head>
 <body>
 	<nav class="navbar navbar-expand-md nav-bg">
@@ -25,12 +30,6 @@ session_start();
 					
 				<div class="navbar-collapse" id="navbarText">
 					<ul class="navbar-nav mr-auto">
-						<li class="nav-item">
-							<a class="nav-link" href="">Test1</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="">Test2</a>
-						</li>
 						<?php
 							if(isset($_SESSION['id']))
 							{
@@ -41,6 +40,17 @@ session_start();
 								<li class="nav-item">
 									<a class="nav-link" href="signup">Jauns lietotājs</a>
 								</li>
+
+								<div class="dropdown nav-item">
+									<a class="nav-link dropdown-toggle" href="" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+										Darbinieki
+									</a>
+
+									<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+										<a class="dropdown-item" href="show_employee">Visi darbinieki</a>
+										<a class="dropdown-item" href="add_employee">Pievienot</a>
+									</div>
+								</div>
 						<?php
 							}
 						?>
@@ -64,3 +74,7 @@ session_start();
 				</div>
 		</div>
 	</nav>
+
+	<?php
+		include "constants.php";
+	?>

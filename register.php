@@ -11,7 +11,7 @@
 		$role = htmlspecialchars($_POST["role"]);
 
 		//Error handlers
-		//Check if username and passwords are set
+		//Check if username, passwords and role are set
 		if(empty($username) || empty($password) || empty($password2) || empty($role))
 		{
 			$_SESSION['error'] = "Lūdzu aizpildiet visus laukus!";

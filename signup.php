@@ -10,7 +10,7 @@
 
 	<!-- Register -->
 	<div class="container">
-		<div class="row">
+		<div class="row cont-space">
 			<div class="col-md-12">
 				<?php include "message.php"; ?>
 				<div class="card">
@@ -52,7 +52,6 @@
 								<div class="col-md-5">
 									<select class="custom-select" name="role">
 										<option>Izvēlieties lietotāja lomu</option>
-										<!-- <option value="1">Lietotājs</option> -->
 										<option value="2">Pārvaldnieks</option>
 										<option value="3">Administrators</option>
 									</select>

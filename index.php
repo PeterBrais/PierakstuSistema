@@ -5,7 +5,7 @@
 ?>
 	<!-- Login -->
 	<div class="container">
-		<div class="row">
+		<div class="row cont-space">
 			<div class="col-md-12">
 				<!-- Shows error message -->
 				<?php include "message.php"; ?>	
