@@ -37,6 +37,10 @@ body{
 	padding: 6px 12px;
 }
 
+.alert-size{
+	padding: 6px 12px;
+}
+
 .footer {
 	position: absolute;
 	margin-top: 20px;

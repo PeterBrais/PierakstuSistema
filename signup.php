@@ -21,9 +21,9 @@
 								<label class="col-md-2 offset-md-1 col-form-label">Lietotājvārds</label>
 								<div class="col-md-5">
 									<input class="form-control" type="text" name="usr" aria-describedby="userArea">
-								<small id="userArea" class="form-text text-muted">
-									* Satur tikai lielos un mazos latīņu burtus un ciparus *
-								</small>
+									<small id="userArea" class="form-text text-muted">
+										* Satur tikai lielos un mazos latīņu burtus un ciparus *
+									</small>
 								</div>
 							</div>
 							<div class="form-group row">

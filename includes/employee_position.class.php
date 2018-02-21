@@ -2,15 +2,12 @@
 
 	include "config.php";
 
-	class Employee
+	class EmployeePosition
 	{
 		private $conn;
 		public $id;
-		public $name;
-		public $last_name;
-		public $working_from;
-		public $working_to;
-		public $place;
+		public $employee_id;
+		public $position_id;
 
 		function __construct()
 		{
@@ -22,8 +19,8 @@
 		{
 			try
 			{
-				$sql = $this->conn->prepare("INSERT INTO employees VALUES (DEFAULT, ?, ?, ?, ?, ?)");
-				$sql->bind_param('sssss', $this->name, $this->last_name, $this->working_from, $this->working_to, $this->place);
+				$sql = $this->conn->prepare("INSERT INTO employees_positions VALUES (DEFAULT, ?, ?)");
+				$sql->bind_param('ii', $this->employee_id, $this->position_id);
 				$sql->execute();
 
 				$this->id = $this->conn->insert_id;
@@ -37,5 +34,4 @@
 		}
 
 	}
-
 ?>

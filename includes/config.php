@@ -5,7 +5,7 @@ $DBUser = "root";
 $DBPassword = "";
 $DBName = "pieraksts";
 
-//Izveido savienojumu ar datubāzi
+//Creating connection with Database
 $conn = new mysqli($DBServer, $DBUser, $DBPassword, $DBName);
 
 if(mysqli_connect_errno())

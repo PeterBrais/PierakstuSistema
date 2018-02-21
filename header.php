@@ -48,7 +48,8 @@ session_start();
 
 									<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
 										<a class="dropdown-item" href="show_employee">Visi darbinieki</a>
-										<a class="dropdown-item" href="add_employee">Pievienot</a>
+										<a class="dropdown-item" href="add_employee">Jauns darbinieku</a>
+										<a class="dropdown-item" href="add_position">Jauns amatu</a>
 									</div>
 								</div>
 						<?php
