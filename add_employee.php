@@ -37,7 +37,7 @@
 										if(isset($_SESSION['name']))
 										{
 									?>
-										<div class="alert alert-danger" role="alert">
+										<div class="alert alert-danger alert-size" role="alert">
 											<?=$_SESSION['name']?>
 										</div>
 									<?php
@@ -49,7 +49,7 @@
 							<div class="form-group row">
 								<label class="col-md-2 offset-md-1 col-form-label">Uzvārds</label>
 								<div class="col-md-5">
-									<input class="form-control" type="text" name="last" aria-describedby="lastNameArea">
+									<input class="form-control" type="text" name="last_name" aria-describedby="lastNameArea">
 									<small id="lastNameArea" class="form-text text-muted">
 										* Satur tikai lielos un mazos latīņu burtus *
 									</small>
@@ -57,34 +57,86 @@
 										* Jābūt garumā no 3 līdz 50 rakstzīmēm *
 									</small>
 								</div>
+								<div class="col-md-4">
+									<?php
+										if(isset($_SESSION['last_name']))
+										{
+									?>
+										<div class="alert alert-danger alert-size" role="alert">
+											<?=$_SESSION['last_name']?>
+										</div>
+									<?php
+											unset($_SESSION['last_name']);
+										}
+									?>
+								</div>
 							</div>							
 							<div class="form-group row">
 								<label class="col-md-2 offset-md-1 col-form-label">Strādā no</label>
 								<div class="col-md-5">
-									<input class="form-control" type="time" name="timefrom" aria-describedby="timeFromArea">
+									<input class="form-control" type="time" name="time_from" aria-describedby="timeFromArea">
 									<small id="timeFromArea" class="form-text text-muted">
 										* Satur tikai skaitļus un kolu laika formā, piemēram, kā: 00:00 *
 									</small>
+								</div>
+								<div class="col-md-4">
+									<?php
+										if(isset($_SESSION['time_from']))
+										{
+									?>
+										<div class="alert alert-danger alert-size" role="alert">
+											<?=$_SESSION['time_from']?>
+										</div>
+									<?php
+											unset($_SESSION['time_from']);
+										}
+									?>
 								</div>
 							</div>
 							<div class="form-group row">
 								<label class="col-md-2 offset-md-1 col-form-label">Strādā līdz</label>
 								<div class="col-md-5">
-									<input class="form-control" type="time" name="timeto" aria-describedby="timeToArea">
+									<input class="form-control" type="time" name="time_to" aria-describedby="timeToArea">
 									<small id="timeToArea" class="form-text text-muted">
 										* Satur tikai skaitļus un kolu laika formā, piemēram, kā: 00:00 *
 									</small>
+								</div>
+								<div class="col-md-4">
+									<?php
+										if(isset($_SESSION['time_to']))
+										{
+									?>
+										<div class="alert alert-danger alert-size" role="alert">
+											<?=$_SESSION['time_to']?>
+										</div>
+									<?php
+											unset($_SESSION['time_to']);
+										}
+									?>
 								</div>
 							</div>
 							<div class="form-group row">
 								<label class="col-md-2 offset-md-1 col-form-label">Darbavieta</label>
 								<div class="col-md-5">
 									<select class="custom-select" name="place">
-										<option selected disabled value="0">Izvēlieties darba vietu</option>
+										<option selected value="0">Izvēlieties darba vietu</option>
 										<option value="1">Birojs</option>
 										<option value="2">Zāģētava</option>
 										<option value="3">Šķirošana</option>
 									</select>
+								</div>
+								<div class="col-md-4">
+									<?php
+										if(isset($_SESSION['place']))
+										{
+									?>
+										<div class="alert alert-danger alert-size" role="alert">
+											<?=$_SESSION['place']?>
+										</div>
+									<?php
+											unset($_SESSION['place']);
+										}
+									?>
 								</div>
 							</div>
 
@@ -93,9 +145,22 @@
 								<div class="col-md-5">
 									<?php include "position_select.php"; ?>
 								</div>
-								<div class="col-md-4">
+								<div class="col-md-1">
 									<button type="button" name="add" id="add" class="btn btn-success">+</button>
 								</div>
+								<div class="col-md-3">
+									<?php
+										if(isset($_SESSION['position']))
+										{
+									?>
+										<div class="alert alert-danger alert-size" role="alert">
+											<?=$_SESSION['position']?>
+										</div>
+									<?php
+											unset($_SESSION['position']);
+										}
+									?>
+								</div>	
 							</div>
 							<div class="form-group row">
 								<div class="col-md-3 offset-md-3">
@@ -111,9 +176,7 @@
 
 <script>  
 $(document).ready(function(){
-	var remove_btn = `<div class="col-md-4">
-						<button type="button" class="btn btn-danger remove">X</button>
-					</div>`;
+	var remove_btn = '<div class="col-md-4"><button type="button" class="btn btn-danger remove">X</button></div>';
 
 	$('#add').click(function(){ 
 		$.get('position_select.php', function(result){

@@ -51,7 +51,7 @@
 								<label class="col-md-2 offset-md-1 col-form-label">Loma</label>
 								<div class="col-md-5">
 									<select class="custom-select" name="role">
-										<option>Izvēlieties lietotāja lomu</option>
+										<option selected value="0">Izvēlieties lietotāja lomu</option>
 										<option value="2">Pārvaldnieks</option>
 										<option value="3">Administrators</option>
 									</select>
@@ -59,7 +59,7 @@
 							</div>	
 							<div class="form-group row">
 								<div class="col-md-3 offset-md-3">
-									<button class="btn btn-success" type="submit" name="submit">Reģistrēt</button>
+									<button class="btn btn-info" type="submit" name="submit">Reģistrēt</button>
 								</div>
 							</div>
 						</form>

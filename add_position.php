@@ -17,7 +17,7 @@
 				<div class="card">
 					<div class="card-body">
 						<h4 class="card-title text-center">Pievienot jaunu amatu</h4>
-						<form action="new_position" method="POST" id="add_form">
+						<form action="new_position" method="POST">
 							<div class="form-group row">
 								<label class="col-md-2 offset-md-1 col-form-label">Amats</label>
 								<div class="col-md-5">
@@ -45,7 +45,7 @@
 							</div>
 							<div class="form-group row">
 								<div class="col-md-3 offset-md-3">
-									<button class="btn btn-success" type="submit" name="submit">Pievienot</button>
+									<button class="btn btn-info" type="submit" name="submit">Pievienot</button>
 								</div>
 							</div>
 						</form>
@@ -54,29 +54,7 @@
 			</div>
 		</div>
 	</div>
-
-<script>  
-$(document).ready(function(){  
- 	var positionDiv = `<div class="form-group row positions">
- 							<div class="offset-md-3 col-md-5">
- 								<input type="text" name="positions[]" class="form-control" placeholder="Ievadiet darbinieka amatu">
- 								</div>
- 							<div class="col-md-3">
- 								<button type="button" name="remove" class="btn btn-danger btn_remove">X</button>
- 							</div>
- 						</div>`;
-
-	$('#add').click(function(){ 
-		$('#dynamic_field').append(positionDiv);
-	});  
-
-	$(document).on('click', '.btn_remove', function(){  
-		$(this).closest('.positions').remove();
-	}); 
-
-});  
-</script>
-
+	
 <?php
 	include_once "footer.php";
 ?>
