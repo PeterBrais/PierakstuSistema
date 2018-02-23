@@ -122,7 +122,7 @@
 										<option selected value="0">Izvēlieties darba vietu</option>
 										<option value="1">Birojs</option>
 										<option value="2">Zāģētava</option>
-										<option value="3">Šķirošana</option>
+										<option value="3">Šķirotava</option>
 									</select>
 								</div>
 								<div class="col-md-4">

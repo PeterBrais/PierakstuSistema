@@ -15,7 +15,7 @@
 			$this->conn = $conn;
 		}
 
-		function Save()
+		function Save()	//Inserts data, Many:Many relation from Positions and Employee table
 		{
 			try
 			{

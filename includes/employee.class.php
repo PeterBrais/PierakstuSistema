@@ -18,7 +18,7 @@
 			$this->conn = $conn;
 		}
 
-		function Save()
+		function Save()	//Inserts new employee data into Database
 		{
 			try
 			{

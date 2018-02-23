@@ -16,7 +16,7 @@
 		}
 
 		//Check position length
-		if(strlen($position) < 3 || strlen($position) > 40)
+		if(mb_strlen($position) < 3 || mb_strlen($position) > 40)
 		{
 			$_SESSION['new_position'] = "Amats jāsatur simbolu skaits robežās no 3 līdz 40!";
 			header("Location: ../add_position");
@@ -24,7 +24,7 @@
 		}
 
 		//Check if position match complexity
-		if(!preg_match("/^[a-zA-Z0-9\/\s.,_-]*$/", $position))
+		if(!preg_match("/^\p{L}[\p{L}\/0-9\s.,_-]+$/u", $position))
 		{
 			$_SESSION['new_position'] = "Amats var saturēt tikai latīņu burtus, ciparus un speciālos simbolus!";
 			header("Location: ../add_position");

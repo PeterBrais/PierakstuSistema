@@ -7,7 +7,8 @@ session_start();
 <head>
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Pierakstu sistēma</title>
+	<title>Kokzāģētava "Norupe"</title>
+	<link rel="shortcut icon" href="public/images/favicon.ico">
 	<link rel="stylesheet" type="text/css" href="public/css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="public/css/mix.css">
 	
@@ -49,8 +50,8 @@ session_start();
 
 									<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
 										<a class="dropdown-item" href="show_employee">Visi darbinieki</a>
-										<a class="dropdown-item" href="add_employee">Jauns darbinieku</a>
-										<a class="dropdown-item" href="add_position">Jauns amatu</a>
+										<a class="dropdown-item" href="add_employee">Jauns darbinieks</a>
+										<a class="dropdown-item" href="add_position">Jauns amats</a>
 									</div>
 								</div>
 						<?php
