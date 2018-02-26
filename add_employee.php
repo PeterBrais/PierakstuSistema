@@ -20,7 +20,7 @@
 					<div class="card-body">
 						<h4 class="card-title text-center">Pievienot jaunu darbinieku</h4>
 
-						<form action="new_employee" method="POST" id="add_form">
+						<form action="new_employee" method="POST">
 							<div class="form-group row">
 								<label class="col-md-2 offset-md-1 col-form-label">Vārds</label>
 								<div class="col-md-5">
@@ -70,55 +70,11 @@
 										}
 									?>
 								</div>
-							</div>							
-							<div class="form-group row">
-								<label class="col-md-2 offset-md-1 col-form-label">Strādā no</label>
-								<div class="col-md-5">
-									<input class="form-control" type="time" name="time_from" aria-describedby="timeFromArea">
-									<small id="timeFromArea" class="form-text text-muted">
-										* Satur tikai skaitļus un kolu laika formā, piemēram, kā: 00:00 *
-									</small>
-								</div>
-								<div class="col-md-4">
-									<?php
-										if(isset($_SESSION['time_from']))
-										{
-									?>
-										<div class="alert alert-danger alert-size" role="alert">
-											<?=$_SESSION['time_from']?>
-										</div>
-									<?php
-											unset($_SESSION['time_from']);
-										}
-									?>
-								</div>
 							</div>
-							<div class="form-group row">
-								<label class="col-md-2 offset-md-1 col-form-label">Strādā līdz</label>
-								<div class="col-md-5">
-									<input class="form-control" type="time" name="time_to" aria-describedby="timeToArea">
-									<small id="timeToArea" class="form-text text-muted">
-										* Satur tikai skaitļus un kolu laika formā, piemēram, kā: 00:00 *
-									</small>
-								</div>
-								<div class="col-md-4">
-									<?php
-										if(isset($_SESSION['time_to']))
-										{
-									?>
-										<div class="alert alert-danger alert-size" role="alert">
-											<?=$_SESSION['time_to']?>
-										</div>
-									<?php
-											unset($_SESSION['time_to']);
-										}
-									?>
-								</div>
-							</div>
-							<div class="form-group row">
+							<div class="form-group row" id="workplace_input">
 								<label class="col-md-2 offset-md-1 col-form-label">Darbavieta</label>
 								<div class="col-md-5">
-									<select class="custom-select" name="place">
+									<select class="custom-select" name="place" id="place_selects">
 										<option selected value="0">Izvēlieties darba vietu</option>
 										<option value="1">Birojs</option>
 										<option value="2">Zāģētava</option>
@@ -139,7 +95,6 @@
 									?>
 								</div>
 							</div>
-
 							<div class="form-group row" id="position_selects">
 								<label class="col-md-2 offset-md-1 col-form-label">Amats</label>
 								<div class="col-md-5">
@@ -189,7 +144,25 @@ $(document).ready(function(){
 	$(document).on('click', '.remove', function(){  
 		$(this).parent().prev('.position-select').remove();
 		$(this).parent().remove();
-	}); 
+	});
+
+	//Shows shift input for sawmill workers
+	var shift = '<label class="col-md-2 offset-md-1 col-form-label mt-3">Maiņa</label><div class="col-md-5 mt-3"><select class="custom-select" name="shift"><option selected value="0">Izvēlieties maiņu</option><option value="1">1</option><option value="2">2</option></select></div>';
+
+	$('#place_selects').on('change', function(){
+		var place_value = $(this).val();
+		if(place_value == "2")
+		{
+			$('#workplace_input').append(shift);
+		}
+		else //Removes label and div from variable shift
+		{
+			$(this).parent().next().next().remove();
+			$(this).parent().next().next().remove();
+		}
+	});
+
+
 
 });  
 </script>

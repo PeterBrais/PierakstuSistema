@@ -8,9 +8,8 @@
 		public $id;
 		public $name;
 		public $last_name;
-		public $working_from;
-		public $working_to;
 		public $place;
+		public $shift;
 
 		function __construct()
 		{
@@ -22,8 +21,8 @@
 		{
 			try
 			{
-				$sql = $this->conn->prepare("INSERT INTO employees VALUES (DEFAULT, ?, ?, ?, ?, ?)");
-				$sql->bind_param('sssss', $this->name, $this->last_name, $this->working_from, $this->working_to, $this->place);
+				$sql = $this->conn->prepare("INSERT INTO employees VALUES (DEFAULT, ?, ?, ?, ?)");
+				$sql->bind_param('ssss', $this->name, $this->last_name, $this->place, $this->shift);
 				$sql->execute();
 
 				$this->id = $this->conn->insert_id;

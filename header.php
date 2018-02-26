@@ -54,6 +54,27 @@ session_start();
 										<a class="dropdown-item" href="add_position">Jauns amats</a>
 									</div>
 								</div>
+
+								<div class="dropdown nav-item">
+									<a class="nav-link dropdown-toggle" href="" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+										Zāģētava
+									</a>
+
+									<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+										<a class="dropdown-item" href="show_sawmill_production">
+											Visas produkcijas
+										</a>
+										<a class="dropdown-item" href="add_sawmill_production">
+											Jauna produkcija
+										</a>
+									</div>
+								</div>
+
+								<div class="dropdown nav-item">
+									<a class="nav-link dropdown-toggle" href="" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+										Šķirotava
+									</a>
+								</div>
 						<?php
 							}
 						?>

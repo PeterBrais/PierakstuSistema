@@ -21,7 +21,7 @@
 							<div class="form-group row">
 								<label class="col-md-2 offset-md-1 col-form-label">Amats</label>
 								<div class="col-md-5">
-									<input class="form-control" type="text" name="position" aria-describedby="positionArea">
+									<input class="form-control" type="text" name="name" aria-describedby="positionArea">
 									<small id="positionArea" class="form-text text-muted">
 										* Satur tikai lielos un mazos latīņu burtus, ciparus un speciālos simbolus *
 									</small>

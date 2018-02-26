@@ -2,9 +2,9 @@
 
 	session_start();
 
-	if(isset($_POST['position']))
+	if(isset($_POST['name']))
 	{
-		$position = htmlspecialchars($_POST['position']);
+		$position = htmlspecialchars($_POST['name']);
 
 		//Error handlers
 		//Check if position is set
@@ -42,7 +42,7 @@
 
 		//Object
 		$pos = new Position();
-		$pos->position = $position;
+		$pos->name = $position;
 		$pos->Save();	//Saving position in database
 
 		$_SESSION['success'] = "Amats pievienots veiksmīgi!";

@@ -16,7 +16,7 @@
 		{
 			global $conn;
 
-			$sql = $conn->query("SELECT id, position FROM positions");
+			$sql = $conn->query("SELECT id, name FROM positions");
 
 			return mysqli_fetch_all($sql, MYSQLI_ASSOC);
 

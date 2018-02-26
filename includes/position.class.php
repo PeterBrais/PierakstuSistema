@@ -5,7 +5,7 @@
 	class Position
 	{
 		private $conn;
-		public $position;
+		public $name;
 
 		function __construct()
 		{
@@ -13,12 +13,12 @@
 			$this->conn = $conn;
 		}
 
-		public static function ExistsName($position)	//Finds if position already exists in database
+		public static function ExistsName($name)	//Finds if position already exists in database
 		{
 			global $conn;
 
-			$sql = $conn->prepare("SELECT position FROM positions WHERE position=?");
-			$sql->bind_param('s', $position);
+			$sql = $conn->prepare("SELECT name FROM positions WHERE name=?");
+			$sql->bind_param('s', $name);
 			$sql->execute();
 			$result = $sql->get_result();
 
@@ -46,7 +46,7 @@
 			try
 			{
 				$sql = $this->conn->prepare("INSERT INTO positions VALUES (DEFAULT, ?)");
-				$sql->bind_param('s', $this->position);
+				$sql->bind_param('s', $this->name);
 				$sql->execute();
 			}
 			catch(mysqli_sql_exception $e)

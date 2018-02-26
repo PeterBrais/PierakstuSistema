@@ -33,43 +33,51 @@
 						$i = 1;
 						foreach($employees as $employee)
 						{
-							if($employee['place'] == "Zagetava" && ($employee['working_from'] == "07:00" || $employee['working_from'] == "7:00"))
+							if($employee['place'] == "Zagetava")
 							{
-								echo '<tr class="d-flex">
-									<th class="col-md-1">'.$i++.'</th>
-									<td class="col-md-3">'.$employee['name'].'</td>
-									<td class="col-md-3">'.$employee['last_name'].'</td>
-									<td class="col-md-1"> 1</td>
-									<td class="col-md-2">';
-										$positions = Manager::EmployeePositions($employee['id']);
+					?>
+								<tr class="d-flex">
+									<th class="col-md-1"><?=$i++?></th>
+									<td class="col-md-3"><?=$employee['name']?></td>
+									<td class="col-md-3"><?=$employee['last_name']?></td>
+									<td class="col-md-1">1</td>
+									<td class="col-md-2">
+									<?php
+										$positions = Manager::EmployeePositions($employee['ID']);
 										foreach($positions as $position)
 										{
-											echo $position['position'];
+											echo $position['name'].'<br>';
 										}
-									echo '</td>
+									?>
+									</td>
 									<td class="col-md-2"></td>
-								</tr>';
+								</tr>
+					<?php
 							}
 						}
 
 						foreach ($employees as $employee)
 						{
-							if($employee['place'] == "Zagetava" && $employee['working_from'] == "14:00")
+							if($employee['place'] == "Zagetava")
 							{
-								echo '<tr class="d-flex table-success">
-									<th class="col-md-1">'.$i++.'</th>
-									<td class="col-md-3">'.$employee['name'].'</td>
-									<td class="col-md-3">'.$employee['last_name'].'</td>
+					?>
+								<tr class="d-flex table-success">
+									<th class="col-md-1"><?=$i++?></th>
+									<td class="col-md-3"><?=$employee['name']?></td>
+									<td class="col-md-3"><?=$employee['last_name']?></td>
 									<td class="col-md-1">2</td>
-									<td class="col-md-2">';
-										$positions = Manager::EmployeePositions($employee['id']);
+									<td class="col-md-2">
+									<?php
+										$positions = Manager::EmployeePositions($employee['ID']);
 										foreach($positions as $position)
 										{
-											echo $position['position'].'<br>';
+											echo $position['name'].'<br>';
 										}
-									echo '</td>
+									?>
+									</td>
 									<td class="col-md-2"></td>
-								</tr>';
+								</tr>
+					<?php
 							}
 						}
 					?>
@@ -96,19 +104,23 @@
 						{
 							if($employee['place'] == "Skirotava")
 							{
-								echo '<tr class="d-flex">
-									<th class="col-md-1">'.$i++.'</th>
-									<td class="col-md-3">'.$employee['name'].'</td>
-									<td class="col-md-3">'.$employee['last_name'].'</td>
-									<td class="col-md-3">';
-										$positions = Manager::EmployeePositions($employee['id']);
+					?>
+								<tr class="d-flex">
+									<th class="col-md-1"><?=$i++?></th>
+									<td class="col-md-3"><?=$employee['name']?></td>
+									<td class="col-md-3"><?=$employee['last_name']?></td>
+									<td class="col-md-3">
+									<?php
+										$positions = Manager::EmployeePositions($employee['ID']);
 										foreach($positions as $position)
 										{
-											echo $position['position'].'<br>';
+											echo $position['name'].'<br>';
 										}
-									echo '</td>
+									?>
+									</td>
 									<td class="col-md-2"></td>
-								</tr>';
+								</tr>
+					<?php
 							}
 						}
 					?>
@@ -135,19 +147,23 @@
 						{
 							if($employee['place'] == "Birojs")
 							{
-								echo '<tr class="d-flex">
-									<th class="col-md-1">'.$i++.'</th>
-									<td class="col-md-3">'.$employee['name'].'</td>
-									<td class="col-md-3">'.$employee['last_name'].'</td>
-									<td class="col-md-3">';
-										$positions = Manager::EmployeePositions($employee['id']);
+					?>
+								<tr class="d-flex">
+									<th class="col-md-1"><?=$i++?></th>
+									<td class="col-md-3"><?=$employee['name']?></td>
+									<td class="col-md-3"><?=$employee['last_name']?></td>
+									<td class="col-md-3">
+									<?php
+										$positions = Manager::EmployeePositions($employee['ID']);
 										foreach($positions as $position)
 										{
-											echo $position['position'].'<br>';
+											echo $position['name'].'<br>';
 										}
-									echo '</td>
+									?>
+									</td>
 									<td class="col-md-2"></td>
-								</tr>';
+								</tr>
+					<?php
 							}
 						}
 					?>
