@@ -16,7 +16,7 @@
 		$positions = $_POST['positions'];
 
 		//Error handlers
-		//Check if fields are set
+		//Check if fields are empty
 		if(empty($name) || empty($last_name) || empty($place))
 		{
 			$_SESSION['error'] = "Lūdzu aizpildiet visus laukus!";
@@ -43,20 +43,22 @@
 					exit();
 				}
 
-				if($shift == "1")
-				{
-
-				}
-				elseif($shift == "2")
-				{
-
-				}
-				else
+				if($shift != "1" && $shift != "2")
 				{
 					$_SESSION['error'] = "Lūdzu mēģiniet vēlreiz!";
 					header("Location: ../add_employee");
 					exit();
 				}
+				// elseif($shift == "2")
+				// {
+
+				// }
+				// else
+				// {
+				// 	$_SESSION['error'] = "Lūdzu mēģiniet vēlreiz!";
+				// 	header("Location: ../add_employee");
+				// 	exit();
+				// }
 			}
 			else
 			{
@@ -84,11 +86,11 @@
 		{
 			if(empty($position))
 			{
-				$_SESSION['position'] = "Lūdzu ievadiet darbinieka amatu/s!";
+				$_SESSION['position'] = "Lūdzu izvēlieties darbinieka amatu/s!";
 				header("Location: ../add_employee");
 				exit();
 			}
-			else if(!Position::Exists($position))
+			else if(!Position::Exists($position)) //Checks if position with this id exists
 			{
 				$_SESSION['error'] = "Radās kļūda, lūdzu mēģiniet vēlreiz!";
 				header("Location: ../add_employee");

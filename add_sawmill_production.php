@@ -21,25 +21,25 @@
 					<div class="card-body">
 						<h4 class="card-title text-center">Pievienot jaunu zāģētavas produkciju</h4>
 
-						<form action="" method="POST">
+						<form action="new_sawmill_production" method="POST">
 							<div class="form-group row">
 								<label class="col-md-2 offset-md-1 col-form-label">Datums</label>
 								<div class="col-md-5">
-									<input class="form-control" type="date" name="date" aria-describedby="dateArea">
+									<input class="form-control" type="text" name="date" aria-describedby="dateArea">
 									<small id="dateArea" class="form-text text-muted">
-										* Satur tikai datuma formātu, piemēram, kā: YYYY-MM-DD *
+										* Satur tikai datuma formātu, piemēram, kā: GGGG-MM-DD *
 									</small>
 								</div>
 								<div class="col-md-4">
 									<?php
-										if(isset($_SESSION['']))
+										if(isset($_SESSION['date']))
 										{
 									?>
 										<div class="alert alert-danger alert-size" role="alert">
-											<?=$_SESSION['']?>
+											<?=$_SESSION['date']?>
 										</div>
 									<?php
-											unset($_SESSION['']);
+											unset($_SESSION['date']);
 										}
 									?>
 								</div>
@@ -62,14 +62,14 @@
 
 								<div class="col-md-4">
 									<?php
-										if(isset($_SESSION['']))
+										if(isset($_SESSION['time']))
 										{
 									?>
 										<div class="alert alert-danger alert-size" role="alert">
-											<?=$_SESSION['']?>
+											<?=$_SESSION['time']?>
 										</div>
 									<?php
-											unset($_SESSION['']);
+											unset($_SESSION['time']);
 										}
 									?>
 								</div>
@@ -84,14 +84,14 @@
 								</div>
 								<div class="col-md-4">
 									<?php
-										if(isset($_SESSION['']))
+										if(isset($_SESSION['invoice']))
 										{
 									?>
 										<div class="alert alert-danger alert-size" role="alert">
-											<?=$_SESSION['']?>
+											<?=$_SESSION['invoice']?>
 										</div>
 									<?php
-											unset($_SESSION['']);
+											unset($_SESSION['invoice']);
 										}
 									?>
 								</div>
@@ -101,21 +101,21 @@
 									Apaļkoku skaits
 								</label>
 								<div class="col-md-5">
-									<input class="form-control" type="text" name="beam_count" aria-describedby="beemCountArea" id="beam_count_area">
+									<input class="form-control" type="text" name="beam_count" aria-describedby="beemCountArea" id="beam_count">
 									<small id="beemCountArea" class="form-text text-muted">
 										* Satur tikai skaitļus, kopējo (gab) skaitu *
 									</small>
 								</div>
 								<div class="col-md-4">
 									<?php
-										if(isset($_SESSION['']))
+										if(isset($_SESSION['beam_count']))
 										{
 									?>
 										<div class="alert alert-danger alert-size" role="alert">
-											<?=$_SESSION['']?>
+											<?=$_SESSION['beam_count']?>
 										</div>
 									<?php
-											unset($_SESSION['']);
+											unset($_SESSION['beam_count']);
 										}
 									?>
 								</div>
@@ -127,14 +127,14 @@
 								</div>
 								<div class="col-md-4">
 									<?php
-										if(isset($_SESSION['']))
+										if(isset($_SESSION['beam_size']))
 										{
 									?>
 										<div class="alert alert-danger alert-size" role="alert">
-											<?=$_SESSION['']?>
+											<?=$_SESSION['beam_size']?>
 										</div>
 									<?php
-											unset($_SESSION['']);
+											unset($_SESSION['beam_size']);
 										}
 									?>
 								</div>
@@ -144,19 +144,6 @@
 								<div class="col-md-5">
 									<p class="form-control-static" id="beam_capacity"> m<sup>3</sup></p>
 								</div>
-								<div class="col-md-4">
-									<?php
-										if(isset($_SESSION['']))
-										{
-									?>
-										<div class="alert alert-danger alert-size" role="alert">
-											<?=$_SESSION['']?>
-										</div>
-									<?php
-											unset($_SESSION['']);
-										}
-									?>
-								</div>	
 							</div>
 							<div class="form-group row">
 								<label class="col-md-2 offset-md-1 col-form-label">
@@ -170,14 +157,14 @@
 								</div>
 								<div class="col-md-4">
 									<?php
-										if(isset($_SESSION['']))
+										if(isset($_SESSION['lumber_count']))
 										{
 									?>
 										<div class="alert alert-danger alert-size" role="alert">
-											<?=$_SESSION['']?>
+											<?=$_SESSION['lumber_count']?>
 										</div>
 									<?php
-											unset($_SESSION['']);
+											unset($_SESSION['lumber_count']);
 										}
 									?>
 								</div>	
@@ -194,14 +181,14 @@
 								</div>
 								<div class="col-md-4">
 									<?php
-										if(isset($_SESSION['']))
+										if(isset($_SESSION['lumber_capacity']))
 										{
 									?>
 										<div class="alert alert-danger alert-size" role="alert">
-											<?=$_SESSION['']?>
+											<?=$_SESSION['lumber_capacity']?>
 										</div>
 									<?php
-											unset($_SESSION['']);
+											unset($_SESSION['lumber_capacity']);
 										}
 									?>
 								</div>	
@@ -221,14 +208,14 @@
 								</div>
 								<div class="col-md-4">
 									<?php
-										if(isset($_SESSION['']))
+										if(isset($_SESSION['note']))
 										{
 									?>
 										<div class="alert alert-danger alert-size" role="alert">
 											<?=$_SESSION['']?>
 										</div>
 									<?php
-											unset($_SESSION['']);
+											unset($_SESSION['note']);
 										}
 									?>
 								</div>	
@@ -237,24 +224,24 @@
 							<div class="form-group row" id="maintenance_select">
 								<label class="col-md-2 offset-md-1 col-form-label">Remontlaiks</label>
 								<div class="col-md-1">
-									<input class="form-control" type="text" name="" aria-describedby="lumberCapacityArea" placeholder="Laiks">
+									<input class="form-control" type="text" name="maintenance_times[]" aria-describedby="lumberCapacityArea" placeholder="Laiks">
 								</div>
 								<div class="col-md-4">
-									<input class="form-control" type="text" name="" aria-describedby="lumberCapacityArea" placeholder="Piezīme">
+									<input class="form-control" type="text" name="maintenance_notes[]" aria-describedby="lumberCapacityArea" placeholder="Piezīme">
 								</div>
 								<div class="col-md-1">
 									<button type="button" name="add" id="add" class="btn btn-success">+</button>
 								</div>
 								<div class="col-md-3">
 									<?php
-										if(isset($_SESSION['']))
+										if(isset($_SESSION['maintenance']))
 										{
 									?>
 										<div class="alert alert-danger alert-size" role="alert">
-											<?=$_SESSION['']?>
+											<?=$_SESSION['maintenance']?>
 										</div>
 									<?php
-											unset($_SESSION['']);
+											unset($_SESSION['maintenance']);
 										}
 									?>
 								</div>	
@@ -277,7 +264,7 @@ $(document).ready(function(){
 	var remove_btn = '<div class="col-md-4"><button type="button" class="btn btn-danger remove mt-2">X</button></div>';
 
 	$('#add').click(function(){ 
-		var maintenanceSelect = '<div class="offset-md-3 col-md-1"><input class="form-control mt-2" type="text" name="" placeholder="Laiks"></div><div class="col-md-4"><input class="form-control mt-2" type="text" name="" placeholder="Piezīme"></div>'+remove_btn;
+		var maintenanceSelect = '<div class="offset-md-3 col-md-1"><input class="form-control mt-2" type="text" name="maintenance_times[]" placeholder="Laiks"></div><div class="col-md-4"><input class="form-control mt-2" type="text" name="maintenance_notes[]" placeholder="Piezīme"></div>'+remove_btn;
 		$('#maintenance_select').append(maintenanceSelect);
 	});
 
@@ -290,7 +277,7 @@ $(document).ready(function(){
 	//Show beam count and beem size multiplier
 	var measure_unit = ' m<sup>3</sup>';
 	$('#beam_count_area, #beam_size_select').change(function(){
-		var count = Number($('#beam_count_area').val());
+		var count = Number($('#beam_count').val());
 		var size = Number($('#beam_size_select').val());
 		var capacity = count*size;
 		$('#beam_capacity').html(capacity+measure_unit);

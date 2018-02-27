@@ -77,8 +77,8 @@ CREATE TABLE sawmill_maintenance (
 	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	time INT NOT NULL,
 	note VARCHAR(255) NOT NULL,
-	mill_production_id INT NOT NULL,
-    FOREIGN KEY (mill_production_id) REFERENCES sawmill_productions(id)
+	sawmill_production_id INT NOT NULL,
+    FOREIGN KEY (sawmill_production_id) REFERENCES sawmill_productions(id)
 );
 
 CREATE TABLE employees_sawmill_productions (
