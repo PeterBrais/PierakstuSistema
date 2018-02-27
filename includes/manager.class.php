@@ -28,11 +28,20 @@
 			// return $rows;
 		}
 
+		public static function BeamSizes()	//Returns all entered beam sizes from Database
+		{
+			global $conn;
+
+			$sql = $conn->query("SELECT id, size FROM beam_sizes");
+
+			return mysqli_fetch_all($sql, MYSQLI_ASSOC);
+		}
+
 		public static function Employees()	//Returns all employees from Database
 		{
 			global $conn;
 
-			$sql = $conn->query("SELECT * FROM employees");
+			$sql = $conn->query("SELECT * FROM employees ORDER BY shift, last_name, name ASC");
 
 			return mysqli_fetch_all($sql, MYSQLI_ASSOC);
 		}

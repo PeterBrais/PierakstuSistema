@@ -11,14 +11,15 @@ CREATE TABLE employees (
 	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(50) NOT NULL,
     last_name VARCHAR(50) NOT NULL,
-    working_from VARCHAR(10) NULL,
-    working_to VARCHAR(10) NULL,
-    place VARCHAR(12) NOT NULL
+    place VARCHAR(12) NOT NULL,
+	shift CHAR(2) NULL,
+	working_from DATE NULL,
+	working_to DATE NULL
 );
 
 CREATE TABLE positions (
 	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-	position VARCHAR(40) NOT NULL
+	name VARCHAR(40) NOT NULL
 );
 
 CREATE TABLE employees_positions (
@@ -50,6 +51,11 @@ CREATE TABLE working_times (
     FOREIGN KEY (employee_id) REFERENCES employees(id)
 );
 
+CREATE TABLE beam_sizes (
+	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	size DECIMAL(12,3) NOT NULL
+);
+
 CREATE TABLE sawmill_productions (
 	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	date DATE NOT NULL,
@@ -62,6 +68,8 @@ CREATE TABLE sawmill_productions (
 	lumber_capacity DECIMAL(12,3),
 	percentage INT NOT NULL,
 	note VARCHAR(255) NULL,
+	beam_size_id INT NOT NULL,
+	FOREIGN KEY (beam_size_id) REFERENCES beam_sizes(id),
     UNIQUE (invoice)
 );
 

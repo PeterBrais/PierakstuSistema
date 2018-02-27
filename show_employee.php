@@ -35,49 +35,48 @@
 						{
 							if($employee['place'] == "Zagetava")
 							{
+								if($employee['shift'] == "1")
+								{
 					?>
-								<tr class="d-flex">
-									<th class="col-md-1"><?=$i++?></th>
-									<td class="col-md-3"><?=$employee['name']?></td>
-									<td class="col-md-3"><?=$employee['last_name']?></td>
-									<td class="col-md-1">1</td>
-									<td class="col-md-2">
-									<?php
-										$positions = Manager::EmployeePositions($employee['ID']);
-										foreach($positions as $position)
-										{
-											echo $position['name'].'<br>';
-										}
-									?>
-									</td>
-									<td class="col-md-2"></td>
-								</tr>
+									<tr class="d-flex">
+										<th class="col-md-1"><?=$i++?></th>
+										<td class="col-md-3"><?=$employee['name']?></td>
+										<td class="col-md-3"><?=$employee['last_name']?></td>
+										<td class="col-md-1"><?=$employee['shift']?></td>
+										<td class="col-md-2">
+										<?php
+											$positions = Manager::EmployeePositions($employee['id']);
+											foreach($positions as $position)
+											{
+												echo $position['name'].'<br>';
+											}
+										?>
+										</td>
+										<td class="col-md-2"></td>
+									</tr>
 					<?php
-							}
-						}
-
-						foreach ($employees as $employee)
-						{
-							if($employee['place'] == "Zagetava")
-							{
+								}
+								else if($employee['shift'] == "2")
+								{
 					?>
-								<tr class="d-flex table-success">
-									<th class="col-md-1"><?=$i++?></th>
-									<td class="col-md-3"><?=$employee['name']?></td>
-									<td class="col-md-3"><?=$employee['last_name']?></td>
-									<td class="col-md-1">2</td>
-									<td class="col-md-2">
-									<?php
-										$positions = Manager::EmployeePositions($employee['ID']);
-										foreach($positions as $position)
-										{
-											echo $position['name'].'<br>';
-										}
-									?>
-									</td>
-									<td class="col-md-2"></td>
-								</tr>
+									<tr class="d-flex table-success">
+										<th class="col-md-1"><?=$i++?></th>
+										<td class="col-md-3"><?=$employee['name']?></td>
+										<td class="col-md-3"><?=$employee['last_name']?></td>
+										<td class="col-md-1"><?=$employee['shift']?></td>
+										<td class="col-md-2">
+										<?php
+											$positions = Manager::EmployeePositions($employee['id']);
+											foreach($positions as $position)
+											{
+												echo $position['name'].'<br>';
+											}
+										?>
+										</td>
+										<td class="col-md-2"></td>
+									</tr>
 					<?php
+								}
 							}
 						}
 					?>
@@ -111,7 +110,7 @@
 									<td class="col-md-3"><?=$employee['last_name']?></td>
 									<td class="col-md-3">
 									<?php
-										$positions = Manager::EmployeePositions($employee['ID']);
+										$positions = Manager::EmployeePositions($employee['id']);
 										foreach($positions as $position)
 										{
 											echo $position['name'].'<br>';
@@ -154,7 +153,7 @@
 									<td class="col-md-3"><?=$employee['last_name']?></td>
 									<td class="col-md-3">
 									<?php
-										$positions = Manager::EmployeePositions($employee['ID']);
+										$positions = Manager::EmployeePositions($employee['id']);
 										foreach($positions as $position)
 										{
 											echo $position['name'].'<br>';

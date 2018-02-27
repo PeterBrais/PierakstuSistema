@@ -27,7 +27,7 @@
 			return $resultCheck >= 1;
 		}
 
-		public static function Exists($id)			//Finds if ID exists
+		public static function Exists($id)			//Finds if ID exists in database
 		{
 			global $conn;
 

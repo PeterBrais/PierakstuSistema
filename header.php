@@ -67,6 +67,7 @@ session_start();
 										<a class="dropdown-item" href="add_sawmill_production">
 											Jauna produkcija
 										</a>
+										<a class="dropdown-item" href="add_beam_size">Jauns tilpums</a>
 									</div>
 								</div>
 
