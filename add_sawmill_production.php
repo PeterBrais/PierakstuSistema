@@ -23,9 +23,14 @@
 
 						<form action="new_sawmill_production" method="POST">
 							<div class="form-group row">
-								<label class="col-md-2 offset-md-1 col-form-label">Datums</label>
+								<label class="col-md-2 offset-md-1 col-form-label">
+									Datums
+									<span class="text-danger" title="Šis lauks ir obligāts">
+										&#10033;
+									</span>
+								</label>
 								<div class="col-md-5">
-									<input class="form-control" type="text" name="date" aria-describedby="dateArea">
+									<input class="form-control" type="text" name="date" aria-describedby="dateArea" placeholder="2000/01/01">
 									<small id="dateArea" class="form-text text-muted">
 										* Satur tikai datuma formātu, piemēram, kā: GGGG-MM-DD *
 									</small>
@@ -45,7 +50,12 @@
 								</div>
 							</div>
 							<div class="form-group row">
-								<label class="col-md-2 offset-md-1 col-form-label">Laiks</label>
+								<label class="col-md-2 offset-md-1 col-form-label">
+									Laiks
+									<span class="text-danger" title="Šie lauki ir obligāti">
+										&#10033;
+									</span>
+								</label>
 								<div class="col-md-5">
 									<div class="row">
 										<div class="col-md-6">
@@ -75,7 +85,12 @@
 								</div>
 							</div>							
 							<div class="form-group row">
-								<label class="col-md-2 offset-md-1 col-form-label">Pavadzīmes Nr.</label>
+								<label class="col-md-2 offset-md-1 col-form-label">
+									Pavadzīmes Nr.
+									<span class="text-danger" title="Šis lauks ir obligāts">
+										&#10033;
+									</span>
+								</label>
 								<div class="col-md-5">
 									<input class="form-control" type="text" name="invoice" aria-describedby="invoiceArea">
 									<small id="invoiceArea" class="form-text text-muted">
@@ -99,9 +114,12 @@
 							<div class="form-group row">
 								<label class="col-md-2 offset-md-1 col-form-label">
 									Apaļkoku skaits
+									<span class="text-danger" title="Šis lauks ir obligāts">
+										&#10033;
+									</span>
 								</label>
 								<div class="col-md-5">
-									<input class="form-control" type="text" name="beam_count" aria-describedby="beemCountArea" id="beam_count">
+									<input class="form-control" type="text" name="beam_count" aria-describedby="beemCountArea" id="beam_count_input">
 									<small id="beemCountArea" class="form-text text-muted">
 										* Satur tikai skaitļus, kopējo (gab) skaitu *
 									</small>
@@ -121,7 +139,12 @@
 								</div>
 							</div>
 							<div class="form-group row">
-								<label class="col-md-2 offset-md-1 col-form-label">Kubatūras izmērs</label>
+								<label class="col-md-2 offset-md-1 col-form-label">
+									Kubatūras izmērs
+									<span class="text-danger" title="Šis lauks ir obligāts">
+										&#10033;
+									</span>
+								</label>
 								<div class="col-md-5">
 									<?php include "beam_size_select.php"; ?> 
 								</div>
@@ -140,7 +163,9 @@
 								</div>
 							</div>
 							<div class="form-group row">
-								<label class="col-md-2 offset-md-1 control-label">Apaļkoku tilpums</label>
+								<label class="col-md-2 offset-md-1 control-label">
+									Apaļkoku tilpums
+								</label>
 								<div class="col-md-5">
 									<p class="form-control-static" id="beam_capacity"> m<sup>3</sup></p>
 								</div>
@@ -148,6 +173,9 @@
 							<div class="form-group row">
 								<label class="col-md-2 offset-md-1 col-form-label">
 									Zāģmatariālu skaits
+									<span class="text-danger" title="Šis lauks ir obligāts">
+										&#10033;
+									</span>
 								</label>
 								<div class="col-md-5">
 									<input class="form-control" type="text" name="lumber_count" aria-describedby="lumberCountArea">
@@ -172,11 +200,14 @@
 							<div class="form-group row">
 								<label class="col-md-2 offset-md-1 col-form-label">
 									Zāģmatariālu tilpums
+									<span class="text-danger" title="Šis lauks ir obligāts">
+										&#10033;
+									</span>
 								</label>
 								<div class="col-md-5">
-									<input class="form-control" type="text" name="lumber_capacity" aria-describedby="lumberCapacityArea">
+									<input class="form-control" type="text" name="lumber_capacity" aria-describedby="lumberCapacityArea" placeholder="0.000">
 									<small id="lumberCapacityArea" class="form-text text-muted">
-										* Satur tikai skaitļus, kopējo m<sup>3</sup> tilpumu *
+										* Satur tikai ciparus, kopējo m<sup>3</sup> tilpumu *
 									</small>
 								</div>
 								<div class="col-md-4">
@@ -196,15 +227,9 @@
 							<div class="form-group row has-success">
 								<label class="col-md-2 offset-md-1 col-form-label">
 									Citas piezīmes
-									<span class="badge badge-warning">
-										<abbr title="Šis ievadlauks nav obligāts"> *** </abbr>
-									</span>
 								</label>
 								<div class="col-md-5">
 									<textarea class="form-control rounded-0" name="note" rows="3" aria-describedby="noteArea"></textarea>
-									<small id="noteArea" class="form-text text-muted">
-										* Nav obligāts *
-									</small>
 								</div>
 								<div class="col-md-4">
 									<?php
@@ -212,7 +237,7 @@
 										{
 									?>
 										<div class="alert alert-danger alert-size" role="alert">
-											<?=$_SESSION['']?>
+											<?=$_SESSION['note']?>
 										</div>
 									<?php
 											unset($_SESSION['note']);
@@ -220,9 +245,13 @@
 									?>
 								</div>	
 							</div>
-
 							<div class="form-group row" id="maintenance_select">
-								<label class="col-md-2 offset-md-1 col-form-label">Remontlaiks</label>
+								<label class="col-md-2 offset-md-1 col-form-label">
+									Remontlaiks
+									<span id="show_required" class="text-danger" title="Šie lauki ir obligāti" style="display:none">
+										&#10033;
+									</span>
+								</label>
 								<div class="col-md-1">
 									<input class="form-control" type="text" name="maintenance_times[]" aria-describedby="lumberCapacityArea" placeholder="Laiks">
 								</div>
@@ -246,7 +275,6 @@
 									?>
 								</div>	
 							</div>
-
 							<div class="form-group row">
 								<div class="col-md-3 offset-md-3">
 									<button class="btn btn-info" type="submit" name="submit">Pievienot</button>
@@ -276,12 +304,36 @@ $(document).ready(function(){
 
 	//Show beam count and beem size multiplier
 	var measure_unit = ' m<sup>3</sup>';
-	$('#beam_count_area, #beam_size_select').change(function(){
-		var count = Number($('#beam_count').val());
-		var size = Number($('#beam_size_select').val());
+	$('#beam_count_input, #beam_size_select').change(function(){
+
+		var count = Number($('#beam_count_input').val());
+    	var size = $("#beam_size_select option:selected").text();
+
 		var capacity = count*size;
-		$('#beam_capacity').html(capacity+measure_unit);
-	});;
+		if(isNaN(capacity))
+		{
+			capacity = "0.000";
+			$('#beam_capacity').html(capacity+measure_unit);
+		}
+		else
+		{
+			capacity = capacity.toFixed(3);
+			$('#beam_capacity').html(capacity+measure_unit);
+		}
+	});
+
+	//Show required input field notification, when multiple fields are chosen
+	$(document).on('click', '#add, .remove', function(){
+		if($(".remove")[0])
+		{
+			$('#show_required').show();
+		}
+		else
+		{
+			$('#show_required').hide();
+		}
+	});
+
 
 });  
 </script>

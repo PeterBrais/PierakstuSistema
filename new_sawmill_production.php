@@ -3,6 +3,7 @@
 	session_start();
 
 	include_once "includes/validate.class.php";
+	include "includes/sawmill_production.class.php";
 
 	$inputs = ['date', 'time_from', 'time_to', 'invoice', 'beam_count', 'sizes', 'lumber_count', 'lumber_capacity', 'note', 'maintenance_times', 'maintenance_notes'];
 
@@ -14,9 +15,6 @@
 			exit();
 		}
 	}
-
-	// if(isset($_POST['date']) && isset($_POST['time_from']) && isset($_POST['time_to']) && isset($_POST['invoice']) && isset($_POST['beam_count']) && isset($_POST['sizes']) && isset($_POST['lumber_count']) && isset($_POST['lumber_capacity']) && isset($_POST['note']) && isset($_POST['maintenance_times']) && isset($_POST['maintenance_notes']))
-	// {
 
 		$date = htmlspecialchars($_POST['date']);
 		$time_from = htmlspecialchars($_POST['time_from']);
@@ -53,7 +51,7 @@
 		//Checks if date is correct, like yyyy/mm/dd or yyyy-mm-dd
 		if(!preg_match("/^\d{4}[\-\/\s]?((((0[13578])|(1[02]))[\-\/\s]?(([0-2][0-9])|(3[01])))|(((0[469])|(11))[\-\/\s]?(([0-2][0-9])|(30)))|(02[\-\/\s]?[0-2][0-9]))$/", $date))
 		{
-			$_SESSION['date'] = "Lūdzu ievadiet korektu datumu, formā gggg-mm-dd!";
+			$_SESSION['date'] = "Lūdzu ievadiet korektu datumu, formā: gggg-mm-dd vai gggg/mm/dd!";
 			header("Location: ../add_sawmill_production");
 			exit();
 		}
@@ -61,13 +59,13 @@
 		//Check if production times are correct
 		if(!Validate::IsValidTime($time_from))
 		{
-			$_SESSION['time'] = "Jāsastāv no laika formāta hh:mm!";
+			$_SESSION['time'] = "Lūdzu ievadiet korektu laiku, formā: hh:mm!";
 			header("Location: ../add_sawmill_production");
 			exit();
 		}
 		if(!Validate::IsValidTime($time_to))
 		{
-			$_SESSION['time'] = "Jāsastāv no laika formāta hh:mm!";
+			$_SESSION['time'] = "Lūdzu ievadiet korektu laiku, formā: hh:mm!";
 			header("Location: ../add_sawmill_production");
 			exit();
 		}
@@ -75,13 +73,12 @@
 		//Check if invoice is number
 		if(!preg_match("/^\d{1,11}+$/", $invoice))
 		{
-			$_SESSION['invoice'] = "Pavadzīmes numurs var sastāvēt tikai no skaitļiem!";
+			$_SESSION['invoice'] = "Ievadītais pavadzīmes numurs ir neatbilstošs! Tas var sastāvēt tikai no cipariem!";
 			header("Location: ../add_sawmill_production");
 			exit();
 		}
 
 		//Checks if entered invoice number already exists
-		include "includes/sawmill_production.class.php";
 		if(SawmillProduction::ExistsInvoice($invoice))	
 		{
 			$_SESSION['invoice'] = "Pavadzīme ar šādu numuru jau eksistē!";
@@ -92,7 +89,7 @@
 		//Check if beam_count is number
 		if(!preg_match("/^\d{1,11}+$/", $beam_count))
 		{
-			$_SESSION['beam_count'] = "Apaļkoku skaits var sastāvēt tikai no skaitļiem!";
+			$_SESSION['beam_count'] = "Apaļkoku skaits drīkst sastāvēt tikai no cipariem!";
 			header("Location: ../add_sawmill_production");
 			exit();
 		}
@@ -115,15 +112,15 @@
 		//Check if lumber_count is number
 		if(!preg_match("/^\d{1,11}+$/", $lumber_count))
 		{
-			$_SESSION['lumber_count'] = "Zāģmatariālu skaits var sastāvēt tikai no skaitļiem!";
+			$_SESSION['lumber_count'] = "Zāģmatariālu skaits drīkst sastāvēt tikai no cipariem!";
 			header("Location: ../add_sawmill_production");
 			exit();
 		}
 
-		//Check if lumber_capacity is float number
-		if(!preg_match("/^\d{1,12}+.\d{1,3}$/", $lumber_capacity))
+		//Check if lumber_capacity is float number with comma or dot
+		if(!preg_match("/^\d{1,12}([\.\,]\d{1,3}+)?$/", $lumber_capacity))
 		{
-			$_SESSION['lumber_capacity'] = "Zāģmatariālu tilpums var saturēt tikai skaitļus ar punktu, maksimums 3 cipari aiz punkta!";
+			$_SESSION['lumber_capacity'] = "Zāģmatariālu tilpums drīkst saturēt tikai ciparus ar komatu! (Maksimums 3 cipari aiz komata)";
 			header("Location: ../add_sawmill_production");
 			exit();
 		}
@@ -131,9 +128,16 @@
 		//Checks if note is filled, then matches its content with regular expression
 		if(!empty($note))
 		{
+			if(mb_strlen($note) < 2 || mb_strlen($note) > 255)
+			{
+				$_SESSION['note'] = "Citas piezīmes jābūt garumā no 2 simboliem līdz 255 simboliem!";
+				header("Location: ../add_sawmill_production");
+				exit();
+			}
+
 			if(!preg_match("/^[0-9\p{L}][\p{L}\/0-9\s.,_-]+$/u", $note))
 			{
-				$_SESSION['note'] = "Citas piezīmes var saturēt tikai latīņu burtus, ciparus un speciālos simbolus!";
+				$_SESSION['note'] = "Citas piezīmes drīkst saturēt tikai latīņu burtus, ciparus un speciālos simbolus!";
 				header("Location: ../add_sawmill_production");
 				exit();
 			}
@@ -146,26 +150,26 @@
 			{
 				if(!preg_match("/^\d{1,11}+$/", $maintenance_times[0]))
 				{
-					$_SESSION['maintenance'] = "Remonta laiks var sastāvēt tikai no skaitļiem!";
+					$_SESSION['maintenance'] = "Remonta laiks drīkst sastāvēt tikai no cipariem!";
 					header("Location: ../add_sawmill_production");
 					exit();
 				}
 
 				if(mb_strlen($maintenance_notes[0]) < 3 || mb_strlen($maintenance_notes[0]) > 255)
 				{
-					$_SESSION['maintenance'] = "Piezīmei jāsatur simbolu skaits robežās no 3 līdz 255!";
+					$_SESSION['maintenance'] = "Piezīme jābūt garumā no 3 simboliem līdz 255 simboliem!";
 					header("Location: ../add_sawmill_production");
 					exit();
 				}
 
 				if(!preg_match("/^[0-9\p{L}][\p{L}\/0-9\s.,_-]+$/u", $maintenance_notes[0]))
 				{
-					$_SESSION['maintenance'] = "Piezīme var saturēt tikai latīņu burtus, ciparus un speciālos simbolus!";
+					$_SESSION['maintenance'] = "Piezīme drīkst saturēt tikai latīņu burtus, ciparus un speciālos simbolus!";
 					header("Location: ../add_sawmill_production");
 					exit();
 				}
 			}
-			else //One or other is filled
+			else if((empty($maintenance_times[0]) && !empty($maintenance_notes[0])) || (!empty($maintenance_times[0]) && empty($maintenance_notes[0]))) //One or other is filled
 			{
 				$_SESSION['maintenance'] = "Lūdzu ievadiet remonta laiku un piezīmi!";
 				header("Location: ../add_sawmill_production");
@@ -185,7 +189,7 @@
 
 				if(!preg_match("/^\d{1,11}+$/", $maintenance_time))
 				{
-					$_SESSION['maintenance'] = "Remonta laiks var sastāvēt tikai no skaitļiem!";
+					$_SESSION['maintenance'] = "Remonta laiks drīkst sastāvēt tikai no cipariem!";
 					header("Location: ../add_sawmill_production");
 					exit();
 				}
@@ -201,14 +205,14 @@
 
 				if(mb_strlen($maintenance_note) < 3 || mb_strlen($maintenance_note) > 255)
 				{
-					$_SESSION['maintenance'] = "Piezīmei jāsatur simbolu skaits robežās no 3 līdz 255!";
+					$_SESSION['maintenance'] = "Piezīme jābūt garumā no 3 simboliem līdz 255 simboliem!";
 					header("Location: ../add_sawmill_production");
 					exit();
 				}
 
 				if(!preg_match("/^[0-9\p{L}][\p{L}\/0-9\s.,_-]+$/u", $maintenance_note))
 				{
-					$_SESSION['maintenance'] = "Piezīme var saturēt tikai latīņu burtus, ciparus un speciālos simbolus!";
+					$_SESSION['maintenance'] = "Piezīme drīkst saturēt tikai latīņu burtus, ciparus un speciālos simbolus!";
 					header("Location: ../add_sawmill_production");
 					exit();
 				}
@@ -218,7 +222,12 @@
 		$beamSize = BeamSize::Get($beam_size);
 		(float)$beam_capacity = (int)$beam_count * (float)$beamSize->size;
 
-		//include "includes/sawmill_production.class.php";
+		$lumber_capacity = str_replace(',', '.', $lumber_capacity); //If user typed float with comma, it changes it to dot
+
+		(float)$percentage = ((float)$lumber_capacity / (float)$beam_capacity) * 100;
+
+		$percentage = round($percentage, 2);
+
 
 		$sawmillProduction = new SawmillProduction();
 
@@ -230,6 +239,7 @@
 		$sawmillProduction->beem_capacity = $beam_capacity;
 		$sawmillProduction->lumber_count = $lumber_count;
 		$sawmillProduction->lumber_capacity = $lumber_capacity;
+		$sawmillProduction->percentage = $percentage;
 		$sawmillProduction->note = $note;
 		$sawmillProduction->beam_size_id = $beam_size;
 		$sawmillProduction->Save();
@@ -251,12 +261,5 @@
 		$_SESSION['success'] = "Zāģētavas produkcija pievienota veiksmīgi!";
 		header("Location: ../add_sawmill_production");
 		exit();
-
-	// }
-	// else
-	// {
-	// 	header("Location: /");
-	// 	exit();
-	// }
 
 ?>

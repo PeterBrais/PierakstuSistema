@@ -10,8 +10,8 @@
 		public $time_from;
 		public $time_to;
 		public $invoice;
-		public $beem_count; //JAIZLABO uz beam
-		public $beem_capacity; //JAIZLABO uz beam
+		public $beam_count;
+		public $beam_capacity;
 		public $lumber_count;
 		public $lumber_capacity;
 		public $percentage;
@@ -25,7 +25,6 @@
 		{
 			global $conn;
 			$this->conn = $conn;
-			$this->percentage = 8;
 		}
 
 		public static function ExistsInvoice($invoice)	//Finds if position already exists in atabase
@@ -47,7 +46,7 @@
 			try
 			{
 				$sql = $this->conn->prepare("INSERT INTO sawmill_productions VALUES (DEFAULT, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-				$sql->bind_param('sssiididisi', $this->date, $this->time_from, $this->time_to, $this->invoice, $this->beem_count, $this->beem_capacity, $this->lumber_count, $this->lumber_capacity, $this->percentage, $this->note, $this->beam_size_id);
+				$sql->bind_param('sssiididdsi', $this->date, $this->time_from, $this->time_to, $this->invoice, $this->beem_count, $this->beem_capacity, $this->lumber_count, $this->lumber_capacity, $this->percentage, $this->note, $this->beam_size_id);
 				$sql->execute();
 
 				$this->id = $this->conn->insert_id; //Sets object id
