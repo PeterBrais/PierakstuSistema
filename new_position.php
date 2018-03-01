@@ -2,55 +2,58 @@
 
 	session_start();
 
-	if(isset($_POST['name']))
-	{
-		$position = htmlspecialchars($_POST['name']);
+/****************** Includes ******************/
+	include_once "includes/position.class.php";
+	include_once "includes/validate.class.php";
+/****************** Includes ******************/
 
-		//Error handlers
-		//Check if position is set
-		if(empty($position))
-		{
-			$_SESSION['new_position'] = "Lūdzu aizpildiet Amats lauku!";
-			header("Location: ../add_position");
-			exit();
-		}
-
-		//Check position length
-		if(mb_strlen($position) < 3 || mb_strlen($position) > 40)
-		{
-			$_SESSION['new_position'] = "Amats jāsatur simbolu skaits robežās no 3 līdz 40!";
-			header("Location: ../add_position");
-			exit();
-		}
-
-		//Check if position match complexity
-		if(!preg_match("/^\p{L}[\p{L}\/0-9\s.,_-]+$/u", $position))
-		{
-			$_SESSION['new_position'] = "Amats var saturēt tikai latīņu burtus, ciparus un speciālos simbolus!";
-			header("Location: ../add_position");
-			exit();
-		}
-
-		//Check if possition already exists
-		include_once "includes/position.class.php";
-		if(Position::ExistsName($position))
-		{
-			$_SESSION['success'] = "Amats jau eksistē, jums nav nepieciešams to ievadīt vēlreiz!";
-			header("Location: ../add_position");
-			exit();
-		}
-
-		//Object
-		$pos = new Position();
-		$pos->name = $position;
-		$pos->Save();	//Saving position in database
-
-		$_SESSION['success'] = "Amats pievienots veiksmīgi!";
-		header("Location: ../add_position");
-		exit();
-	}
-	else
+	if(!isset($_POST['name']))
 	{
 		header("Location: /");
 		exit();
 	}
+
+	//Sets variable
+	$position = htmlspecialchars($_POST['name']);
+
+	//Error handlers
+	//Check if position is set
+	if(empty($position))
+	{
+		$_SESSION['new_position'] = "Lūdzu aizpildiet Amats lauku!";
+		header("Location: ../add_position");
+		exit();
+	}
+
+	//Check position length
+	if(!Validate::IsValidPositionLength($position))
+	{
+		$_SESSION['new_position'] = "Amats jābūt garumā no 3 simboliem līdz 40 simboliem!";
+		header("Location: ../add_position");
+		exit();
+	}
+
+	//Check if position match complexity
+	if(!Validate::IsValidText($position))
+	{
+		$_SESSION['new_position'] = "Amats drīkst saturēt tikai latīņu burtus, ciparus un speciālos simbolus!";
+		header("Location: ../add_position");
+		exit();
+	}
+
+	//Check if possition already exists
+	if(Position::ExistsName($position))
+	{
+		$_SESSION['warning'] = "Amats jau eksistē, jums nav nepieciešams to ievadīt vēlreiz!";
+		header("Location: ../add_position");
+		exit();
+	}
+
+	//Object
+	$pos = new Position();
+	$pos->name = $position;
+	$pos->Save();
+
+	$_SESSION['success'] = "Amats pievienots veiksmīgi!";
+	header("Location: ../add_position");
+	exit();

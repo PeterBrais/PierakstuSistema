@@ -17,4 +17,13 @@
 <?php
 		unset($_SESSION['success']);
 	}
+	elseif(isset($_SESSION['warning']))
+	{
+?>
+		<div class="alert alert-warning" role="alert">
+			<?=$_SESSION['warning']?>
+		</div>
+<?php
+		unset($_SESSION['warning']);
+	}
 ?>

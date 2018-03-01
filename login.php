@@ -2,8 +2,17 @@
 
 	session_start();
 
-	if(isset($_POST['usr']) && isset($_POST['pwd']))
+	$inputs = ['usr', 'pwd'];
+
+	foreach($inputs as $input)
 	{
+		if(!isset($_POST[$input]))
+		{
+			header("Location: /");
+			exit();
+		}
+	}
+
 		$username = htmlspecialchars($_POST['usr']);
 		$password = htmlspecialchars($_POST['pwd']);
 
@@ -20,11 +29,5 @@
 			$user = new User();
 			$user->Login($username, $password);
 		}
-	}
-	else
-	{
-		header("Location: /");
-		exit();
-	}
 
 ?>

@@ -12,11 +12,9 @@
 	<div class="container">
 		<div class="row cont-space">
 			<div class="col-md-12">
-
 				<div id="message">
 					<?php include "message.php"; ?>
 				</div>
-				
 				<div class="card">
 					<div class="card-body">
 						<h4 class="card-title text-center">Pievienot jaunu zāģētavas produkciju</h4>
@@ -32,7 +30,7 @@
 								<div class="col-md-5">
 									<input class="form-control" type="text" name="date" aria-describedby="dateArea" placeholder="2000/01/01">
 									<small id="dateArea" class="form-text text-muted">
-										* Satur tikai datuma formātu, piemēram, kā: GGGG-MM-DD *
+										* Satur tikai datumu, piemēram, formātā: GGGG-MM-DD *
 									</small>
 								</div>
 								<div class="col-md-4">
@@ -66,10 +64,9 @@
 										</div>
 									</div>
 									<small id="timeFromArea" class="form-text text-muted">
-										* Satur tikai skaitļus un kolu laika formā, piemēram, kā: 00:00 *
+										* Satur tikai laikus, piemēram, formātā: 00:00 *
 									</small>
 								</div>
-
 								<div class="col-md-4">
 									<?php
 										if(isset($_SESSION['time']))
@@ -94,7 +91,7 @@
 								<div class="col-md-5">
 									<input class="form-control" type="text" name="invoice" aria-describedby="invoiceArea">
 									<small id="invoiceArea" class="form-text text-muted">
-										* Satur tikai skaitļus *
+										* Satur tikai ciparus *
 									</small>
 								</div>
 								<div class="col-md-4">
@@ -119,9 +116,9 @@
 									</span>
 								</label>
 								<div class="col-md-5">
-									<input class="form-control" type="text" name="beam_count" aria-describedby="beemCountArea" id="beam_count_input">
-									<small id="beemCountArea" class="form-text text-muted">
-										* Satur tikai skaitļus, kopējo (gab) skaitu *
+									<input class="form-control" type="text" name="beam_count" aria-describedby="beamCountArea" id="beam_count_input">
+									<small id="beamCountArea" class="form-text text-muted">
+										* Satur tikai ciparus, kopējo (gab) skaitu *
 									</small>
 								</div>
 								<div class="col-md-4">
@@ -180,7 +177,7 @@
 								<div class="col-md-5">
 									<input class="form-control" type="text" name="lumber_count" aria-describedby="lumberCountArea">
 									<small id="lumberCountArea" class="form-text text-muted">
-										* Satur tikai skaitļus, kopējo (gab) skaitu *
+										* Satur tikai ciparus, kopējo (gab) skaitu *
 									</small>
 								</div>
 								<div class="col-md-4">
@@ -205,9 +202,9 @@
 									</span>
 								</label>
 								<div class="col-md-5">
-									<input class="form-control" type="text" name="lumber_capacity" aria-describedby="lumberCapacityArea" placeholder="0.000">
+									<input class="form-control" type="text" name="lumber_capacity" aria-describedby="lumberCapacityArea" placeholder="0,000">
 									<small id="lumberCapacityArea" class="form-text text-muted">
-										* Satur tikai ciparus, kopējo m<sup>3</sup> tilpumu *
+										* Satur tikai ciparus, kopējo tilpumu m<sup>3</sup>. (Maksimums 3 cipari aiz komata) *
 									</small>
 								</div>
 								<div class="col-md-4">
@@ -302,7 +299,7 @@ $(document).ready(function(){
 		$(this).parent().remove();
 	}); 
 
-	//Show beam count and beem size multiplier
+	//Show beam count and beam size multiplier
 	var measure_unit = ' m<sup>3</sup>';
 	$('#beam_count_input, #beam_size_select').change(function(){
 

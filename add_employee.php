@@ -22,14 +22,16 @@
 
 						<form action="new_employee" method="POST">
 							<div class="form-group row">
-								<label class="col-md-2 offset-md-1 col-form-label">Vārds</label>
+								<label class="col-md-2 offset-md-1 col-form-label">
+									Vārds
+									<span class="text-danger" title="Šis lauks ir obligāts">
+										&#10033;
+									</span>
+								</label>
 								<div class="col-md-5">
 									<input class="form-control" type="text" name="name" aria-describedby="nameArea">
 									<small id="nameArea" class="form-text text-muted">
-										* Satur tikai lielos un mazos latīņu burtus *
-									</small>
-									<small id="nameArea" class="form-text text-muted">
-										* Jābūt garumā no 3 līdz 50 rakstzīmēm *
+										* Satur tikai latīņu burtus, garumā no 3 līdz 50 rakstzīmēm *
 									</small>
 								</div>
 								<div class="col-md-4">
@@ -47,14 +49,16 @@
 								</div>
 							</div>
 							<div class="form-group row">
-								<label class="col-md-2 offset-md-1 col-form-label">Uzvārds</label>
+								<label class="col-md-2 offset-md-1 col-form-label">
+									Uzvārds
+									<span class="text-danger" title="Šis lauks ir obligāts">
+										&#10033;
+									</span>
+								</label>
 								<div class="col-md-5">
 									<input class="form-control" type="text" name="last_name" aria-describedby="lastNameArea">
 									<small id="lastNameArea" class="form-text text-muted">
-										* Satur tikai lielos un mazos latīņu burtus *
-									</small>
-									<small id="lastNameArea" class="form-text text-muted">
-										* Jābūt garumā no 3 līdz 50 rakstzīmēm *
+										* Satur tikai latīņu burtus, garumā no 3 līdz 50 rakstzīmēm *
 									</small>
 								</div>
 								<div class="col-md-4">
@@ -72,7 +76,12 @@
 								</div>
 							</div>
 							<div class="form-group row" id="workplace_input">
-								<label class="col-md-2 offset-md-1 col-form-label">Darbavieta</label>
+								<label class="col-md-2 offset-md-1 col-form-label">
+									Darbavieta
+									<span class="text-danger" title="Šis lauks ir obligāts">
+										&#10033;
+									</span>
+								</label>
 								<div class="col-md-5">
 									<select class="custom-select" name="place" id="place_selects">
 										<option selected value="0">Izvēlieties darba vietu</option>
@@ -96,7 +105,12 @@
 								</div>
 							</div>
 							<div class="form-group row" id="position_selects">
-								<label class="col-md-2 offset-md-1 col-form-label">Amats</label>
+								<label class="col-md-2 offset-md-1 col-form-label">
+									Amats
+									<span class="text-danger" title="Šis lauks ir obligāts">
+										&#10033;
+									</span>
+								</label>
 								<div class="col-md-5">
 									<?php include "position_select.php"; ?>
 								</div>
@@ -147,7 +161,7 @@ $(document).ready(function(){
 	});
 
 	//Shows shift input for sawmill workers
-	var shift = '<label class="col-md-2 offset-md-1 col-form-label mt-3">Maiņa</label><div class="col-md-5 mt-3"><select class="custom-select" name="shift"><option selected value="0">Izvēlieties maiņu</option><option value="1">1</option><option value="2">2</option></select></div>';
+	var shift = '<label class="col-md-2 offset-md-1 col-form-label mt-3">Maiņa<span class="text-danger" title="Šis lauks ir obligāts"> &#10033;</span></label><div class="col-md-5 mt-3"><select class="custom-select" name="shift"><option selected value="0">Izvēlieties maiņu</option><option value="1">1</option><option value="2">2</option></select></div>';
 
 	$('#place_selects').on('change', function(){
 		var place_value = $(this).val();
@@ -161,9 +175,6 @@ $(document).ready(function(){
 			$(this).parent().next().next().remove();
 		}
 	});
-
-
-
 });  
 </script>
 

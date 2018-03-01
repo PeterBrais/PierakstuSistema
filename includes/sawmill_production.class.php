@@ -46,7 +46,7 @@
 			try
 			{
 				$sql = $this->conn->prepare("INSERT INTO sawmill_productions VALUES (DEFAULT, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-				$sql->bind_param('sssiididdsi', $this->date, $this->time_from, $this->time_to, $this->invoice, $this->beem_count, $this->beem_capacity, $this->lumber_count, $this->lumber_capacity, $this->percentage, $this->note, $this->beam_size_id);
+				$sql->bind_param('sssiididdsi', $this->date, $this->time_from, $this->time_to, $this->invoice, $this->beam_count, $this->beam_capacity, $this->lumber_count, $this->lumber_capacity, $this->percentage, $this->note, $this->beam_size_id);
 				$sql->execute();
 
 				$this->id = $this->conn->insert_id; //Sets object id

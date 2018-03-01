@@ -1,7 +1,7 @@
 <?php
 	include_once "header.php";
 
-	if(!isset($_SESSION['id']))	//Registering new user is allowed only when user is logged in
+	if(!isset($_SESSION['id']) && ($_SESSION['role']) == "p")
 	{
 		header("Location: /");
 		exit();
@@ -12,49 +12,120 @@
 	<div class="container">
 		<div class="row cont-space">
 			<div class="col-md-12">
-				<?php include "message.php"; ?>
+				<div id="message">
+					<?php include "message.php"; ?>
+				</div>
 				<div class="card">
 					<div class="card-body">
 						<h4 class="card-title text-center">Reģistrēt jaunu lietotāju</h4>
 						<form action="register" method="POST">
 							<div class="form-group row">
-								<label class="col-md-2 offset-md-1 col-form-label">Lietotājvārds</label>
+								<label class="col-md-2 offset-md-1 col-form-label">
+									Lietotājvārds
+									<span class="text-danger" title="Šis lauks ir obligāts">
+										&#10033;
+									</span>
+								</label>
 								<div class="col-md-5">
 									<input class="form-control" type="text" name="usr" aria-describedby="userArea">
 									<small id="userArea" class="form-text text-muted">
-										* Satur tikai lielos un mazos latīņu burtus un ciparus *
+										* Satur tikai latīņu burtus un ciparus *
 									</small>
+								</div>
+								<div class="col-md-4">
+									<?php
+										if(isset($_SESSION['usr_name']))
+										{
+									?>
+										<div class="alert alert-danger alert-size" role="alert">
+											<?=$_SESSION['usr_name']?>
+										</div>
+									<?php
+											unset($_SESSION['usr_name']);
+										}
+									?>
 								</div>
 							</div>
 							<div class="form-group row">
-								<label class="col-md-2 offset-md-1 col-form-label">Parole</label>
+								<label class="col-md-2 offset-md-1 col-form-label">
+									Parole
+									<span class="text-danger" title="Šis lauks ir obligāts">
+										&#10033;
+									</span>
+								</label>
 								<div class="col-md-5">
 									<input class="form-control" type="password" name="pwd" placeholder="********" aria-describedby="pwdArea">
 									<small id="pwdArea" class="form-text text-muted">
-										* Jābūt garumā no 8 līdz 64 rakstzīmēm *
+										* Satur vismaz no vienu mazo un lielo latīņu burtu, ciparu un speciālo simbolu *
 									</small>
-									<small id="pwdArea" class="form-text text-muted">
-										* Jāsastāv vismaz no viena mazā un lielā latīņu burta, cipara un speciālā simbola *
-									</small>
+								</div>
+								<div class="col-md-4">
+									<?php
+										if(isset($_SESSION['pwd']))
+										{
+									?>
+										<div class="alert alert-danger alert-size" role="alert">
+											<?=$_SESSION['pwd']?>
+										</div>
+									<?php
+											unset($_SESSION['pwd']);
+										}
+									?>
 								</div>
 							</div>
 							<div class="form-group row">
-								<label class="col-md-2 offset-md-1 col-form-label">Parole atkārtoti</label>
+								<label class="col-md-2 offset-md-1 col-form-label">
+									Parole atkārtoti
+									<span class="text-danger" title="Šis lauks ir obligāts">
+										&#10033;
+									</span>
+								</label>
 								<div class="col-md-5">
 									<input class="form-control" type="password" name="pwd2" placeholder="********" aria-describedby="pwdArea2">
 									<small id="pwdArea2" class="form-text text-muted">
 										* Ievadītā parole atkārtoti *
 									</small>
 								</div>
+								<div class="col-md-4">
+									<?php
+										if(isset($_SESSION['pwd2']))
+										{
+									?>
+										<div class="alert alert-danger alert-size" role="alert">
+											<?=$_SESSION['pwd2']?>
+										</div>
+									<?php
+											unset($_SESSION['pwd2']);
+										}
+									?>
+								</div>
 							</div>
 							<div class="form-group row">
-								<label class="col-md-2 offset-md-1 col-form-label">Loma</label>
+								<label class="col-md-2 offset-md-1 col-form-label">
+									Loma
+									<span class="text-danger" title="Šis lauks ir obligāts">
+										&#10033;
+									</span>
+								</label>
 								<div class="col-md-5">
 									<select class="custom-select" name="role">
 										<option selected value="0">Izvēlieties lietotāja lomu</option>
 										<option value="2">Pārvaldnieks</option>
 										<option value="3">Administrators</option>
 									</select>
+								</div>
+								<div class="col-md-4">
+									<?php
+										if(isset($_SESSION['usr_role']))
+										{
+									?>
+										<div class="alert alert-danger alert-size" role="alert">
+											<?=$_SESSION['usr_role']?>
+										</div>
+									<?php
+											unset($_SESSION['usr_role']);
+										}
+									?>
 								</div>
 							</div>	
 							<div class="form-group row">

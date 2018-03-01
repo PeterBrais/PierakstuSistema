@@ -16,18 +16,22 @@
 				<div id="message">
 					<?php include "message.php"; ?>
 				</div>
-				
+		
 				<div class="card">
 					<div class="card-body">
 						<h4 class="card-title text-center">Pievienot jaunu kubatūras izmēru apaļkoka tilpuma aprēķiniem</h4>
-
 						<form action="new_beam_size" method="POST">
 							<div class="form-group row">
-								<label class="col-md-2 offset-md-1 col-form-label">Izmērs</label>
+								<label class="col-md-2 offset-md-1 col-form-label">
+									Izmērs
+									<span class="text-danger" title="Šis lauks ir obligāts">
+										&#10033;
+									</span>
+								</label>
 								<div class="col-md-5">
-									<input class="form-control" type="text" name="size" aria-describedby="sizeArea">
+									<input class="form-control" type="text" name="size" aria-describedby="sizeArea" placeholder="0,000">
 									<small id="sizeArea" class="form-text text-muted">
-										* Satur tikai skaitli, ar maksimums 3 cipariem aiz komata *
+										* Satur tikai ciparus. (Maksimums 3 cipari aiz komata) *
 									</small>
 								</div>
 								<div class="col-md-4">
@@ -44,7 +48,6 @@
 									?>
 								</div>
 							</div>
-						
 							<div class="form-group row">
 								<div class="col-md-3 offset-md-3">
 									<button class="btn btn-info" type="submit" name="submit">Pievienot</button>
