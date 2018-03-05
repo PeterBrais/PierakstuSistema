@@ -6,9 +6,13 @@
 	include_once "includes/validate.class.php";
 	include_once "includes/sawmill_production.class.php";
 	include_once "includes/sawmill_maintenance.class.php";
+	include_once "includes/employees_sawmill_productions.class.php";
+	include_once "includes/manager.class.php";
+	include_once "includes/working_times.class.php";
+	include_once "includes/times.class.php";
 /****************** Includes ******************/
 
-	$inputs = ['date', 'time_from', 'time_to', 'invoice', 'beam_count', 'sizes', 'lumber_count', 'lumber_capacity', 'note', 'maintenance_times', 'maintenance_notes'];
+	$inputs = ['date', 'time_from', 'time_to', 'invoice', 'beam_count', 'sizes', 'lumber_count', 'lumber_capacity', 'note', 'maintenance_times', 'maintenance_notes', 'shifts'];
 
 	foreach($inputs as $input)
 	{
@@ -19,7 +23,7 @@
 		}
 	}
 
-	//Sets all variables
+	//Sets variables
 	$date = htmlspecialchars($_POST['date']);
 	$time_from = htmlspecialchars($_POST['time_from']);
 	$time_to = htmlspecialchars($_POST['time_to']);
@@ -43,14 +47,42 @@
 	$maintenance_times = $_POST['maintenance_times'];
 	$maintenance_notes = $_POST['maintenance_notes'];
 
+	$shift = htmlspecialchars($_POST['shifts']);
+
 	//Error handlers
 	//Check if fields are empty
-	if(empty($date) || empty($time_from) || empty($time_to) || empty($invoice) || empty($beam_count) || empty($lumber_count) || empty($lumber_capacity))
+	if(empty($date) || empty($time_from) || empty($time_to) || empty($invoice) || empty($beam_count) || empty($lumber_count) || empty($lumber_capacity) || empty($shift))
 	{
 		$_SESSION['error'] = "Lūdzu aizpildiet visus obligātos laukus!";
 		header("Location: ../add_sawmill_production");
 		exit();
 	}
+
+	//Checks if shift number exists in database
+	if(!Manager::ExistsShift($shift))
+	{
+		$_SESSION['error'] = "Radās kļūda, lūdzu mēģiniet vēlreiz!";
+		header("Location: ../add_sawmill_production");
+		exit();
+	}
+
+	//Checks if employees input fields are set
+	$inputs = ['id', 'working_hours', 'vacation', 'sick_leave', 'nonattendance'];
+	foreach($inputs as $input)
+	{
+		if(!isset($_POST[$input]))
+		{
+			header("Location: /");
+			exit();
+		}
+	}
+
+	//Sets variables
+	$ids = $_POST['id'];
+	$working_hours = $_POST['working_hours'];
+	$vacations = $_POST['vacation'];
+	$sick_leaves = $_POST['sick_leave'];
+	$nonattendances = $_POST['nonattendance'];
 
 	//Checks if date is correct, like yyyy/mm/dd or yyyy-mm-dd
 	if(!Validate::IsValidDate($date))
@@ -225,6 +257,64 @@
 		}
 	}
 
+	//Checks employees working fields, only one filled is allowed
+	for($i = 0; $i < count($working_hours); $i++) 
+	{
+		if(empty($working_hours[$i]) && empty($vacations[$i]) && empty($sick_leaves[$i]) && empty($nonattendances[$i]))
+		{
+			$_SESSION['shift'] = "Lūdzu aizpildiet darbinieku tabulu";
+			header("Location: ../add_sawmill_production");
+			exit();
+		}
+		else if(!empty($working_hours[$i]) && empty($vacations[$i]) && empty($sick_leaves[$i]) && empty($nonattendances[$i]))
+		{
+			//Check if working hour is number
+			if(!Validate::IsValidHours($working_hours[$i]))
+			{
+				$_SESSION['shift'] = "Nostrādātās darba stundas drīkst sastāvēt tikai no cipariem! (No 1 līdz 24)";
+				header("Location: ../add_sawmill_production");
+				exit();
+			}
+		}
+		else if(empty($working_hours[$i]) && !empty($vacations[$i]) && empty($sick_leaves[$i]) && empty($nonattendances[$i]))
+		{
+			//Check if vacation is letter
+			if(!Validate::IsValidLetterA($vacations[$i]))
+			{
+				$_SESSION['shift'] = "Atvaļinājums drīkst sastāvēt tikai no burta 'A'!";
+				header("Location: ../add_sawmill_production");
+				exit();
+			}
+
+		}
+		else if(empty($working_hours[$i]) && empty($vacations[$i]) && !empty($sick_leaves[$i]) && empty($nonattendances[$i]))
+		{
+			//Check if sick leave is letter
+			if(!Validate::IsValidLetterS($sick_leaves[$i]))
+			{
+				$_SESSION['shift'] = "Slimības lapa drīkst sastāvēt tikai no burta 'S'!";
+				header("Location: ../add_sawmill_production");
+				exit();
+			}
+		}
+		else if(empty($working_hours[$i]) && empty($vacations[$i]) && empty($sick_leaves[$i]) && !empty($nonattendances[$i]))
+		{
+			//Check if nonattendance is letter
+			if(!Validate::IsValidLetterN($nonattendances[$i]))
+			{
+				$_SESSION['shift'] = "Neapmeklējums drīkst sastāvēt tikai no burta 'N'!";
+				header("Location: ../add_sawmill_production");
+				exit();
+			}
+		}
+		else
+		{
+			$_SESSION['shift'] = "Lūdzu aizpildiet tikai vienu ievadlauku katram darbiniekam!";
+			header("Location: ../add_sawmill_production");
+			exit();
+		}
+	}
+
 	$beamSize = BeamSize::Get($beam_size);
 	(float)$beam_capacity = (int)$beam_count * (float)$beamSize->size; //Calculates beam_capacity
 
@@ -232,6 +322,7 @@
 
 	$percentage = round($percentage, 2);
 
+	//Saves sawmill production
 	$sawmillProduction = new SawmillProduction();
 	$sawmillProduction->date = $date;
 	$sawmillProduction->time_from = $time_from;
@@ -246,6 +337,7 @@
 	$sawmillProduction->beam_size_id = $beam_size;
 	$sawmillProduction->Save();
 
+	//Saves sawmillproduction maintenance times and notes
 	if(!empty($maintenance_times[0]) && !empty($maintenance_notes[0]))
 	{
 		for($i=0; $i<count($maintenance_times); $i++)
@@ -256,6 +348,37 @@
 			$sawmillMaintenance->sawmill_production_id = $sawmillProduction->id;
 			$sawmillMaintenance->Save();
 		}
+	}
+
+	//Saves 
+	$employees_sawmill_procutions = new EmployeeSawmillProductions();
+	$working_times = new WorkingTimes();
+	$times = new Times();
+
+	for($i = 0; $i < count($ids); $i++)
+	{
+		$employees_sawmill_procutions->employee_id = $ids[$i];
+		$employees_sawmill_procutions->sawmill_id = $sawmillProduction->id;
+		$employees_sawmill_procutions->Save();
+
+		if($working_hours[$i] != '' && $working_hours > 0)
+		{
+			$working_times->date = $date;
+			$working_times->working_hours = $working_hours[$i];
+			$working_times->employee_id = $ids[$i];
+			$working_times->Save();
+		}
+		else if($working_hours[$i] == '')
+		{
+			$times->date = $date;
+			$times->vacation = $vacations[$i];
+			$times->sick_leave = $sick_leaves[$i];
+			$times->nonattendance = $nonattendances[$i];
+			$times->pregnancy = NULL;
+			$times->employee_id = $ids[$i];
+			$times->Save();
+		}
+
 	}
 
 	$_SESSION['success'] = "Zāģētavas produkcija pievienota veiksmīgi!";

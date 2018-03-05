@@ -89,6 +89,26 @@
 		{
 			return preg_match("/^(?=.*\d)(?=.*[@#\-_$%^&+=§!\?])(?=.*[a-z])(?=.*[A-Z])[0-9A-Za-z@#\-_$%^&+=§!\?]{8,64}$/", $text);
 		}
+
+		static function IsValidHours($text)
+		{
+			return preg_match("/^([1-9]|1[0-9]|2[0-4])$/", $text);
+		}
+
+		static function IsValidLetterA($text)
+		{
+			return preg_match("/^[aA]{1}$/", $text);
+		}
+
+		static function IsValidLetterS($text)
+		{
+			return preg_match("/^[sS]{1}$/", $text);
+		}
+
+		static function IsValidLetterN($text)
+		{
+			return preg_match("/^[nN]{1}$/", $text);
+		}
 	}
 
 ?>

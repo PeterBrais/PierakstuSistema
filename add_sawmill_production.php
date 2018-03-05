@@ -272,6 +272,33 @@
 									?>
 								</div>	
 							</div>
+							<div class="form-group row" id="shift_select">
+								<label class="col-md-2 offset-md-1 col-form-label">
+									Maiņa
+									<span class="text-danger" title="Šis lauks ir obligāts">
+										&#10033;
+									</span>
+								</label>
+								<div class="col-md-5">
+									<?php include "shift_select.php"; ?> 
+								</div>
+								<div class="col-md-4">
+									<?php
+										if(isset($_SESSION['shift']))
+										{
+									?>
+										<div class="alert alert-danger alert-size" role="alert">
+											<?=$_SESSION['shift']?>
+										</div>
+									<?php
+											unset($_SESSION['shift']);
+										}
+									?>
+								</div>
+								<div class="col-md-12 mt-3" id="table_show">
+
+								</div>
+							</div>
 							<div class="form-group row">
 								<div class="col-md-3 offset-md-3">
 									<button class="btn btn-info" type="submit" name="submit">Pievienot</button>
@@ -331,6 +358,19 @@ $(document).ready(function(){
 		}
 	});
 
+	//Show all employees on selected shift
+	$('#employees_shift').change(function(){ //id from file: shift_select.php
+		var shift_id = $(this).val();
+
+		$.ajax({
+			url:"employee_times_table.php",
+			method:"POST",
+			data:{shift_id:shift_id},
+			success:function(data){
+				$('#table_show').html(data);
+			}
+		});
+	});
 
 });  
 </script>

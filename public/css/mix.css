@@ -14,7 +14,7 @@ body{
 	padding-right: 5px;
 }
 
-.dropdown .dropdown-menu a{
+.dropdown .dropdown-menu a {
 	color: #000;
 }
 
@@ -27,7 +27,7 @@ body{
 	margin-top: 20px;
 }
 
-.user-name{
+.user-name {
 	display: inline-block;
 	font-weight: 600;
 	color: #000;
@@ -37,8 +37,22 @@ body{
 	padding: 6px 12px;
 }
 
-.alert-size{
+.alert-size {
 	padding: 6px 12px;
+}
+
+.table td, .table th {
+	vertical-align: middle;
+}
+
+.table thead th {
+	vertical-align: middle;
+	text-align: center;
+}
+
+.list-space {
+	margin-left: 15px;
+	padding: 0;
 }
 
 .footer {

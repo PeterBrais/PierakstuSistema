@@ -18,9 +18,6 @@
 		public $note;
 		public $beam_size_id;
 
-
-
-
 		function __construct()
 		{
 			global $conn;

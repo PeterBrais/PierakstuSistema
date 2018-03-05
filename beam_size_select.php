@@ -8,7 +8,7 @@
 		<option selected value="0">Izvēlieties kubatūras izmēru</option>
 
 <?php
-	foreach ($sizes as $size)
+	foreach($sizes as $size)
 	{
 		echo '<option value="'.$size['id'].'">'.$size['size'].'</option>';
 	}
