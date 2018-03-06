@@ -10,6 +10,7 @@
 	include_once "includes/manager.class.php";
 	include_once "includes/working_times.class.php";
 	include_once "includes/times.class.php";
+	include_once "includes/beam_size.class.php";
 /****************** Includes ******************/
 
 	$inputs = ['date', 'time_from', 'time_to', 'invoice', 'beam_count', 'sizes', 'lumber_count', 'lumber_capacity', 'note', 'maintenance_times', 'maintenance_notes', 'shifts'];
@@ -67,7 +68,7 @@
 	}
 
 	//Checks if employees input fields are set
-	$inputs = ['id', 'working_hours', 'vacation', 'sick_leave', 'nonattendance'];
+	$inputs = ['id', 'working_hours', 'nonworking'];
 	foreach($inputs as $input)
 	{
 		if(!isset($_POST[$input]))
@@ -80,9 +81,7 @@
 	//Sets variables
 	$ids = $_POST['id'];
 	$working_hours = $_POST['working_hours'];
-	$vacations = $_POST['vacation'];
-	$sick_leaves = $_POST['sick_leave'];
-	$nonattendances = $_POST['nonattendance'];
+	$nonworking = $_POST['nonworking'];
 
 	//Checks if date is correct, like yyyy/mm/dd or yyyy-mm-dd
 	if(!Validate::IsValidDate($date))
@@ -131,7 +130,6 @@
 	}
 
 	//Check if beam_size is sellected
-	include "includes/beam_size.class.php";
 	if(empty($beam_size))
 	{
 		$_SESSION['beam_size'] = "Lūdzu izvēlieties kubatūras izmēru";
@@ -158,6 +156,12 @@
 
 	//Check if lumber_capacity is float number with comma or dot
 	if(!Validate::IsValidFloatNumber($lumber_capacity))
+	{
+		$_SESSION['lumber_capacity'] = "Zāģmatariālu tilpums drīkst saturēt tikai ciparus ar komatu! (Maksimums 3 cipari aiz komata)";
+		header("Location: ../add_sawmill_production");
+		exit();
+	}
+	if($lumber_capacity <= 0)
 	{
 		$_SESSION['lumber_capacity'] = "Zāģmatariālu tilpums drīkst saturēt tikai ciparus ar komatu! (Maksimums 3 cipari aiz komata)";
 		header("Location: ../add_sawmill_production");
@@ -260,49 +264,28 @@
 	//Checks employees working fields, only one filled is allowed
 	for($i = 0; $i < count($working_hours); $i++) 
 	{
-		if(empty($working_hours[$i]) && empty($vacations[$i]) && empty($sick_leaves[$i]) && empty($nonattendances[$i]))
+		if(empty($working_hours[$i]) && empty($nonworking[$i]))
 		{
-			$_SESSION['shift'] = "Lūdzu aizpildiet darbinieku tabulu";
+			$_SESSION['shift'] = "Lūdzu aizpildiet darbinieku tabulu!";
 			header("Location: ../add_sawmill_production");
 			exit();
 		}
-		else if(!empty($working_hours[$i]) && empty($vacations[$i]) && empty($sick_leaves[$i]) && empty($nonattendances[$i]))
+		else if(!empty($working_hours[$i]) && empty($nonworking[$i]))
 		{
 			//Check if working hour is number
 			if(!Validate::IsValidHours($working_hours[$i]))
 			{
-				$_SESSION['shift'] = "Nostrādātās darba stundas drīkst sastāvēt tikai no cipariem! (No 1 līdz 24)";
+				$_SESSION['shift'] = "Nostrādātās darba stundas drīkst sastāvēt tikai no cipariem!";
 				header("Location: ../add_sawmill_production");
 				exit();
 			}
 		}
-		else if(empty($working_hours[$i]) && !empty($vacations[$i]) && empty($sick_leaves[$i]) && empty($nonattendances[$i]))
+		else if(empty($working_hours[$i]) && !empty($nonworking[$i]))
 		{
-			//Check if vacation is letter
-			if(!Validate::IsValidLetterA($vacations[$i]))
+			//Check nonworking select values
+			if($nonworking[$i] != "1" && $nonworking[$i] != "2" && $nonworking[$i] != "3")
 			{
-				$_SESSION['shift'] = "Atvaļinājums drīkst sastāvēt tikai no burta 'A'!";
-				header("Location: ../add_sawmill_production");
-				exit();
-			}
-
-		}
-		else if(empty($working_hours[$i]) && empty($vacations[$i]) && !empty($sick_leaves[$i]) && empty($nonattendances[$i]))
-		{
-			//Check if sick leave is letter
-			if(!Validate::IsValidLetterS($sick_leaves[$i]))
-			{
-				$_SESSION['shift'] = "Slimības lapa drīkst sastāvēt tikai no burta 'S'!";
-				header("Location: ../add_sawmill_production");
-				exit();
-			}
-		}
-		else if(empty($working_hours[$i]) && empty($vacations[$i]) && empty($sick_leaves[$i]) && !empty($nonattendances[$i]))
-		{
-			//Check if nonattendance is letter
-			if(!Validate::IsValidLetterN($nonattendances[$i]))
-			{
-				$_SESSION['shift'] = "Neapmeklējums drīkst sastāvēt tikai no burta 'N'!";
+				$_SESSION['error'] = "Lūdzu mēģiniet vēlreiz!";
 				header("Location: ../add_sawmill_production");
 				exit();
 			}
@@ -350,7 +333,7 @@
 		}
 	}
 
-	//Saves 
+	//Saves data to tables: employees_sawmill_productions, working_times, times
 	$employees_sawmill_procutions = new EmployeeSawmillProductions();
 	$working_times = new WorkingTimes();
 	$times = new Times();
@@ -369,16 +352,37 @@
 			$working_times->Save();
 		}
 		else if($working_hours[$i] == '')
-		{
+		{	
+			if($nonworking[$i] == "1")
+			{
+				$times->vacation = "A";
+				$times->sick_leave = NULL;
+				$times->nonattendance = NULL;
+			}
+			else if($nonworking[$i] == "2")
+			{
+				$times->vacation = NULL;
+				$times->sick_leave = "S";
+				$times->nonattendance = NULL;
+			}
+			else if($nonworking == "3")
+			{
+				$times->vacation = NULL;
+				$times->sick_leave = NULL;
+				$times->nonattendance = "N";
+			}
+			else
+			{
+				$_SESSION['error'] = "Lūdzu mēģiniet vēlreiz!";
+				header("Location: ../add_sawmill_production");
+				exit();
+			}
+
 			$times->date = $date;
-			$times->vacation = $vacations[$i];
-			$times->sick_leave = $sick_leaves[$i];
-			$times->nonattendance = $nonattendances[$i];
 			$times->pregnancy = NULL;
 			$times->employee_id = $ids[$i];
 			$times->Save();
 		}
-
 	}
 
 	$_SESSION['success'] = "Zāģētavas produkcija pievienota veiksmīgi!";

@@ -15,10 +15,8 @@
 						<th>Nr. p. k</th>
 						<th>Vārds</th>
 						<th>Uzvārds</th>
-						<th>Nostrādātas stundas (8)</th>
-						<th>Atvaļinājums (A)</th>
-						<th>Slimības lapa (S)</th>
-						<th>Neapmeklējums (N)</th>
+						<th>Nostrādātas stundas</th>
+						<th>Cits iemesls</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -36,13 +34,12 @@
 							<input class="form-control" type="number" min="1" max="24" step="1" name="working_hours[]">
 						</td>
 						<td>
-							<input class="form-control" type="text" name="vacation[]">
-						</td>
-						<td>
-							<input class="form-control" type="text" name="sick_leave[]">
-						</td>
-						<td>
-							<input class="form-control" type="text" name="nonattendance[]">
+							<select class="custom-select" name="nonworking[]">
+								<option selected value="0" style="font-weight:bold;">Izvēlēties citu iemeslu</option>
+								<option value="1">Atvaļinājums</option>
+								<option value="2">Slimības lapa</option>
+								<option value="3">Neapmeklējums</option>
+							</select>
 						</td>
 					</tr>
 <?php

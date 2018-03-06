@@ -10,6 +10,8 @@
 		public $last_name;
 		public $place;
 		public $shift;
+		public $capacity_rate;
+		public $hour_rate;
 		public $working_from;
 		public $working_to;
 
@@ -25,8 +27,8 @@
 		{
 			try
 			{
-				$sql = $this->conn->prepare("INSERT INTO employees VALUES (DEFAULT, ?, ?, ?, ?, ?, ?)");
-				$sql->bind_param('ssssss', $this->name, $this->last_name, $this->place, $this->shift, $this->working_from, $this->working_to);
+				$sql = $this->conn->prepare("INSERT INTO employees VALUES (DEFAULT, ?, ?, ?, ?, ?, ?, ?, ?)");
+				$sql->bind_param('ssssddss', $this->name, $this->last_name, $this->place, $this->shift, $this->capacity_rate, $this->hour_rate, $this->working_from, $this->working_to);
 				$sql->execute();
 
 				$this->id = $this->conn->insert_id;

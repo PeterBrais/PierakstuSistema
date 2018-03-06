@@ -13,6 +13,8 @@ CREATE TABLE employees (
     last_name VARCHAR(50) NOT NULL,
     place VARCHAR(12) NOT NULL,
 	shift CHAR(2) NULL,
+	capacity_rate DECIMAL(12,2) NULL,
+	hour_rate DECIMAL(12,2) NULL,
 	working_from DATE NULL,
 	working_to DATE NULL
 );

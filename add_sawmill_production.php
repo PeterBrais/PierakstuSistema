@@ -202,7 +202,7 @@
 									</span>
 								</label>
 								<div class="col-md-5">
-									<input class="form-control" type="text" name="lumber_capacity" aria-describedby="lumberCapacityArea" placeholder="0,000">
+									<input class="form-control" type="number" min="0" step="0.001" name="lumber_capacity" aria-describedby="lumberCapacityArea" placeholder="0,000">
 									<small id="lumberCapacityArea" class="form-text text-muted">
 										* Satur tikai ciparus, kopējo tilpumu m<sup>3</sup>. (Maksimums 3 cipari aiz komata) *
 									</small>

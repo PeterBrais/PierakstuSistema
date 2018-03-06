@@ -40,32 +40,72 @@
 	{
 		$place = "Birojs";
 		$shift = NULL;
+		$capacity_rate = NULL;
+		$hour_rate = NULL;
 	}
 	elseif($place == "2")
 	{
-		if(isset($_POST['shift']))
+		//Checks sawmill inputs
+		$inputs = ['shift', 'capacity_rate', 'hour_rate'];
+
+		foreach($inputs as $input)
 		{
-			$shift = $_POST['shift'];
-
-			if(empty($shift))
+			if(!isset($_POST[$input]))
 			{
-				$_SESSION['error'] = "Lūdzu aizpildiet visus obligātos laukus!";
-				header("Location: ../add_employee");
-				exit();
-			}
-
-			if($shift != "1" && $shift != "2")
-			{
-				$_SESSION['error'] = "Lūdzu mēģiniet vēlreiz!";
-				header("Location: ../add_employee");
+				header("Location: /");
 				exit();
 			}
 		}
-		else
+
+		$shift = $_POST['shift'];
+		$capacity_rate = $_POST['capacity_rate'];
+		$hour_rate = $_POST['hour_rate'];
+
+		if(empty($shift) || empty($capacity_rate) || empty($hour_rate))
 		{
-			header("Location: /");
+			$_SESSION['error'] = "Lūdzu aizpildiet visus obligātos laukus!";
+			header("Location: ../add_employee");
 			exit();
 		}
+
+		if($shift != "1" && $shift != "2")
+		{
+			$_SESSION['error'] = "Lūdzu mēģiniet vēlreiz!";
+			header("Location: ../add_employee");
+			exit();
+		}
+
+		//If user typed number with comma, it changes it to dot
+		$capacity_rate = str_replace(',', '.', $capacity_rate);
+		$hour_rate = str_replace(',', '.', $hour_rate);
+
+		if(!Validate::IsValidFloatNumberWithTwoDigitsAfterDot($capacity_rate))
+		{
+			$_SESSION['place'] = "Kubikmetra likme drīkst saturēt tikai ciparus ar komatu! (Maksimums 2 cipari aiz komata)";
+			header("Location: ../add_employee");
+			exit();
+		}
+		if(!Validate::IsValidFloatNumberWithTwoDigitsAfterDot($hour_rate))
+		{
+			$_SESSION['place'] = "Stundas likme drīkst saturēt tikai ciparus ar komatu! (Maksimums 2 cipari aiz komata)";
+			header("Location: ../add_employee");
+			exit();
+		}
+		if($capacity_rate <= 0)
+		{
+			$_SESSION['place'] = "Kubikmetra likme drīkst saturēt tikai ciparus ar komatu! (Maksimums 2 cipari aiz komata)";
+			header("Location: ../add_employee");
+			exit();
+		}
+		if($hour_rate <= 0)
+		{
+			$_SESSION['place'] = "Stundas likme drīkst saturēt tikai ciparus ar komatu! (Maksimums 2 cipari aiz komata)";
+			header("Location: ../add_employee");
+			exit();
+		}
+
+		echo "la";
+		die();
 
 		$place = "Zagetava";
 	}
@@ -73,6 +113,8 @@
 	{
 		$place = "Skirotava";
 		$shift = NULL;
+		$capacity_rate = NULL;
+		$hour_rate = NULL;
 	}
 	else
 	{
@@ -136,6 +178,8 @@
 	$employee->last_name = $last_name;
 	$employee->place = $place;
 	$employee->shift = $shift;
+	$employee->capacity_rate = $capacity_rate;
+	$employee->hour_rate = $hour_rate;
 	$employee->Save();
 
 	//Sub-entity 

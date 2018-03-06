@@ -87,7 +87,7 @@
 									<?=$production['time_from']?> - <?=$production['time_to']?>
 								</td>
 								<td><?=$production['invoice']?></td>
-								<td><?=$production['invoice']?></td>
+								<td><?=$production['shift']?></td>
 								<td><?=$production['beam_count']?></td>
 								<td><?=$production['beam_capacity']?></td>
 								<td><?=$production['lumber_count']?></td>

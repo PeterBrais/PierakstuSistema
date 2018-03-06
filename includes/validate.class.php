@@ -12,6 +12,11 @@
 			return preg_match("/^\d{1,12}([\.]\d{1,3}+)?$/", $number);
 		}
 
+		static function IsValidFloatNumberWithTwoDigitsAfterDot($number)
+		{
+			return preg_match("/^\d{1,12}([\.]\d{1,2}+)?$/", $number);
+		}
+
 		static function IsValidDate($text)
 		{
 			return preg_match("/^\d{4}[\-\/\s]?((((0[13578])|(1[02]))[\-\/\s]?(([0-2][0-9])|(3[01])))|(((0[469])|(11))[\-\/\s]?(([0-2][0-9])|(30)))|(02[\-\/\s]?[0-2][0-9]))$/", $text);
@@ -93,21 +98,6 @@
 		static function IsValidHours($text)
 		{
 			return preg_match("/^([1-9]|1[0-9]|2[0-4])$/", $text);
-		}
-
-		static function IsValidLetterA($text)
-		{
-			return preg_match("/^[aA]{1}$/", $text);
-		}
-
-		static function IsValidLetterS($text)
-		{
-			return preg_match("/^[sS]{1}$/", $text);
-		}
-
-		static function IsValidLetterN($text)
-		{
-			return preg_match("/^[nN]{1}$/", $text);
 		}
 	}
 
