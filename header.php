@@ -8,12 +8,12 @@ session_start();
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<title>Kokzāģētava "Norupe"</title>
-	<link rel="shortcut icon" href="public/images/favicon.ico">
-	<link rel="stylesheet" type="text/css" href="public/css/bootstrap.min.css">
-	<link rel="stylesheet" type="text/css" href="public/css/mix.css">
+	<link rel="shortcut icon" href="/public/images/favicon.ico">
+	<link rel="stylesheet" type="text/css" href="/public/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="/public/css/mix.css">
 	
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-	<script src="public/js/bootstrap.min.js"></script>
+	<script src="/public/js/bootstrap.min.js"></script>
 
       
 </head>
@@ -21,7 +21,7 @@ session_start();
 	<nav class="navbar navbar-expand-md nav-bg">
 		<div class="container">
 				<a class="navbar-brand" href="http://www.rigasmezi.lv/">
-					<img src="public/images/Rigas-mezi.png" height="60" alt="Rīgas Meži">
+					<img src="/public/images/Rigas-mezi.png" height="60" alt="Rīgas Meži">
 				</a>
 
 					<!--
@@ -40,7 +40,7 @@ session_start();
 									<a class="nav-link" href="/">Sākums</a>
 								</li>
 								<li class="nav-item">
-									<a class="nav-link" href="signup">Jauns lietotājs</a>
+									<a class="nav-link" href="/new_user/signup">Jauns lietotājs</a>
 								</li>
 
 								<div class="dropdown nav-item">
@@ -49,9 +49,9 @@ session_start();
 									</a>
 
 									<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-										<a class="dropdown-item" href="show_employee">Visi darbinieki</a>
-										<a class="dropdown-item" href="add_employee">Jauns darbinieks</a>
-										<a class="dropdown-item" href="add_position">Jauns amats</a>
+										<a class="dropdown-item" href="/employees/show_employee">Visi darbinieki</a>
+										<a class="dropdown-item" href="/employees/add_employee">Jauns darbinieks</a>
+										<a class="dropdown-item" href="/employees/add_position">Jauns amats</a>
 									</div>
 								</div>
 
@@ -61,13 +61,13 @@ session_start();
 									</a>
 
 									<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-										<a class="dropdown-item" href="show_sawmill_production">
+										<a class="dropdown-item" href="/sawmill/show_sawmill_production">
 											Visas produkcijas
 										</a>
-										<a class="dropdown-item" href="add_sawmill_production">
+										<a class="dropdown-item" href="/sawmill/add_sawmill_production">
 											Jauna produkcija
 										</a>
-										<a class="dropdown-item" href="add_beam_size">Jauns tilpums</a>
+										<a class="dropdown-item" href="/sawmill/add_beam_size">Jauns tilpums</a>
 									</div>
 								</div>
 
@@ -89,7 +89,7 @@ session_start();
 							<div class="user-name">
 								<?=$_SESSION['username']?>
 							</div>
-							<a href="logout" class="btn btn-warning" name="logout">Iziet</a>
+							<a href="/logout" class="btn btn-warning" name="logout">Iziet</a>
 						<?php
 							}
 						?>
@@ -101,5 +101,5 @@ session_start();
 	</nav>
 
 	<?php
-		include "constants.php";
+		include_once "constants.php";
 	?>

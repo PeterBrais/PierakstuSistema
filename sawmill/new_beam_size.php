@@ -3,8 +3,8 @@
 	session_start();
 
 /****************** Includes ******************/
-	include_once "includes/beam_size.class.php";
-	include_once "includes/validate.class.php";
+	include_once "../includes/beam_size.class.php";
+	include_once "../includes/validate.class.php";
 /****************** Includes ******************/
 
 	if(!isset($_POST['size']))
@@ -21,7 +21,7 @@
 	if(empty($size))
 	{
 		$_SESSION['new_beam'] = "Lūdzu aizpildiet Izmērs lauku!";
-		header("Location: ../add_beam_size");
+		header("Location: add_beam_size");
 		exit();
 	}
 
@@ -32,7 +32,13 @@
 	if(!Validate::IsValidFloatNumber($size))
 	{
 		$_SESSION['new_beam'] = "Izmērs drīkst saturēt tikai ciparus ar komatu! (Maksimums 3 cipari aiz komata)";
-		header("Location: ../add_beam_size");
+		header("Location: add_beam_size");
+		exit();
+	}
+	if($size <= 0)
+	{
+		$_SESSION['new_beam'] = "Izmērs drīkst saturēt tikai ciparus ar komatu! (Maksimums 3 cipari aiz komata)";
+		header("Location: add_beam_size");
 		exit();
 	}
 
@@ -40,7 +46,7 @@
 	if(BeamSize::ExistsSize($size))
 	{
 		$_SESSION['warning'] = "Izmērs jau eksistē, jums nav nepieciešams to ievadīt vēlreiz!";
-		header("Location: ../add_beam_size");
+		header("Location: add_beam_size");
 		exit();
 	}
 
@@ -50,5 +56,5 @@
 	$beam->Save();
 
 	$_SESSION['success'] = "Izmērs pievienots!";
-	header("Location: ../add_beam_size");
+	header("Location: add_beam_size");
 	exit();

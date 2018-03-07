@@ -1,7 +1,7 @@
 <?php
 
-	include "header.php";
-	include "includes/manager.class.php";
+	include_once "../header.php";
+	include_once "../includes/manager.class.php";
 
 	$employees = Manager::Employees();
 
@@ -11,16 +11,15 @@
 	<div class="row cont-space">
 		<div class="col-md-12">
 			<div id="message">
-				<?php include "message.php"; ?>
+				<?php include "../message.php"; ?>
 			</div>
 			<div class="card">
-
 				<div class="card-body">
 					<h4 class="card-title text-center">Zāģētavas darbinieki</h4>
 					<table class="table table-bordered table-hover">
 						<thead class="thead-default table-active">
 							<tr class="d-flex">
-								<th class="col-md-1">Nr. p. k</th>
+								<th class="col-md-1">Nr.p.k</th>
 								<th class="col-md-3">Vārds</th>
 								<th class="col-md-3">Uzvārds</th>
 								<th class="col-md-1">Maiņa</th>
@@ -177,6 +176,6 @@
 
 <?php
 
-	include "footer.php";
+	include_once "../footer.php";
 
 ?>

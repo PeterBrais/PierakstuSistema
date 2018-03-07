@@ -1,7 +1,7 @@
 <?php
-	include_once "header.php";
+	include_once "../header.php";
 
-	if(!isset($_SESSION['id']) && ($_SESSION['role'] == "p") )	//Adding new employee possible if user role is Manager
+	if(!isset($_SESSION['id']) && ($_SESSION['role'] == "p"))	//Adding new employee possible if user role is Manager
 	{
 		header("Location: /");
 		exit();
@@ -11,15 +11,12 @@
 	<div class="container">
 		<div class="row cont-space">
 			<div class="col-md-12">
-
 				<div id="message">
-					<?php include "message.php"; ?>
+					<?php include "../message.php"; ?>
 				</div>
-				
 				<div class="card">
 					<div class="card-body">
 						<h4 class="card-title text-center">Pievienot jaunu darbinieku</h4>
-
 						<form action="new_employee" method="POST">
 							<div class="form-group row">
 								<label class="col-md-2 offset-md-1 col-form-label">
@@ -185,5 +182,5 @@ $(document).ready(function(){
 </script>
 
 <?php
-	include_once "footer.php";
+	include_once "../footer.php";
 ?>

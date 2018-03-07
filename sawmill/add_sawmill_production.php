@@ -1,5 +1,5 @@
 <?php
-	include_once "header.php";
+	include_once "../header.php";
 
 	if(!isset($_SESSION['id']) && ($_SESSION['role']) == "p")	//Adding new production available only if user has sign up and role is Manager
 	{
@@ -13,7 +13,7 @@
 		<div class="row cont-space">
 			<div class="col-md-12">
 				<div id="message">
-					<?php include "message.php"; ?>
+					<?php include "../message.php"; ?>
 				</div>
 				<div class="card">
 					<div class="card-body">
@@ -376,5 +376,5 @@ $(document).ready(function(){
 </script>
 
 <?php
-	include_once "footer.php";
+	include_once "../footer.php";
 ?>

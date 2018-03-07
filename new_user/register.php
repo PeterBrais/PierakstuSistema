@@ -2,10 +2,10 @@
 
 	session_start();
 
-	/****************** Includes ******************/
-		include_once "includes/user.class.php";
-		include_once "includes/validate.class.php";
-	/****************** Includes ******************/
+/****************** Includes ******************/
+	include_once "../includes/user.class.php";
+	include_once "../includes/validate.class.php";
+/****************** Includes ******************/
 
 	$inputs = ['usr', 'pwd', 'pwd2', 'role'];
 
@@ -29,7 +29,7 @@
 	if(empty($username) || empty($password) || empty($password2) || empty($role))
 	{
 		$_SESSION['error'] = "Lūdzu aizpildiet visus obligātos laukus!";
-		header("Location: ../signup");
+		header("Location: signup");
 		exit();
 	}
 
@@ -44,7 +44,7 @@
 	else
 	{
 		$_SESSION['usr_role'] = "Lūdzu izvēlieties lietotāja lomu!";
-		header("Location: ../signup");
+		header("Location: signup");
 		exit();
 	}
 
@@ -52,7 +52,7 @@
 	if(!Validate::IsValidNameLength($username))
 	{
 		$_SESSION['usr_name'] = "Lietotājvārdam jābūt garumā no 3 simboliem līdz 50 simboliem!";
-		header("Location: ../signup");
+		header("Location: signup");
 		exit();
 	}
 
@@ -60,7 +60,7 @@
 	if(!Validate::IsValidUsername($username))
 	{
 		$_SESSION['usr_name'] = "Lietotājvārds drīkst saturēt tikai latīņu burtus un ciparus!";
-		header("Location: ../signup");
+		header("Location: signup");
 		exit();
 	}
 
@@ -68,7 +68,7 @@
 	if(User::Exists($username))
 	{
 		$_SESSION['usr_name'] = "Lietotājvārds jau eksistē!";
-		header("Location: ../signup");
+		header("Location: signup");
 		exit();
 	}
 
@@ -76,7 +76,7 @@
 	if(!Validate::IsValidPasswordLength($password))
 	{
 		$_SESSION['pwd'] = "Parolei jābūt garumā no 8 simboliem līdz 64 simboliem!";
-		header("Location: ../signup");
+		header("Location: signup");
 		exit();
 	}
 
@@ -84,7 +84,7 @@
 	if(!Validate::IsValidPassword($password))
 	{
 		$_SESSION['pwd'] = "Parolei jāsastāv vismaz no viena cipara, lielā un mazā latīņu burta un speciālā simbola!";
-		header("Location: ../signup");
+		header("Location: signup");
 		exit();
 	}
 
@@ -93,7 +93,7 @@
 	{
 		$_SESSION['pwd'] = "Ievadītās paroles nesakrīt!";
 		$_SESSION['pwd2'] = "Ievadītās paroles nesakrīt!";
-		header("Location: ../signup");
+		header("Location: signup");
 		exit();
 	}
 

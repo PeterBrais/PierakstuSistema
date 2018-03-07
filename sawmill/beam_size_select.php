@@ -1,5 +1,5 @@
 <?php
-	include_once "includes/manager.class.php";
+	include_once "../includes/manager.class.php";
 
 	$sizes = Manager::BeamSizes();
 ?>
