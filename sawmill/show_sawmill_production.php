@@ -14,7 +14,7 @@
 			<div class="card">
 				<div class="card-body">
 					<h4 class="card-title text-center">Produkcijas periods</h4>
-					<div class="col-md-6">
+					<div class="offset-md-4 col-md-4 offset-md-4">
 						<?php include_once "period_select.php"; ?>
 					</div>
 				</div>

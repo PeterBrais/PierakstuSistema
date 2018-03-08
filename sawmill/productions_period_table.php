@@ -3,7 +3,8 @@
 
 	$date_string = isset($_POST['date_string']) ? $_POST['date_string'] : date('Y-m');
 	$productions = Manager::GetProductionsByDate($date_string);
-	$employees = Manager::GetProductionEmployeesByDate($date_string);
+	$employees = Manager::GetEmployeesByDate($date_string);
+	$total = Manager::GetAllProductionSummByDate($date_string);
 ?>
 	<div class="card-body">
 		<h4 class="card-title text-center">Zāģētavas produkcijas</h4>
@@ -64,6 +65,38 @@
 	<?php
 		}
 	?>
+				<tr class="table-info">
+					<td colspan="4" class="text-right"><strong> Kopā: </strong></td>
+					<td><?=$total['beam_count']?></td>
+					<td><?=$total['beam_capacity']?></td>
+					<td><?=$total['lumber_count']?></td>
+					<td><?=$total['lumber_capacity']?></td>
+					<td>
+						<?php
+							if(!isset($total['lumber_capacity']))
+							{
+								echo "";
+							}
+							else
+							{
+								echo round(($total['lumber_capacity']/$total['beam_capacity'])*100, 1);
+							}
+						?>
+					</td>
+					<td colspan="2">
+						<?php
+							if(!isset($total['maintenance']))
+							{
+								echo "";
+							}
+							else
+							{
+								echo $total['maintenance']." min / ";
+								echo round($total['maintenance']/60, 2)." h";
+							}
+						?>
+					</td>
+				</tr>
 			</tbody>
 		</table>
 	</div>
@@ -109,7 +142,14 @@
 					<td><?=$employee['shift']?></td>
 					<td></td>
 					<td></td>
-					<td></td>
+					<td>
+					<?php
+						$maint = Manager::GetEmployeeProductionsMaintenances($date_string, $employee['shift'], $employee['id']);
+						foreach ($maint as $maints) {
+							echo $maints['maintanence'];
+						}
+					?>
+					</td>
 					<td></td>
 				</tr>
 	<?php
@@ -132,7 +172,14 @@
 					<td><?=$employee['shift']?></td>
 					<td></td>
 					<td></td>
-					<td></td>
+					<td>
+					<?php
+						$maint = Manager::GetEmployeeProductionsMaintenances($date_string, $employee['shift'], $employee['id']);
+						foreach ($maint as $maints) {
+							echo $maints['maintanence'];
+						}
+					?>
+					</td>
 					<td></td>
 				</tr>
 	<?php

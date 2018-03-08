@@ -104,9 +104,6 @@
 			exit();
 		}
 
-		echo "la";
-		die();
-
 		$place = "Zagetava";
 	}
 	elseif($place == "3")

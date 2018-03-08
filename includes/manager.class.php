@@ -132,17 +132,65 @@
 			return mysqli_fetch_all($result, MYSQLI_ASSOC);
 		}
 
-		public static function GetProductionEmployeesByDate($date_string) //Returns all chosen month employees and production data 
+		public static function GetAllProductionSummByDate($date_string) //Returns all summ of monthly production
 		{
 			global $conn;
 
-			$sql = $conn->prepare("SELECT employees.* FROM employees
-									JOIN employees_sawmill_productions
-									ON employees.id = employees_sawmill_productions.employee_id
+			$sql = $conn->prepare("SELECT DISTINCT 
+				(SELECT SUM(sawmill_productions.beam_count) FROM sawmill_productions 
+				WHERE DATE_FORMAT(sawmill_productions.date, '%Y-%m') = ?) AS beam_count,
+				(SELECT SUM(sawmill_productions.beam_capacity) FROM sawmill_productions 
+				WHERE DATE_FORMAT(sawmill_productions.date, '%Y-%m') = ?) AS beam_capacity,
+				(SELECT SUM(sawmill_productions.lumber_count) FROM sawmill_productions
+				WHERE DATE_FORMAT(sawmill_productions.date, '%Y-%m') = ?) AS lumber_count,
+				(SELECT SUM(sawmill_productions.lumber_capacity) FROM sawmill_productions
+				WHERE DATE_FORMAT(sawmill_productions.date, '%Y-%m') = ?) AS lumber_capacity,
+				(SELECT SUM(sawmill_maintenance.time) FROM sawmill_maintenance 
+				JOIN sawmill_productions
+				ON sawmill_productions.id = sawmill_maintenance.sawmill_production_id
+				WHERE DATE_FORMAT(sawmill_productions.date, '%Y-%m') = ?) AS maintenance
+				FROM sawmill_productions");
+			$sql->bind_param('sssss', $date_string, $date_string, $date_string, $date_string, $date_string);
+			$sql->execute();
+			$result = $sql->get_result();
+
+			return mysqli_fetch_assoc($result);
+		}
+
+		public static function GetEmployeesByDate($date_string) //Returns all chosen month employees and production data 
+		{
+			global $conn;
+
+			$sql = $conn->prepare("SELECT DISTINCT employees.* FROM employees
+									WHERE employees.place = 'Zagetava' AND
+									DATE_FORMAT(employees.working_from, '%Y-%m') <= ? AND
+									(DATE_FORMAT(employees.working_to, '%Y-%m') >= ? OR employees.working_to IS NULL)
+									ORDER BY employees.shift ASC");
+			$sql->bind_param('ss', $date_string, $date_string);
+			$sql->execute();
+			$result = $sql->get_result();
+
+			return mysqli_fetch_all($result, MYSQLI_ASSOC);
+		}
+
+		public static function GetEmployeeProductionsMaintenances($date_string, $shift, $id)
+		{
+			global $conn;
+
+			$sql = $conn->prepare("SELECT employees.id, (SELECT SUM(sawmill_maintenance.time) FROM 							sawmill_maintenance
 									JOIN sawmill_productions
-									ON sawmill_productions.id = employees_sawmill_productions.sawmill_id
-									WHERE DATE_FORMAT(sawmill_productions.date, '%Y-%m') = ?");
-			$sql->bind_param('s', $date_string);
+									ON sawmill_productions.id = sawmill_maintenance.sawmill_production_id
+									JOIN employees_sawmill_productions
+									ON employees_sawmill_productions.sawmill_id = sawmill_productions.id
+									JOIN employees
+									ON employees.id = employees_sawmill_productions.employee_id
+									JOIN working_times
+									ON employees.id = working_times.employee_id
+									WHERE DATE_FORMAT(sawmill_productions.date, '%Y-%m') = ? AND employees.shift = ? AND 
+									sawmill_productions.date = working_times.date) AS maintanence
+									FROM employees
+									WHERE employees.id = ?");
+			$sql->bind_param('sss', $date_string, $shift, $id);
 			$sql->execute();
 			$result = $sql->get_result();
 
