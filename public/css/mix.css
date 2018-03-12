@@ -50,6 +50,11 @@ body{
 	text-align: center;
 }
 
+.labeled-text {
+	vertical-align: middle;
+	text-align: center;
+}
+
 .list-space {
 	margin-left: 15px;
 	padding: 0;

@@ -47,7 +47,6 @@ session_start();
 									<a class="nav-link dropdown-toggle" href="" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 										Darbinieki
 									</a>
-
 									<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
 										<a class="dropdown-item" href="/employees/show_employee">Visi darbinieki</a>
 										<a class="dropdown-item" href="/employees/add_employee">Jauns darbinieks</a>
@@ -59,7 +58,6 @@ session_start();
 									<a class="nav-link dropdown-toggle" href="" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 										Zāģētava
 									</a>
-
 									<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
 										<a class="dropdown-item" href="/sawmill/show_sawmill_production">
 											Visas produkcijas
@@ -75,6 +73,14 @@ session_start();
 									<a class="nav-link dropdown-toggle" href="" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 										Šķirotava
 									</a>
+										<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+										<a class="dropdown-item" href="/sorting/show_sorting_production">
+											Visas sašķirotās produkcijas
+										</a>
+										<a class="dropdown-item" href="/sorting/add_sorting_production">
+											Jauna sašķirotā produkcija
+										</a>
+									</div>
 								</div>
 						<?php
 							}
