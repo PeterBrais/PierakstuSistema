@@ -197,6 +197,21 @@
 			return mysqli_fetch_all($result, MYSQLI_ASSOC);
 		}
 
+		public static function GetSortingEmployees($date_string)	//Returns all employees with selected shift
+		{
+			global $conn;
+
+			$sql = $conn->prepare("SELECT * FROM employees WHERE place = 'Skirotava'
+					AND DATE_FORMAT(employees.working_from, '%Y-%m') <= ? AND
+					(DATE_FORMAT(employees.working_to, '%Y-%m') >= ? OR employees.working_to IS NULL)");
+
+			$sql->bind_param('ss', $date_string, $date_string);
+			$sql->execute();
+			$result = $sql->get_result();
+
+			return mysqli_fetch_all($result, MYSQLI_ASSOC);
+		}
+
 	}
 
 ?>

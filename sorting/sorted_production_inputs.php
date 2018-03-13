@@ -6,11 +6,24 @@
 		</span>
 	</label>
 	<div class="col-md-5">
-		<select class="custom-select" name="type[]">
+		<select class="custom-select" name="sorted_types[]">
 			<option selected value="0">Izvēlieties šķirošanas veidu</option>
 			<option value="1">Šķirots</option>
 			<option value="2">Garināts</option>
 		</select>
+	</div>
+	<div class="col-md-4">
+		<?php
+			if(isset($_SESSION['sorted_types']))
+			{
+		?>
+			<div class="alert alert-danger alert-size" role="alert">
+				<?=$_SESSION['sorted_types']?>
+			</div>
+		<?php
+				unset($_SESSION['sorted_types']);
+			}
+		?>
 	</div>
 </div>	
 <div class="form-group row">
@@ -21,7 +34,7 @@
 		</span>
 	</label>
 	<div class="col-md-5">
-		<input class="form-control" type="number" min="0" name="sorted_count[]" aria-describedby="sawnCountArea" placeholder="Kopējais skaits">
+		<input class="form-control sorted_counts" type="number" min="0" name="sorted_count[]" aria-describedby="sawnCountArea" placeholder="Kopējais skaits">
 		<small id="sawnCountArea" class="form-text text-muted">
 			* Satur tikai ciparus, kopējo (gab) skaitu *
 		</small>
@@ -50,13 +63,13 @@
 	<div class="col-md-5">
 		<div class="row">
 			<div class="col-md-4">
-				<input class="form-control" type="number" min="0" name="sorted_thick[]" aria-describedby="timeFromArea" placeholder="Biezums" id="thickeness">
+				<input class="form-control sorted_thicknesses" type="number" min="0" name="sorted_thick[]" aria-describedby="timeFromArea" placeholder="Biezums">
 			</div>
 			<div class="col-md-4">
-				<input class="form-control" type="number" min="0" name="sorted_width[]" aria-describedby="timeFromArea" placeholder="Platums" id="width">
+				<input class="form-control sorted_widths" type="number" min="0" name="sorted_width[]" aria-describedby="timeFromArea" placeholder="Platums">
 			</div>
 			<div class="col-md-4">
-				<input class="form-control" type="number" min="0" name="sorted_length[]" aria-describedby="timeFromArea" placeholder="Garums" id="length">
+				<input class="form-control sorted_lengths" type="number" min="0" name="sorted_length[]" aria-describedby="timeFromArea" placeholder="Garums">
 			</div>
 		</div>
 		<small id="timeFromArea" class="form-text text-muted">
@@ -82,7 +95,7 @@
 		Tilpums
 	</label>
 	<div class="col-md-5">
-		<p class="form-control-static" id="sorted_capacity"> m<sup>3</sup></p>
+		<p class="form-control-static sorted_capacities"> m<sup>3</sup></p>
 	</div>
 </div>
 <div class="form-group row">
@@ -90,6 +103,6 @@
 		Tilpums / gab
 	</label>
 	<div class="col-md-5">
-		<p class="form-control-static" id="sorted_capacity_piece"> m<sup>3</sup></p>
+		<p class="form-control-static sorted_capacities_pieces"> m<sup>3</sup></p>
 	</div>
 </div>

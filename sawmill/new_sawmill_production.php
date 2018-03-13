@@ -371,12 +371,6 @@
 				$times->sick_leave = NULL;
 				$times->nonattendance = "N";
 			}
-			else
-			{
-				$_SESSION['error'] = "Lūdzu mēģiniet vēlreiz!";
-				header("Location: add_sawmill_production");
-				exit();
-			}
 
 			$times->date = $date;
 			$times->pregnancy = NULL;

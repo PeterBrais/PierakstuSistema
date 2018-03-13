@@ -105,7 +105,7 @@ CREATE TABLE sorting_productions (
 	defect_count INT NULL
 );
 
-CREATE TABLE sorted_prodcution (
+CREATE TABLE sorted_production (
 	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	type CHAR(2) NOT NULL,
 	count INT NOT NULL,
@@ -113,7 +113,7 @@ CREATE TABLE sorted_prodcution (
 	width INT NOT NULL,
 	length INT NOT NULL,
 	capacity DECIMAL(12,3) NOT NULL,
-	volume_per_piece DECIMAL(5,5) NOT NULL,
+	capacity_per_piece DECIMAL(5,5) NOT NULL,
 	sorting_id INT NOT NULL,
 	FOREIGN KEY (sorting_id) REFERENCES sorting_productions(id)
 );

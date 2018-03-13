@@ -202,17 +202,21 @@
 								</div>
 							</div>
 							<hr>
+
 							<h5 class="text-center">Sašķirotā produkcija</h5>
 							<div id="sorted_select">
 								<?php include_once "sorted_production_inputs.php"; ?>
 							</div>
-								
 							<div class="form-group row">
 								<div class="offset-md-3 col-md-4">
 									<button type="button" name="add" id="add" class="btn btn-success">Pievienot sašķiroto produkciju</button>
 								</div>
 							</div>
 							<hr>
+
+							<h5 class="text-center">Šķirotavas darbinieki</h5>
+							<?php include_once "sorting_employees_table.php"; ?>
+							
 							<div class="form-group row">
 								<div class="col-md-3 offset-md-3">
 									<button class="btn btn-info" type="submit" name="submit">Pievienot</button>
@@ -237,7 +241,7 @@ $(document).ready(function(){
 								</span>
 							</label>
 							<div class="col-md-5">
-								<select class="custom-select" name="type[]">
+								<select class="custom-select" name="sorted_types[]">
 									<option selected value="0">Izvēlieties šķirošanas veidu</option>
 									<option value="1">Šķirots</option>
 									<option value="2">Garināts</option>
@@ -252,7 +256,7 @@ $(document).ready(function(){
 								</span>
 							</label>
 							<div class="col-md-5">
-								<input class="form-control" type="number" min="0" name="sorted_count[]" aria-describedby="sawnCountArea" placeholder="Kopējais skaits">
+								<input class="form-control sorted_counts" type="number" min="0" name="sorted_count[]" aria-describedby="sawnCountArea" placeholder="Kopējais skaits">
 								<small id="sawnCountArea" class="form-text text-muted">
 									* Satur tikai ciparus, kopējo (gab) skaitu *
 								</small>
@@ -268,13 +272,13 @@ $(document).ready(function(){
 							<div class="col-md-5">
 								<div class="row">
 									<div class="col-md-4">
-										<input class="form-control" type="number" min="0" name="sorted_thick[]" aria-describedby="timeFromArea" placeholder="Biezums" id="thickeness">
+										<input class="form-control sorted_thicknesses" type="number" min="0" name="sorted_thick[]" aria-describedby="timeFromArea" placeholder="Biezums">
 									</div>
 									<div class="col-md-4">
-										<input class="form-control" type="number" min="0" name="sorted_width[]" aria-describedby="timeFromArea" placeholder="Platums" id="width">
+										<input class="form-control sorted_widths" type="number" min="0" name="sorted_width[]" aria-describedby="timeFromArea" placeholder="Platums">
 									</div>
 									<div class="col-md-4">
-										<input class="form-control" type="number" min="0" name="sorted_length[]" aria-describedby="timeFromArea" placeholder="Garums" id="length">
+										<input class="form-control sorted_lengths" type="number" min="0" name="sorted_length[]" aria-describedby="timeFromArea" placeholder="Garums">
 									</div>
 								</div>
 								<small id="timeFromArea" class="form-text text-muted">
@@ -287,7 +291,7 @@ $(document).ready(function(){
 								Tilpums
 							</label>
 							<div class="col-md-5">
-								<p class="form-control-static" id="sorted_capacity"> m<sup>3</sup></p>
+								<p class="form-control-static sorted_capacities"> m<sup>3</sup></p>
 							</div>
 						</div>
 						<div class="form-group row">
@@ -295,7 +299,7 @@ $(document).ready(function(){
 								Tilpums / gab
 							</label>
 							<div class="col-md-5">
-								<p class="form-control-static" id="sorted_capacity_piece"> m<sup>3</sup></p>
+								<p class="form-control-static sorted_capacities_pieces"> m<sup>3</sup></p>
 							</div>
 							<div class="col-md-4">
 								<button type="button" class="btn btn-danger remove mb-2">Noņemt</button>
@@ -314,7 +318,7 @@ $(document).ready(function(){
 	});
 
 
-	//Show sawn capacity
+	//Show sawn production capacity
 	var measure_unit = ' m<sup>3</sup>';
 	$('#sawn_count, #thickeness, #width, #length').change(function(){
 		var count = $('#sawn_count').val();
@@ -333,6 +337,37 @@ $(document).ready(function(){
 			capacity = capacity.toFixed(3);
 			$('#sawn_capacity').html(capacity+measure_unit);
 		}
+	});
+
+	//Show sorted production capacities and capacities per piece
+	var measure_piece = ' m<sup>3</sup> / gab';
+	$(document).on('input', '.sorted_counts', function(){
+	    var sorted_count = $(this).val();
+	    var sorted_thickness = $(this).parent().parent().next().children().find('.sorted_thicknesses').val();
+	    var sorted_width = $(this).parent().parent().next().children().find('.sorted_widths').val();
+	    var sorted_length = $(this).parent().parent().next().children().find('.sorted_lengths').val();
+	    var total_cap = ((sorted_thickness*sorted_width*sorted_length)/1000000000)*sorted_count;
+	    var total_cap_piece = (sorted_thickness*sorted_width*sorted_length)/1000000000;
+
+	    if(isNaN(total_cap))
+		{
+			total_cap = "0.000";
+		}
+		else
+		{
+			total_cap = total_cap.toFixed(3);
+		}
+		$(this).parent().parent().next().next().children().find('.sorted_capacities').html(total_cap+measure_unit);
+
+		if(isNaN(total_cap_piece))
+		{
+			total_cap_piece = "0.00000"
+		}
+		else
+		{
+			total_cap_piece = total_cap_piece.toFixed(5);
+		}
+		$(this).parent().parent().next().next().next().children().find('.sorted_capacities_pieces').html(total_cap_piece+measure_piece);
 	});
 });
 </script>

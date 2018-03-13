@@ -8,7 +8,7 @@
 	include_once "../includes/sorted_production.class.php";
 /****************** Includes ******************/
 
-	$inputs = ['date', 'time_from', 'time_to', 'invoice', 'thick', 'width', 'length', 'sawn_count', 'defect_count', 'type', 'sorted_count', 'sorted_thick', 'sorted_width', 'sorted_length'];
+	$inputs = ['date', 'time_from', 'time_to', 'invoice', 'thick', 'width', 'length', 'sawn_count', 'defect_count', 'sorted_types', 'sorted_count', 'sorted_thick', 'sorted_width', 'sorted_length'];
 
 	foreach($inputs as $input)
 	{
@@ -30,7 +30,7 @@
 	$sawn_count = htmlspecialchars($_POST['sawn_count']);
 	$defect_count = htmlspecialchars($_POST['defect_count']);
 
-	$types = $_POST['type'];
+	$types = $_POST['sorted_types'];
 	$sorted_counts = $_POST['sorted_count'];
 	$sorted_thicknesses = $_POST['sorted_thick'];
 	$sorted_widths = $_POST['sorted_width'];
@@ -144,7 +144,7 @@
 	}
 
 	//Check sorted productions inputs
-	for($i = 0; $i < count($types); $i++)
+	for($i = 0; $i < count($sorted_counts); $i++)
 	{
 		if(empty($types[$i]) || empty($sorted_counts[$i]) || empty($sorted_thicknesses[$i]) || empty($sorted_widths[$i]) || empty($sorted_lengths[$i]))
 		{
@@ -153,8 +153,15 @@
 			exit();
 		}
 
-		//Chekc if sorted production type is chosen
-		if($types[$i] =! "1" && $types[$i] != "2")
+		//Check if sorted production type is choosen
+		if($types[$i] == "0")
+		{
+			$_SESSION['sorted_types'] = "Lūdzu izvēlieties Šķirošanas veidu!";
+			header("Location: add_sorting_production");
+			exit();
+		}
+
+		if($types[$i] != "1" && $types[$i] != "2")
 		{
 			$_SESSION['error'] = "Lūdzu mēģiniet vēlreiz!";
 			header("Location: add_sorting_production");
@@ -241,16 +248,11 @@
 		{
 			$sortedProduction->type = "S";
 		}
-		else if($types[$i] == "2")
+		elseif($types[$i] == "2")
 		{
 			$sortedProduction->type = "G";
 		}
-		else
-		{
-			$_SESSION['error'] = "Lūdzu mēģiniet vēlreiz!";
-			header("Location: add_sorting_production");
-			exit();
-		}
+
 		$sortedProduction->count = $sorted_counts[$i];
 		$sortedProduction->thickness = $sorted_thicknesses[$i];
 		$sortedProduction->width = $sorted_widths[$i];
