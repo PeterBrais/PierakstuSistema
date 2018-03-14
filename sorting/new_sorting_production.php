@@ -6,9 +6,13 @@
 	include_once "../includes/validate.class.php";
 	include_once "../includes/sorting_production.class.php";
 	include_once "../includes/sorted_production.class.php";
+	include_once "../includes/employee.class.php";
+	include_once "../includes/employees_sorting_productions.class.php";
+	include_once "../includes/working_times.class.php";
+	include_once "../Includes/times.class.php";
 /****************** Includes ******************/
 
-	$inputs = ['date', 'time_from', 'time_to', 'invoice', 'thick', 'width', 'length', 'sawn_count', 'defect_count', 'sorted_types', 'sorted_count', 'sorted_thick', 'sorted_width', 'sorted_length'];
+	$inputs = ['date', 'time_from', 'time_to', 'invoice', 'thick', 'width', 'length', 'sawn_count', 'defect_count', 'sorted_types', 'sorted_count', 'sorted_thick', 'sorted_width', 'sorted_length', 'id', 'working_hours', 'nonworking'];
 
 	foreach($inputs as $input)
 	{
@@ -36,6 +40,9 @@
 	$sorted_widths = $_POST['sorted_width'];
 	$sorted_lengths = $_POST['sorted_length'];
 
+	$ids = $_POST['id'];
+	$working_hours = $_POST['working_hours'];
+	$nonworking = $_POST['nonworking'];
 
 	//Error handlers
 	//Check if fields are empty
@@ -221,6 +228,53 @@
 		}
 	}
 
+	//Check if employee working times table is empty
+	if(Validate::IsArrayEmpty($working_hours) && Validate::IsArrayEmpty($nonworking))
+	{
+		$_SESSION['error'] = "Lūdzu aizpildiet darbinieku tabulu!";
+		header("Location: add_sorting_production");
+		exit();
+	}
+
+	for($i = 0; $i < count($ids); $i++)
+	{
+		if(!Employee::ExistsSortingEmployee($ids[$i])) //Checks if employee with this id exists
+		{
+			$_SESSION['error'] = "Radās kļūda, lūdzu mēģiniet vēlreiz!";
+			header("Location: add_sorting_production");
+			exit();
+		}
+
+		if(!empty($working_hours[$i]) && !empty($nonworking[$i]))
+		{
+			$_SESSION['error'] = "Lūdzu aizpildiet tikai vienu darbinieka ievadlauku!";
+			header("Location: add_sorting_production");
+			exit();
+		}
+
+		if(!empty($working_hours[$i]) && empty($nonworking[$i]))
+		{
+			//Check if working hour is number
+			if(!Validate::IsValidHours($working_hours[$i]))
+			{
+				$_SESSION['error'] = "Darbinieka nostrādātās darba stundas drīkst sastāvēt tikai no cipariem!";
+				header("Location: add_sorting_production");
+				exit();
+			}
+		}
+
+		if(empty($working_hours[$i]) && !empty($nonworking[$i]))
+		{
+			//Check nonworking select values
+			if($nonworking[$i] != "1" && $nonworking[$i] != "2" && $nonworking[$i] != "3")
+			{
+				$_SESSION['error'] = "Radās kļūda, lūdzu mēģiniet vēlreiz!";
+				header("Location: add_sorting_production");
+				exit();
+			}
+		}
+	}
+
 	$sawn_capacity = round((($thickness * $width * $length)/1000000000)*$sawn_count, 3);
 
 	//Saves sorting production
@@ -261,6 +315,56 @@
 		$sortedProduction->capacity_per_piece = $sorted_capacity_piece[$i];
 		$sortedProduction->sorting_id = $sortingProduction->id;
 		$sortedProduction->Save();
+	}
+
+	//Saves data to tables: employees_sorting_productions, working_times, times
+	$employees_sorting_procutions = new EmployeeSortingProductions();
+	$working_times = new WorkingTimes();
+	$times = new Times();
+
+	for($i = 0; $i < count($ids); $i++)
+	{
+		if($working_hours[$i] != '' && $working_hours > 0)
+		{
+			$employees_sorting_procutions->employee_id = $ids[$i];
+			$employees_sorting_procutions->sorting_id = $sortingProduction->id;
+			$employees_sorting_procutions->Save();
+
+			$working_times->date = $date;
+			$working_times->working_hours = $working_hours[$i];
+			$working_times->employee_id = $ids[$i];
+			$working_times->Save();
+		}
+		else if($working_hours[$i] == '' && !empty($nonworking[$i]))
+		{	
+			$employees_sorting_procutions->employee_id = $ids[$i];
+			$employees_sorting_procutions->sorting_id = $sortingProduction->id;
+			$employees_sorting_procutions->Save();
+
+			if($nonworking[$i] == "1")
+			{
+				$times->vacation = "A";
+				$times->sick_leave = NULL;
+				$times->nonattendance = NULL;
+			}
+			else if($nonworking[$i] == "2")
+			{
+				$times->vacation = NULL;
+				$times->sick_leave = "S";
+				$times->nonattendance = NULL;
+			}
+			else if($nonworking == "3")
+			{
+				$times->vacation = NULL;
+				$times->sick_leave = NULL;
+				$times->nonattendance = "N";
+			}
+
+			$times->date = $date;
+			$times->pregnancy = NULL;
+			$times->employee_id = $ids[$i];
+			$times->Save();
+		}
 	}
 
 	$_SESSION['success'] = "Šķirotavas produkcija pievienota veiksmīgi!";

@@ -1,7 +1,7 @@
 <?php
 	include_once "../includes/manager.class.php";
 
-	$periods = Manager::AllSawmillPeriods();
+	$periods = Manager::AllSortingPeriods();
 ?>
 
 	<select class="custom-select" id="period_select">

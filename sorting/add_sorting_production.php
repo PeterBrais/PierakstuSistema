@@ -233,7 +233,7 @@
 $(document).ready(function(){
 	//Add more sorted production
 	$('#add').click(function(){ 
-		var Sorting = `<hr><div class="form-group row">
+		var Sorting = $(`<hr><div class="form-group row">
 							<label class="col-md-2 offset-md-1 col-form-label">
 								Veids
 								<span class="text-danger" title="Šis lauks ir obligāts">
@@ -304,17 +304,29 @@ $(document).ready(function(){
 							<div class="col-md-4">
 								<button type="button" class="btn btn-danger remove mb-2">Noņemt</button>
 							</div>
-						</div>`;
+						</div>`).hide().fadeIn('slow');
 	$('#sorted_select').append(Sorting);
 	});
 
-	$(document).on('click', '.remove', function(){  
-		$(this).parent().parent().prev().remove();
-		$(this).parent().parent().prev().remove();
-		$(this).parent().parent().prev().remove();
-		$(this).parent().parent().prev().remove();
-		$(this).parent().parent().prev().remove();
-		$(this).parent().parent().remove();
+	$(document).on('click', '.remove', function(){
+		$(this).parent().parent().fadeOut('slow', function(){
+			$(this).remove();
+		});
+		$(this).parent().parent().prev().fadeOut('slow', function(){
+			$(this).remove();
+		});
+		$(this).parent().parent().prev().prev().fadeOut('slow', function(){
+			$(this).remove();
+		});
+		$(this).parent().parent().prev().prev().prev().fadeOut('slow', function(){
+			$(this).remove();
+		});
+		$(this).parent().parent().prev().prev().prev().prev().fadeOut('slow', function(){
+			$(this).remove();
+		});
+		$(this).parent().parent().prev().prev().prev().prev().prev().fadeOut('slow', function(){
+			$(this).remove();
+		});
 	});
 
 

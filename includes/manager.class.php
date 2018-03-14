@@ -89,7 +89,7 @@
 			return $resultCheck >= 1;
 		}
 
-		public static function AllPeriods()
+		public static function AllSawmillPeriods()
 		{
 			global $conn;
 
@@ -212,6 +212,52 @@
 			return mysqli_fetch_all($result, MYSQLI_ASSOC);
 		}
 
-	}
+		public static function AllSortingPeriods()
+		{
+			global $conn;
 
+			$sql = $conn->query("SELECT DISTINCT DATE_FORMAT(date, '%Y-%m') AS date,
+									DATE_FORMAT(date, '%M %Y') AS month_year
+									FROM sorting_productions 
+									ORDER BY date DESC");
+
+			return mysqli_fetch_all($sql, MYSQLI_ASSOC);
+		}
+
+		public static function GetSortingEmployeesByDate($date_string) //Returns all chosen month employees and production data 
+		{
+			global $conn;
+
+			$sql = $conn->prepare("SELECT DISTINCT employees.* FROM employees
+									WHERE employees.place = 'Skirotava' AND
+									DATE_FORMAT(employees.working_from, '%Y-%m') <= ? AND
+									(DATE_FORMAT(employees.working_to, '%Y-%m') >= ? OR employees.working_to IS NULL)
+									ORDER BY employees.shift ASC");
+			$sql->bind_param('ss', $date_string, $date_string);
+			$sql->execute();
+			$result = $sql->get_result();
+
+			return mysqli_fetch_all($result, MYSQLI_ASSOC);
+		}
+
+		public static function GetSortingProductionsByDate($date_string) //Returns all chosen month productions
+		{
+			global $conn;
+
+			$sql = $conn->prepare("SELECT DISTINCT sorting_productions.*,
+									FROM sorting_productions
+									JOIN employees_sorting_productions
+									ON sorting_productions.id = employees_sorting_productions.sorting_id
+									JOIN employees
+									ON employees_sorting_productions.employee_id = employees.id
+									WHERE DATE_FORMAT(date, '%Y-%m') = ?
+									ORDER BY date, time_from, time_to ASC");
+			$sql->bind_param('s', $date_string);
+			$sql->execute();
+			$result = $sql->get_result();
+
+			return mysqli_fetch_all($result, MYSQLI_ASSOC);
+		}
+
+	}
 ?>

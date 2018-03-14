@@ -41,6 +41,20 @@
 			}
 		}
 
+		public static function ExistsSortingEmployee($id)	//Finds if shift exists in database
+		{
+			global $conn;
+
+			$sql = $conn->prepare("SELECT id FROM employees WHERE id=? AND place = 'Skirotava'");
+			$sql->bind_param('s', $id);
+			$sql->execute();
+			$result = $sql->get_result();
+
+			$resultCheck = mysqli_num_rows($result);
+
+			return $resultCheck >= 1;
+		}
+
 	}
 
 ?>

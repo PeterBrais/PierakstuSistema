@@ -99,6 +99,18 @@
 		{
 			return preg_match("/^([1-9]|1[0-9]|2[0-4])$/", $text);
 		}
+
+		static function IsArrayEmpty($array)
+		{
+			foreach($array as $key => $value)
+			{
+				if(!empty($value))
+				{
+					return false;
+				}
+			}
+			return true;
+		}
 	}
 
 ?>
