@@ -2,9 +2,9 @@
 	include_once "../includes/manager.class.php";
 
 	$date_string = isset($_POST['date_string']) ? $_POST['date_string'] : date('Y-m');
-	$productions = Manager::GetProductionsByDate($date_string);
-	$employees = Manager::GetEmployeesByDate($date_string);
-	$total = Manager::GetAllProductionSummByDate($date_string);
+	$productions = Manager::GetSawmillProductionsByDate($date_string);
+	$employees = Manager::GetSawmillEmployeesByDate($date_string);
+	$total = Manager::GetAllSawmillProductionSummByDate($date_string);
 ?>
 	<div class="card-body">
 		<h4 class="card-title text-center">Zāģētavas produkcijas</h4>
@@ -102,7 +102,7 @@
 	</div>
 
 <div class="card-body">
-	<h4 class="card-title text-center">Darbinieki</h4>
+	<h4 class="card-title text-center">Zāģētavas Darbinieki</h4>
 	<table class="table table-bordered table-hover">
 		<thead class="thead-default table-active">
 			<tr>

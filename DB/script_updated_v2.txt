@@ -61,6 +61,7 @@ CREATE TABLE beam_sizes (
 CREATE TABLE sawmill_productions (
 	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	date DATE NOT NULL,
+	hours INT NOT NULL,
 	time_from VARCHAR(10) NOT NULL,
 	time_to VARCHAR(10) NOT NULL,
 	invoice INT NOT NULL,
@@ -94,6 +95,7 @@ CREATE TABLE employees_sawmill_productions (
 CREATE TABLE sorting_productions (
 	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	date DATE NOT NULL,
+	hours INT NOT NULL,
 	time_from VARCHAR(10) NOT NULL,
 	time_to VARCHAR(10) NOT NULL,
 	invoice INT NOT NULL,
@@ -102,20 +104,14 @@ CREATE TABLE sorting_productions (
 	length INT NOT NULL,
 	count INT NOT NULL,
 	capacity DECIMAL(12,3) NOT NULL,
-	defect_count INT NULL
-);
-
-CREATE TABLE sorted_production (
-	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	defect_count INT NULL,
 	type CHAR(2) NOT NULL,
-	count INT NOT NULL,
-	thickness INT NOT NULL,
-	width INT NOT NULL,
-	length INT NOT NULL,
-	capacity DECIMAL(12,3) NOT NULL,
-	capacity_per_piece DECIMAL(5,5) NOT NULL,
-	sorting_id INT NOT NULL,
-	FOREIGN KEY (sorting_id) REFERENCES sorting_productions(id)
+	sorted_count INT NOT NULL,
+	sorted_thickness INT NOT NULL,
+	sorted_width INT NOT NULL,
+	sorted_length INT NOT NULL,
+	sorted_capacity DECIMAL(12,3) NOT NULL,
+	sorted_capacity_piece DECIMAL(5,5) NOT NULL
 );
 
 CREATE TABLE employees_sorting_productions (
