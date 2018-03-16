@@ -2,7 +2,7 @@
 	include_once "../includes/manager.class.php";
 
 	$date_string = isset($_POST['date_string']) ? $_POST['date_string'] : date('Y-m');
-	$productions = Manager::GetSortingProductionsByDate($date_string);
+	$invoices = Manager::GetSortingProductionsByInvoice($date_string);
 	$employees = Manager::GetSortingEmployeesByDate($date_string);
 	$total = Manager::GetAllSortingProductionSummByDate($date_string);
 ?>
@@ -11,9 +11,10 @@
 		<table class="table table-bordered">
 			<thead class="thead-default table-active">
 				<tr>
+					<th>Pavadzīmes Nr.</th>
 					<th>Datums</th>
 					<th>Laiks</th>
-					<th>Pavadzīmes Nr.</th>
+					<th>H</th>
 					<th>
 						Izmērs <abbr title="Biezums x Platums x Garums">(BxPxG)</abbr>
 					</th>
@@ -33,17 +34,21 @@
 			</thead>
 			<tbody>
 	<?php
-		foreach($productions as $production)
+		foreach($invoices as $invoice)
 		{
-		$rows = $production['total_sorted'];
-		++$rows;
+			$productions = Manager::GetSortingProductions($invoice['invoice']);
+			foreach($productions as $production)
+			{
+				$rows = $production['total_sorted'];
+				++$rows;
 	?>
 			<tr>
+				<td rowspan="<?=$rows?>"><?=$invoice['invoice']?></td>
 				<td rowspan="<?=$rows?>"><?=$production['date']?></td>
 				<td rowspan="<?=$rows?>">
 					<?=$production['time_from']?> - <?=$production['time_to']?>
 				</td>
-				<td rowspan="<?=$rows?>"><?=$production['invoice']?></td>
+				<td rowspan="<?=$rows?>">Stundas</td>
 				<td rowspan="<?=$rows?>">
 					<?=$production['thickness']?> x <?=$production['width']?> x <?=$production['length']?>
 				</td>
@@ -63,38 +68,39 @@
 				</td>
 				<td rowspan="<?=$rows?>"><?=$production['capacity']?></td>
 			</tr>
-		<?php
-			$sorted_productions = Manager::GetSortedProductionsByID($production['id']);
-			foreach($sorted_productions as $sorted_production)
-			{
-		?>
-			<tr>
-				<td><?=$sorted_production['type']?></td>
-				<td><?=$sorted_production['count']?></td>
-				<td>
-					<?=$production['thickness']?> x <?=$production['width']?> x <?=$production['length']?>
-				</td>
-				<td><?=$sorted_production['capacity']?></td>
-				<td><?=$sorted_production['capacity_per_piece']?></td>
-				<td>
-					<ol class="list-space">
-						<?php
-							$workers = Manager::GetAllSortingProductionWorkers($production['id']);
-							foreach($workers as $worker)
-							{
-								echo '<li>';
-								echo $worker['name'];
-								echo " ";
-								echo $worker['last_name'];
-								echo '</li>';
-							}
-						?>
-					</ol>
-				</td>
-			</tr>
-		<?php
+			<?php
+				$sorted_productions = Manager::GetSortedProductionsByID($production['id']);
+				foreach($sorted_productions as $sorted_production)
+				{
+			?>
+				<tr>
+					<td><?=$sorted_production['type']?></td>
+					<td><?=$sorted_production['count']?></td>
+					<td>
+						<?=$production['thickness']?> x <?=$production['width']?> x <?=$production['length']?>
+					</td>
+					<td><?=$sorted_production['capacity']?></td>
+					<td><?=$sorted_production['capacity_per_piece']?></td>
+					<td>
+						<ol class="list-space">
+							<?php
+								$workers = Manager::GetAllSortingProductionWorkers($production['id']);
+								foreach($workers as $worker)
+								{
+									echo '<li>';
+									echo $worker['name'];
+									echo " ";
+									echo $worker['last_name'];
+									echo '</li>';
+								}
+							?>
+						</ol>
+					</td>
+				</tr>
+			<?php
+				}
 			}
-		?>
+			?>
 			<tr class="table-light">
 				<td colspan="12"></td>
 			</tr>
@@ -102,7 +108,7 @@
 		}
 	?>
 				<tr class="table-info">
-					<td colspan="4" class="text-right"><strong> Kopā: </strong></td>
+					<td colspan="5" class="text-right"><strong> Kopā: </strong></td>
 					<td>
 						<?php
 							echo $total['count'];

@@ -28,7 +28,7 @@
 									</span>
 								</label>
 								<div class="col-md-5">
-									<input class="form-control" type="text" name="date" aria-describedby="dateArea" placeholder="2000/01/01">
+									<input class="form-control" type="text" name="date" aria-describedby="dateArea" placeholder="2000/01/01" value="<?php echo isset($_POST['date']) ? $_POST['date'] : ''; ?>">
 									<small id="dateArea" class="form-text text-muted">
 										* Satur tikai datumu, piemēram, formātā: GGGG-MM-DD *
 									</small>
@@ -89,7 +89,7 @@
 									</span>
 								</label>
 								<div class="col-md-5">
-									<input class="form-control" type="text" name="invoice" aria-describedby="invoiceArea">
+									<input class="form-control" type="text" name="invoice" aria-describedby="invoiceArea" value="<?php echo isset($_POST['invoice']) ? $_POST['invoice'] : ''; ?>">
 									<small id="invoiceArea" class="form-text text-muted">
 										* Satur tikai ciparus *
 									</small>

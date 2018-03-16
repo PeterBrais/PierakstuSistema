@@ -224,19 +224,33 @@
 			return mysqli_fetch_all($sql, MYSQLI_ASSOC);
 		}
 
-		public static function GetSortingProductionsByDate($date_string) //Returns all chosen month sorting productions
+		public static function GetSortingProductionsByInvoice($date_string) //Returns all invoices and their sorting productions
 		{
 			global $conn;
 
-			$sql = $conn->prepare("SELECT DISTINCT sorting_productions.*
-								FROM sorting_productions
-								JOIN employees_sorting_productions
-								ON sorting_productions.id = employees_sorting_productions.sorting_id
-								JOIN employees
-								ON employees_sorting_productions.employee_id = employees.id
-								WHERE DATE_FORMAT(date, '%Y-%m') = ?
-								ORDER BY date, time_from, time_to ASC");
+			$sql = $conn->prepare("SELECT invoice
+									FROM sorting_productions
+									WHERE DATE_FORMAT(date, '%Y-%m') = ?
+									GROUP BY invoice ORDER BY date");
 			$sql->bind_param('s', $date_string);
+			$sql->execute();
+			$result = $sql->get_result();
+
+			return mysqli_fetch_all($result, MYSQLI_ASSOC);
+		}
+
+		public static function GetSortingProductions($invoice) //Returns all chosen month sorting productions
+		{
+			global $conn;
+
+			$sql = $conn->prepare("SELECT sorting_productions.*,
+									(SELECT COUNT(sorted_production.sorting_id) 
+									FROM sorted_production
+									WHERE sorting_productions.id = sorted_production.sorting_id) as total_sorted
+									FROM sorting_productions
+									WHERE sorting_productions.invoice = ?
+									ORDER BY date, time_from, time_to ASC");
+			$sql->bind_param('s', $invoice);
 			$sql->execute();
 			$result = $sql->get_result();
 
@@ -269,21 +283,36 @@
 				(SELECT SUM(sorting_productions.capacity) FROM sorting_productions 
 				WHERE DATE_FORMAT(sorting_productions.date, '%Y-%m') = ?) AS capacity,
 				(SELECT SUM(sorting_productions.defect_count) FROM sorting_productions
-				WHERE DATE_FORMAT(sorting_productions.date, '%Y-%m') = ?) AS defect_count
-				-- (SELECT SUM(sorted_production.count) FROM sorted_production
-				-- JOIN sorting_productions
-				-- ON sorting_productions.id = sorted_production.sorting_id
-				-- WHERE DATE_FORMAT(sorting_productions.date, '%Y-%m') = ?) AS sorted_count,
-				-- (SELECT SUM(sorted_production.capacity) FROM sorted_production
-				-- JOIN sorting_productions
-				-- ON sorting_productions.id = sorted_production.sorting_id
-				-- WHERE DATE_FORMAT(sorting_productions.date, '%Y-%m') = ?) AS sorted_capacity
+				WHERE DATE_FORMAT(sorting_productions.date, '%Y-%m') = ?) AS defect_count,
+				(SELECT SUM(sorted_production.count) FROM sorted_production
+				JOIN sorting_productions
+				ON sorting_productions.id = sorted_production.sorting_id
+				WHERE DATE_FORMAT(sorting_productions.date, '%Y-%m') = ?) AS sorted_count,
+				(SELECT SUM(sorted_production.capacity) FROM sorted_production
+				JOIN sorting_productions
+				ON sorting_productions.id = sorted_production.sorting_id
+				WHERE DATE_FORMAT(sorting_productions.date, '%Y-%m') = ?) AS sorted_capacity
 				FROM sorting_productions");
 			$sql->bind_param('sssss', $date_string, $date_string, $date_string, $date_string, $date_string);
 			$sql->execute();
 			$result = $sql->get_result();
 
 			return mysqli_fetch_assoc($result);
+		}
+
+
+		public static function GetSortedProductionsByID($production_id) //Returns all sorted productions
+		{
+			global $conn;
+
+			$sql = $conn->prepare("SELECT * FROM sorted_production
+									WHERE sorted_production.sorting_id = ?
+									ORDER BY sorted_production.id");
+			$sql->bind_param('s', $production_id);
+			$sql->execute();
+			$result = $sql->get_result();
+
+			return mysqli_fetch_all($result, MYSQLI_ASSOC);
 		}
 
 		public static function GetAllSortingProductionWorkers($production_id) //Returns all workers for sorting production

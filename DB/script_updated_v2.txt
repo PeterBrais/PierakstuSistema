@@ -105,13 +105,19 @@ CREATE TABLE sorting_productions (
 	count INT NOT NULL,
 	capacity DECIMAL(12,3) NOT NULL,
 	defect_count INT NULL,
+);
+
+CREATE TABLE sorted_production (
+	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	type CHAR(2) NOT NULL,
-	sorted_count INT NOT NULL,
-	sorted_thickness INT NOT NULL,
-	sorted_width INT NOT NULL,
-	sorted_length INT NOT NULL,
-	sorted_capacity DECIMAL(12,3) NOT NULL,
-	sorted_capacity_piece DECIMAL(5,5) NOT NULL
+	count INT NOT NULL,
+	thickness INT NOT NULL,
+	width INT NOT NULL,
+	length INT NOT NULL,
+	capacity DECIMAL(12,3) NOT NULL,
+	capacity_piece DECIMAL(5,5) NOT NULL,
+	sorting_id INT NOT NULL,
+	FOREIGN KEY (sorting_id) REFERENCES sorting_productions(id)
 );
 
 CREATE TABLE employees_sorting_productions (
