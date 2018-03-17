@@ -6,6 +6,10 @@
 		header("Location: /");
 		exit();
 	}
+	if(isset($_SESSION['beam']))
+	{
+		extract($_SESSION['beam']);
+	}
 ?>
 
 	<!-- Add  new beam size -->
@@ -29,7 +33,7 @@
 									</span>
 								</label>
 								<div class="col-md-5">
-									<input class="form-control" type="number" min="0" step="0.001" name="size" aria-describedby="sizeArea" placeholder="0,000">
+									<input class="form-control" type="number" min="0" step="0.001" name="size" aria-describedby="sizeArea" placeholder="0,000" value="<?php echo isset($_SESSION['beam']) ? $size : ''; ?>">
 									<small id="sizeArea" class="form-text text-muted">
 										* Satur tikai ciparus. (Maksimums 3 cipari aiz komata) *
 									</small>
@@ -61,5 +65,6 @@
 	</div>
 
 <?php
+	unset($_SESSION['beam']);
 	include_once "../footer.php";
 ?>

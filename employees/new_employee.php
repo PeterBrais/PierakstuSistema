@@ -31,6 +31,7 @@
 	if(empty($name) || empty($last_name) || empty($place))
 	{
 		$_SESSION['error'] = "Lūdzu aizpildiet visus obligātos laukus!";
+		$_SESSION['employee'] = $_POST;
 		header("Location: add_employee");
 		exit();
 	}
@@ -64,6 +65,7 @@
 		if(empty($shift) || empty($capacity_rate) || empty($hour_rate))
 		{
 			$_SESSION['error'] = "Lūdzu aizpildiet visus obligātos laukus!";
+			$_SESSION['employee'] = $_POST;
 			header("Location: add_employee");
 			exit();
 		}
@@ -71,6 +73,7 @@
 		if($shift != "1" && $shift != "2")
 		{
 			$_SESSION['error'] = "Lūdzu mēģiniet vēlreiz!";
+			$_SESSION['employee'] = $_POST;
 			header("Location: add_employee");
 			exit();
 		}
@@ -82,24 +85,28 @@
 		if(!Validate::IsValidFloatNumberWithTwoDigitsAfterDot($capacity_rate))
 		{
 			$_SESSION['place'] = "Kubikmetra likme drīkst saturēt tikai ciparus ar komatu! (Maksimums 2 cipari aiz komata)";
+			$_SESSION['employee'] = $_POST;
 			header("Location: add_employee");
 			exit();
 		}
 		if(!Validate::IsValidFloatNumberWithTwoDigitsAfterDot($hour_rate))
 		{
 			$_SESSION['place'] = "Stundas likme drīkst saturēt tikai ciparus ar komatu! (Maksimums 2 cipari aiz komata)";
+			$_SESSION['employee'] = $_POST;
 			header("Location: add_employee");
 			exit();
 		}
 		if($capacity_rate <= 0)
 		{
 			$_SESSION['place'] = "Kubikmetra likme drīkst saturēt tikai ciparus ar komatu! (Maksimums 2 cipari aiz komata)";
+			$_SESSION['employee'] = $_POST;
 			header("Location: add_employee");
 			exit();
 		}
 		if($hour_rate <= 0)
 		{
 			$_SESSION['place'] = "Stundas likme drīkst saturēt tikai ciparus ar komatu! (Maksimums 2 cipari aiz komata)";
+			$_SESSION['employee'] = $_POST;
 			header("Location: add_employee");
 			exit();
 		}
@@ -116,6 +123,7 @@
 	else
 	{
 		$_SESSION['place'] = "Lūdzu izvēlieties darba vietu!";
+		$_SESSION['employee'] = $_POST;
 		header("Location: add_employee");
 		exit();
 	}
@@ -126,12 +134,14 @@
 		if(empty($position))
 		{
 			$_SESSION['position'] = "Lūdzu izvēlieties darbinieka amatu/s!";
+			$_SESSION['employee'] = $_POST;
 			header("Location: add_employee");
 			exit();
 		}
 		else if(!Position::Exists($position)) //Checks if position with this id exists
 		{
 			$_SESSION['error'] = "Radās kļūda, lūdzu mēģiniet vēlreiz!";
+			$_SESSION['employee'] = $_POST;
 			header("Location: add_employee");
 			exit();
 		}
@@ -141,6 +151,7 @@
 	if(!Validate::IsValidNameLength($name))
 	{
 		$_SESSION['name'] = "Vārds jābūt garumā no 3 simboliem līdz 50 simboliem!";
+		$_SESSION['employee'] = $_POST;
 		header("Location: add_employee");
 		exit();
 	}
@@ -149,6 +160,7 @@
 	if(!Validate::IsValidName($name))
 	{
 		$_SESSION['name'] = "Vārds drīkst saturēt tikai latīņu burtus!";
+		$_SESSION['employee'] = $_POST;
 		header("Location: add_employee");
 		exit();
 	}
@@ -157,6 +169,7 @@
 	if(!Validate::IsValidNameLength($last_name))
 	{
 		$_SESSION['last_name'] = "Uzvārds jābūt garumā no 3 simboliem līdz 50 simboliem!";
+		$_SESSION['employee'] = $_POST;
 		header("Location: add_employee");
 		exit();
 	}
@@ -165,6 +178,7 @@
 	if(!Validate::IsValidName($last_name))
 	{
 		$_SESSION['last_name'] = "Uzvārds drīkst saturēt tikai latīņu burtus!";
+		$_SESSION['employee'] = $_POST;
 		header("Location: add_employee");
 		exit();
 	}

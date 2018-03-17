@@ -21,6 +21,7 @@
 	if(empty($size))
 	{
 		$_SESSION['new_beam'] = "Lūdzu aizpildiet Izmērs lauku!";
+		$_SESSION['beam'] = $_POST;
 		header("Location: add_beam_size");
 		exit();
 	}
@@ -32,12 +33,14 @@
 	if(!Validate::IsValidFloatNumber($size))
 	{
 		$_SESSION['new_beam'] = "Izmērs drīkst saturēt tikai ciparus ar komatu! (Maksimums 3 cipari aiz komata)";
+		$_SESSION['beam'] = $_POST;
 		header("Location: add_beam_size");
 		exit();
 	}
 	if($size <= 0)
 	{
 		$_SESSION['new_beam'] = "Izmērs drīkst saturēt tikai ciparus ar komatu! (Maksimums 3 cipari aiz komata)";
+		$_SESSION['beam'] = $_POST;
 		header("Location: add_beam_size");
 		exit();
 	}
@@ -46,6 +49,7 @@
 	if(BeamSize::ExistsSize($size))
 	{
 		$_SESSION['warning'] = "Izmērs jau eksistē, jums nav nepieciešams to ievadīt vēlreiz!";
+		$_SESSION['beam'] = $_POST;
 		header("Location: add_beam_size");
 		exit();
 	}

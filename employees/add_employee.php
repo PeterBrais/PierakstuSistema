@@ -6,6 +6,10 @@
 		header("Location: /");
 		exit();
 	}
+	if(isset($_SESSION['employee']))
+	{
+		extract($_SESSION['employee']);
+	}
 ?>
 	<!-- Add employee -->
 	<div class="container">
@@ -26,7 +30,7 @@
 									</span>
 								</label>
 								<div class="col-md-5">
-									<input class="form-control" type="text" name="name" aria-describedby="nameArea">
+									<input class="form-control" type="text" name="name" aria-describedby="nameArea" value="<?php echo isset($_SESSION['employee']) ? $name : ''; ?>">
 									<small id="nameArea" class="form-text text-muted">
 										* Satur tikai latīņu burtus, garumā no 3 līdz 50 rakstzīmēm *
 									</small>
@@ -53,7 +57,7 @@
 									</span>
 								</label>
 								<div class="col-md-5">
-									<input class="form-control" type="text" name="last_name" aria-describedby="lastNameArea">
+									<input class="form-control" type="text" name="last_name" aria-describedby="lastNameArea" value="<?php echo isset($_SESSION['employee']) ? $last_name : ''; ?>">
 									<small id="lastNameArea" class="form-text text-muted">
 										* Satur tikai latīņu burtus, garumā no 3 līdz 50 rakstzīmēm *
 									</small>
@@ -81,10 +85,10 @@
 								</label>
 								<div class="col-md-5">
 									<select class="custom-select" name="place" id="place_selects">
-										<option selected value="0">Izvēlieties darba vietu</option>
-										<option value="1">Birojs</option>
-										<option value="2">Zāģētava</option>
-										<option value="3">Šķirotava</option>
+										<option value="0" <?php echo (isset($_SESSION['employee']) && $place == "0") ? 'selected' : ''; ?> >Izvēlieties darba vietu</option>
+										<option value="1" <?php echo (isset($_SESSION['employee']) && $place == "1") ? 'selected' : ''; ?> >Birojs</option>
+										<option value="2" <?php echo (isset($_SESSION['employee']) && $place == "2") ? 'selected' : ''; ?> >Zāģētava</option>
+										<option value="3" <?php echo (isset($_SESSION['employee']) && $place == "3") ? 'selected' : ''; ?> >Šķirotava</option>
 									</select>
 								</div>
 								<div class="col-md-4">
@@ -182,5 +186,6 @@ $(document).ready(function(){
 </script>
 
 <?php
+	unset($_SESSION['employee']);
 	include_once "../footer.php";
 ?>

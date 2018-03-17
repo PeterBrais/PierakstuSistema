@@ -24,7 +24,7 @@
 								<th class="col-md-3">Uzvārds</th>
 								<th class="col-md-1">Maiņa</th>
 								<th class="col-md-2">Amats</th>
-								<th class="col-md-2">...</th>
+								<th class="col-md-2">Labot</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -51,7 +51,11 @@
 											}
 										?>
 										</td>
-										<td class="col-md-2"></td>
+										<td class="col-md-2">
+											<a href="edit_employee?id=<?=$employee['id']?>" class="btn btn-info">
+												Labot datus
+											</a>
+										</td>
 									</tr>
 					<?php
 								}
@@ -72,7 +76,11 @@
 											}
 										?>
 										</td>
-										<td class="col-md-2"></td>
+										<td class="col-md-2">
+											<a href="edit_employee?id=<?=$employee['id']?>" class="btn btn-info">
+												Labot datus
+											</a>
+										</td>
 									</tr>
 					<?php
 								}
@@ -92,7 +100,7 @@
 								<th class="col-md-3">Vārds</th>
 								<th class="col-md-3">Uzvārds</th>
 								<th class="col-md-3">Amats</th>
-								<th class="col-md-2">...</th>
+								<th class="col-md-2">Labot</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -116,7 +124,11 @@
 										}
 									?>
 									</td>
-									<td class="col-md-2"></td>
+									<td class="col-md-2">
+										<a href="edit_employee?id=<?=$employee['id']?>" class="btn btn-info">
+											Labot datus
+										</a>
+									</td>
 								</tr>
 					<?php
 							}
@@ -135,7 +147,7 @@
 								<th class="col-md-3">Vārds</th>
 								<th class="col-md-3">Uzvārds</th>
 								<th class="col-md-3">Amats</th>
-								<th class="col-md-2">...</th>
+								<th class="col-md-2">Labot</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -159,7 +171,11 @@
 										}
 									?>
 									</td>
-									<td class="col-md-2"></td>
+									<td class="col-md-2">
+										<a href="edit_employee?id=<?=$employee['id']?>" class="btn btn-info">
+											Labot datus
+										</a>
+									</td>
 								</tr>
 					<?php
 							}

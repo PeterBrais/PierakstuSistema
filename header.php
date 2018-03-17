@@ -14,8 +14,7 @@ session_start();
 	
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script src="/public/js/bootstrap.min.js"></script>
-
-      
+	<script src="/public/js/jquery.validate.js"></script>
 </head>
 <body>
 	<nav class="navbar navbar-expand-md nav-bg">

@@ -6,6 +6,10 @@
 		header("Location: /");
 		exit();
 	}
+	if(isset($_SESSION['register']))
+	{
+		extract($_SESSION['register']);
+	}
 ?>
 
 	<!-- Register -->
@@ -27,7 +31,7 @@
 									</span>
 								</label>
 								<div class="col-md-5">
-									<input class="form-control" type="text" name="usr" aria-describedby="userArea">
+									<input class="form-control" type="text" name="usr" aria-describedby="userArea" value="<?php echo isset($_SESSION['register']) ? $usr : ''; ?>">
 									<small id="userArea" class="form-text text-muted">
 										* Satur tikai latīņu burtus un ciparus *
 									</small>
@@ -109,9 +113,9 @@
 								</label>
 								<div class="col-md-5">
 									<select class="custom-select" name="role">
-										<option selected value="0">Izvēlieties lietotāja lomu</option>
-										<option value="2">Pārvaldnieks</option>
-										<option value="3">Administrators</option>
+										<option value="0" <?php echo (isset($_SESSION['register']) && $role == "0") ? 'selected' : ''; ?> >Izvēlieties lietotāja lomu</option>
+										<option value="2" <?php echo (isset($_SESSION['register']) && $role == "2") ? 'selected' : ''; ?> >Pārvaldnieks</option>
+										<option value="3" <?php echo (isset($_SESSION['register']) && $role == "3") ? 'selected' : ''; ?> >Administrators</option>
 									</select>
 								</div>
 								<div class="col-md-4">
@@ -141,5 +145,6 @@
 	</div>
 
 <?php
+	unset($_SESSION['register']);
 	include_once "../footer.php";
 ?>

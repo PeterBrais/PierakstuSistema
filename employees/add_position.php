@@ -6,6 +6,10 @@
 		header("Location: /");
 		exit();
 	}
+	if(isset($_SESSION['position']))
+	{
+		extract($_SESSION['position']);
+	}
 ?>
 	<!-- Add position -->
 	<div class="container">
@@ -17,7 +21,7 @@
 				<div class="card">
 					<div class="card-body">
 						<h4 class="card-title text-center">Pievienot jaunu amatu</h4>
-						<form action="new_position" method="POST">
+						<form id="position_form" action="new_position" method="POST">
 							<div class="form-group row">
 								<label class="col-md-2 offset-md-1 col-form-label">
 									Amats
@@ -26,7 +30,7 @@
 									</span>
 								</label>
 								<div class="col-md-5">
-									<input class="form-control" type="text" name="name" aria-describedby="positionArea">
+									<input class="form-control" type="text" name="name" aria-describedby="positionArea" value="<?php echo isset($_SESSION['position']) ? $name : ''; ?>">
 									<small id="positionArea" class="form-text text-muted">
 										* Satur tikai latīņu burtus, ciparus un speciālos simbolus *
 									</small>
@@ -57,6 +61,9 @@
 		</div>
 	</div>
 	
+<script src="../public/js/position_form.js"></script>
+
 <?php
+	unset($_SESSION['position']);
 	include_once "../footer.php";
 ?>
