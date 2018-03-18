@@ -41,6 +41,10 @@ body{
 	padding: 6px 12px;
 }
 
+.alert-size label {
+	all: unset;
+}
+
 .table td, .table th {
 	vertical-align: middle;
 }

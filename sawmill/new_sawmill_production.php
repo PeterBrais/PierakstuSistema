@@ -55,6 +55,7 @@
 	if(empty($date) || empty($time_from) || empty($time_to) || empty($invoice) || empty($beam_count) || empty($lumber_count) || empty($lumber_capacity) || empty($shift))
 	{
 		$_SESSION['error'] = "Lūdzu aizpildiet visus obligātos laukus!";
+		$_SESSION['sawmill_prod'] = $_POST;
 		header("Location: add_sawmill_production");
 		exit();
 	}
@@ -63,6 +64,7 @@
 	if(!Manager::ExistsShift($shift))
 	{
 		$_SESSION['error'] = "Radās kļūda, lūdzu mēģiniet vēlreiz!";
+		$_SESSION['sawmill_prod'] = $_POST;
 		header("Location: add_sawmill_production");
 		exit();
 	}
@@ -87,6 +89,7 @@
 	if(!Validate::IsValidDate($date))
 	{
 		$_SESSION['date'] = "Lūdzu ievadiet korektu datumu, formā: gggg-mm-dd vai gggg/mm/dd!";
+		$_SESSION['sawmill_prod'] = $_POST;
 		header("Location: add_sawmill_production");
 		exit();
 	}
@@ -95,12 +98,14 @@
 	if(!Validate::IsValidTime($time_from))
 	{
 		$_SESSION['time'] = "Lūdzu ievadiet korektu laiku, formā: hh:mm!";
+		$_SESSION['sawmill_prod'] = $_POST;
 		header("Location: add_sawmill_production");
 		exit();
 	}
 	if(!Validate::IsValidTime($time_to))
 	{
 		$_SESSION['time'] = "Lūdzu ievadiet korektu laiku, formā: hh:mm!";
+		$_SESSION['sawmill_prod'] = $_POST;
 		header("Location: add_sawmill_production");
 		exit();
 	}
@@ -109,6 +114,7 @@
 	if(!Validate::IsValidIntegerNumber($invoice))
 	{
 		$_SESSION['invoice'] = "Ievadītais pavadzīmes numurs ir neatbilstošs! Tas var sastāvēt tikai no cipariem!";
+		$_SESSION['sawmill_prod'] = $_POST;
 		header("Location: add_sawmill_production");
 		exit();
 	}
@@ -117,6 +123,7 @@
 	if(SawmillProduction::ExistsInvoice($invoice))	
 	{
 		$_SESSION['invoice'] = "Pavadzīme ar šādu numuru jau eksistē!";
+		$_SESSION['sawmill_prod'] = $_POST;
 		header("Location: add_sawmill_production");
 		exit();
 	}
@@ -125,6 +132,7 @@
 	if(!Validate::IsValidIntegerNumber($beam_count))
 	{
 		$_SESSION['beam_count'] = "Apaļkoku skaits drīkst sastāvēt tikai no cipariem!";
+		$_SESSION['sawmill_prod'] = $_POST;
 		header("Location: add_sawmill_production");
 		exit();
 	}
@@ -133,12 +141,14 @@
 	if(empty($beam_size))
 	{
 		$_SESSION['beam_size'] = "Lūdzu izvēlieties kubatūras izmēru";
+		$_SESSION['sawmill_prod'] = $_POST;
 		header("Location: add_sawmill_production");
 		exit();
 	}
 	else if(!BeamSize::ExistsId($beam_size)) //Checks if position with this id exists
 	{
 		$_SESSION['error'] = "Radās kļūda, lūdzu mēģiniet vēlreiz!";
+		$_SESSION['sawmill_prod'] = $_POST;
 		header("Location: add_sawmill_production");
 		exit();
 	}
@@ -147,6 +157,7 @@
 	if(!Validate::IsValidIntegerNumber($lumber_count))
 	{
 		$_SESSION['lumber_count'] = "Zāģmatariālu skaits drīkst sastāvēt tikai no cipariem!";
+		$_SESSION['sawmill_prod'] = $_POST;
 		header("Location: add_sawmill_production");
 		exit();
 	}
@@ -158,12 +169,14 @@
 	if(!Validate::IsValidFloatNumber($lumber_capacity))
 	{
 		$_SESSION['lumber_capacity'] = "Zāģmatariālu tilpums drīkst saturēt tikai ciparus ar komatu! (Maksimums 3 cipari aiz komata)";
+		$_SESSION['sawmill_prod'] = $_POST;
 		header("Location: add_sawmill_production");
 		exit();
 	}
 	if($lumber_capacity <= 0)
 	{
 		$_SESSION['lumber_capacity'] = "Zāģmatariālu tilpums drīkst saturēt tikai ciparus ar komatu! (Maksimums 3 cipari aiz komata)";
+		$_SESSION['sawmill_prod'] = $_POST;
 		header("Location: add_sawmill_production");
 		exit();
 	}
@@ -174,6 +187,7 @@
 		if(!Validate::IsValidTextLength($note))
 		{
 			$_SESSION['note'] = "Citas piezīmes jābūt garumā no 3 simboliem līdz 255 simboliem!";
+			$_SESSION['sawmill_prod'] = $_POST;
 			header("Location: add_sawmill_production");
 			exit();
 		}
@@ -181,6 +195,7 @@
 		if(!Validate::IsValidText($note))
 		{
 			$_SESSION['note'] = "Citas piezīmes drīkst saturēt tikai latīņu burtus, ciparus un speciālos simbolus!";
+			$_SESSION['sawmill_prod'] = $_POST;
 			header("Location: add_sawmill_production");
 			exit();
 		}
@@ -193,6 +208,7 @@
 			if(!Validate::IsValidIntegerNumber($maintenance_times[0]))
 			{
 				$_SESSION['maintenance'] = "Remonta laiks drīkst sastāvēt tikai no cipariem!";
+				$_SESSION['sawmill_prod'] = $_POST;
 				header("Location: add_sawmill_production");
 				exit();
 			}
@@ -200,6 +216,7 @@
 			if(!Validate::IsValidTextLength($maintenance_notes[0]))
 			{
 				$_SESSION['maintenance'] = "Piezīme jābūt garumā no 3 simboliem līdz 255 simboliem!";
+				$_SESSION['sawmill_prod'] = $_POST;
 				header("Location: add_sawmill_production");
 				exit();
 			}
@@ -207,6 +224,7 @@
 			if(!Validate::IsValidText($maintenance_notes[0]))
 			{
 				$_SESSION['maintenance'] = "Piezīme drīkst saturēt tikai latīņu burtus, ciparus un speciālos simbolus!";
+				$_SESSION['sawmill_prod'] = $_POST;
 				header("Location: add_sawmill_production");
 				exit();
 			}
@@ -214,6 +232,7 @@
 		else if((empty($maintenance_times[0]) && !empty($maintenance_notes[0])) || (!empty($maintenance_times[0]) && empty($maintenance_notes[0]))) //One or other is filled
 		{
 			$_SESSION['maintenance'] = "Lūdzu ievadiet remonta laiku un piezīmi!";
+			$_SESSION['sawmill_prod'] = $_POST;
 			header("Location: add_sawmill_production");
 			exit();
 		}
@@ -225,6 +244,7 @@
 			if(empty($maintenance_time))
 			{
 				$_SESSION['maintenance'] = "Lūdzu ievadiet remonta laikus un piezīmes!";
+				$_SESSION['sawmill_prod'] = $_POST;
 				header("Location: add_sawmill_production");
 				exit();
 			}
@@ -232,6 +252,7 @@
 			if(!Validate::IsValidIntegerNumber($maintenance_time))
 			{
 				$_SESSION['maintenance'] = "Remonta laiks drīkst sastāvēt tikai no cipariem!";
+				$_SESSION['sawmill_prod'] = $_POST;
 				header("Location: add_sawmill_production");
 				exit();
 			}
@@ -241,6 +262,7 @@
 			if(empty($maintenance_note))
 			{
 				$_SESSION['maintenance'] = "Lūdzu ievadiet remonta laikus un piezīmes!";
+				$_SESSION['sawmill_prod'] = $_POST;
 				header("Location: add_sawmill_production");
 				exit();
 			}
@@ -248,6 +270,7 @@
 			if(!Validate::IsValidTextLength($maintenance_note))
 			{
 				$_SESSION['maintenance'] = "Piezīme jābūt garumā no 3 simboliem līdz 255 simboliem!";
+				$_SESSION['sawmill_prod'] = $_POST;
 				header("Location: add_sawmill_production");
 				exit();
 			}
@@ -255,6 +278,7 @@
 			if(!Validate::IsValidText($maintenance_note))
 			{
 				$_SESSION['maintenance'] = "Piezīme drīkst saturēt tikai latīņu burtus, ciparus un speciālos simbolus!";
+				$_SESSION['sawmill_prod'] = $_POST;
 				header("Location: add_sawmill_production");
 				exit();
 			}
@@ -267,6 +291,7 @@
 		if(empty($working_hours[$i]) && empty($nonworking[$i]))
 		{
 			$_SESSION['shift'] = "Lūdzu aizpildiet darbinieku tabulu!";
+			$_SESSION['sawmill_prod'] = $_POST;
 			header("Location: add_sawmill_production");
 			exit();
 		}
@@ -276,6 +301,7 @@
 			if(!Validate::IsValidHours($working_hours[$i]))
 			{
 				$_SESSION['shift'] = "Nostrādātās darba stundas drīkst sastāvēt tikai no cipariem!";
+				$_SESSION['sawmill_prod'] = $_POST;
 				header("Location: add_sawmill_production");
 				exit();
 			}
@@ -286,6 +312,7 @@
 			if($nonworking[$i] != "1" && $nonworking[$i] != "2" && $nonworking[$i] != "3")
 			{
 				$_SESSION['error'] = "Lūdzu mēģiniet vēlreiz!";
+				$_SESSION['sawmill_prod'] = $_POST;
 				header("Location: add_sawmill_production");
 				exit();
 			}
@@ -293,6 +320,7 @@
 		else
 		{
 			$_SESSION['shift'] = "Lūdzu aizpildiet tikai vienu ievadlauku katram darbiniekam!";
+			$_SESSION['sawmill_prod'] = $_POST;
 			header("Location: add_sawmill_production");
 			exit();
 		}

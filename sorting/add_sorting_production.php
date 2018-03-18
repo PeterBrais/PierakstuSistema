@@ -6,6 +6,10 @@
 		header("Location: /");
 		exit();
 	}
+	if(isset($_SESSION['sorting_prod']))
+	{
+		extract($_SESSION['sorting_prod']);
+	}
 ?>
 
 <!-- Add sorting production -->
@@ -28,7 +32,7 @@
 									</span>
 								</label>
 								<div class="col-md-5">
-									<input class="form-control" type="text" name="date" aria-describedby="dateArea" placeholder="2000/01/01" value="<?php echo isset($_POST['date']) ? $_POST['date'] : ''; ?>">
+									<input class="form-control" type="text" name="date" aria-describedby="dateArea" placeholder="2000/01/01" value="<?php echo isset($_SESSION['sorting_prod']) ? $date : ''; ?>">
 									<small id="dateArea" class="form-text text-muted">
 										* Satur tikai datumu, piemēram, formātā: GGGG-MM-DD *
 									</small>
@@ -57,10 +61,10 @@
 								<div class="col-md-5">
 									<div class="row">
 										<div class="col-md-6">
-											<input class="form-control" type="time" name="time_from" aria-describedby="timeFromArea">
+											<input class="form-control" type="time" name="time_from" aria-describedby="timeFromArea" value="<?php echo isset($_SESSION['sorting_prod']) ? $time_from : ''; ?>">
 										</div>
 										<div class="col-md-6">
-											<input class="form-control" type="time" name="time_to" aria-describedby="timeFromArea">
+											<input class="form-control" type="time" name="time_to" aria-describedby="timeFromArea" value="<?php echo isset($_SESSION['sorting_prod']) ? $time_to : ''; ?>">
 										</div>
 									</div>
 									<small id="timeFromArea" class="form-text text-muted">
@@ -89,7 +93,7 @@
 									</span>
 								</label>
 								<div class="col-md-5">
-									<input class="form-control" type="text" name="invoice" aria-describedby="invoiceArea" value="<?php echo isset($_POST['invoice']) ? $_POST['invoice'] : ''; ?>">
+									<input class="form-control" type="text" name="invoice" aria-describedby="invoiceArea" value="<?php echo isset($_SESSION['sorting_prod']) ? $invoice : ''; ?>">
 									<small id="invoiceArea" class="form-text text-muted">
 										* Satur tikai ciparus *
 									</small>
@@ -118,13 +122,13 @@
 								<div class="col-md-5">
 									<div class="row">
 										<div class="col-md-4">
-											<input class="form-control" type="number" min="0" name="thick" aria-describedby="timeFromArea" placeholder="Biezums" id="thickeness">
+											<input class="form-control" type="number" min="0" name="thick" aria-describedby="timeFromArea" placeholder="Biezums" id="thickeness" value="<?php echo isset($_SESSION['sorting_prod']) ? $thick : ''; ?>">
 										</div>
 										<div class="col-md-4">
-											<input class="form-control" type="number" min="0" name="width" aria-describedby="timeFromArea" placeholder="Platums" id="width">
+											<input class="form-control" type="number" min="0" name="width" aria-describedby="timeFromArea" placeholder="Platums" id="width" value="<?php echo isset($_SESSION['sorting_prod']) ? $width : ''; ?>">
 										</div>
 										<div class="col-md-4">
-											<input class="form-control" type="number" min="0" name="length" aria-describedby="timeFromArea" placeholder="Garums" id="length">
+											<input class="form-control" type="number" min="0" name="length" aria-describedby="timeFromArea" placeholder="Garums" id="length" value="<?php echo isset($_SESSION['sorting_prod']) ? $length : ''; ?>">
 										</div>
 									</div>
 									<small id="timeFromArea" class="form-text text-muted">
@@ -153,7 +157,7 @@
 									</span>
 								</label>
 								<div class="col-md-5">
-									<input class="form-control" type="number" min="0" name="sawn_count" aria-describedby="sawnCountArea" id="sawn_count" placeholder="Kopējais skaits">
+									<input class="form-control" type="number" min="0" name="sawn_count" aria-describedby="sawnCountArea" id="sawn_count" placeholder="Kopējais skaits" value="<?php echo isset($_SESSION['sorting_prod']) ? $sawn_count : ''; ?>">
 									<small id="sawnCountArea" class="form-text text-muted">
 										* Satur tikai ciparus, kopējo (gab) skaitu *
 									</small>
@@ -185,7 +189,7 @@
 									Defektu skaits
 								</label>
 								<div class="col-md-5">
-									<input class="form-control" type="number" min="0" name="defect_count" aria-describedby="sawnCountArea" id="defect_count" placeholder="Defektu skaits">
+									<input class="form-control" type="number" min="0" name="defect_count" aria-describedby="sawnCountArea" id="defect_count" placeholder="Defektu skaits" value="<?php echo isset($_SESSION['sorting_prod']) ? $defect_count : ''; ?>">
 								</div>
 								<div class="col-md-4">
 									<?php
@@ -385,5 +389,6 @@ $(document).ready(function(){
 </script>
 
 <?php
+	unset($_SESSION['sorting_prod']);
 	include_once "../footer.php";
 ?>

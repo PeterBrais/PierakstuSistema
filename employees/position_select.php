@@ -10,7 +10,7 @@
 <?php
 	foreach($positions as $position)
 	{
-		echo '<option value="'.$position['id'].'">'.$position['name'].'</option>';
+		echo '<option value="'.$position['id'].'"  >'.$position['name'].'</option>';
 	}
 ?>
 

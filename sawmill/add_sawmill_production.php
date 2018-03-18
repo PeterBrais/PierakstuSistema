@@ -6,6 +6,10 @@
 		header("Location: /");
 		exit();
 	}
+	if(isset($_SESSION['sawmill_prod']))
+	{
+		extract($_SESSION['sawmill_prod']);
+	}
 ?>
 
 	<!-- Add sawmill production -->
@@ -28,7 +32,7 @@
 									</span>
 								</label>
 								<div class="col-md-5">
-									<input class="form-control" type="text" name="date" aria-describedby="dateArea" placeholder="2000/01/01">
+									<input class="form-control" type="text" name="date" aria-describedby="dateArea" placeholder="2000/01/01" value="<?php echo isset($_SESSION['sawmill_prod']) ? $date : ''; ?>">
 									<small id="dateArea" class="form-text text-muted">
 										* Satur tikai datumu, piemēram, formātā: GGGG-MM-DD *
 									</small>
@@ -57,10 +61,10 @@
 								<div class="col-md-5">
 									<div class="row">
 										<div class="col-md-6">
-											<input class="form-control" type="time" name="time_from" aria-describedby="timeFromArea">
+											<input class="form-control" type="time" name="time_from" aria-describedby="timeFromArea" value="<?php echo isset($_SESSION['sawmill_prod']) ? $time_from : ''; ?>">
 										</div>
 										<div class="col-md-6">
-											<input class="form-control" type="time" name="time_to" aria-describedby="timeFromArea">
+											<input class="form-control" type="time" name="time_to" aria-describedby="timeFromArea" value="<?php echo isset($_SESSION['sawmill_prod']) ? $time_to : ''; ?>">
 										</div>
 									</div>
 									<small id="timeFromArea" class="form-text text-muted">
@@ -89,7 +93,7 @@
 									</span>
 								</label>
 								<div class="col-md-5">
-									<input class="form-control" type="text" name="invoice" aria-describedby="invoiceArea">
+									<input class="form-control" type="text" name="invoice" aria-describedby="invoiceArea" value="<?php echo isset($_SESSION['sawmill_prod']) ? $invoice : ''; ?>">
 									<small id="invoiceArea" class="form-text text-muted">
 										* Satur tikai ciparus *
 									</small>
@@ -116,7 +120,7 @@
 									</span>
 								</label>
 								<div class="col-md-5">
-									<input class="form-control" type="text" name="beam_count" aria-describedby="beamCountArea" id="beam_count_input">
+									<input class="form-control" type="text" name="beam_count" aria-describedby="beamCountArea" id="beam_count_input" value="<?php echo isset($_SESSION['sawmill_prod']) ? $beam_count : ''; ?>">
 									<small id="beamCountArea" class="form-text text-muted">
 										* Satur tikai ciparus, kopējo (gab) skaitu *
 									</small>
@@ -175,7 +179,7 @@
 									</span>
 								</label>
 								<div class="col-md-5">
-									<input class="form-control" type="text" name="lumber_count" aria-describedby="lumberCountArea">
+									<input class="form-control" type="text" name="lumber_count" aria-describedby="lumberCountArea" value="<?php echo isset($_SESSION['sawmill_prod']) ? $lumber_count : ''; ?>">
 									<small id="lumberCountArea" class="form-text text-muted">
 										* Satur tikai ciparus, kopējo (gab) skaitu *
 									</small>
@@ -202,7 +206,7 @@
 									</span>
 								</label>
 								<div class="col-md-5">
-									<input class="form-control" type="number" min="0" step="0.001" name="lumber_capacity" aria-describedby="lumberCapacityArea" placeholder="0,000">
+									<input class="form-control" type="number" min="0" step="0.001" name="lumber_capacity" aria-describedby="lumberCapacityArea" placeholder="0,000" value="<?php echo isset($_SESSION['sawmill_prod']) ? $lumber_capacity : ''; ?>"> 
 									<small id="lumberCapacityArea" class="form-text text-muted">
 										* Satur tikai ciparus, kopējo tilpumu m<sup>3</sup>. (Maksimums 3 cipari aiz komata) *
 									</small>
@@ -226,7 +230,7 @@
 									Citas piezīmes
 								</label>
 								<div class="col-md-5">
-									<textarea class="form-control rounded-0" name="note" rows="3" aria-describedby="noteArea"></textarea>
+									<textarea class="form-control rounded-0" name="note" rows="3" aria-describedby="noteArea"><?php echo isset($_SESSION['sawmill_prod']) ? $note : ''; ?></textarea>
 								</div>
 								<div class="col-md-4">
 									<?php
@@ -250,10 +254,10 @@
 									</span>
 								</label>
 								<div class="col-md-1">
-									<input class="form-control" type="text" name="maintenance_times[]" aria-describedby="lumberCapacityArea" placeholder="Laiks">
+									<input class="form-control" type="text" name="maintenance_times[]" aria-describedby="lumberCapacityArea" placeholder="Laiks" value="<?php echo isset($_SESSION['sawmill_prod']) ? $maintenance_times[0] : ''; ?>">
 								</div>
 								<div class="col-md-4">
-									<input class="form-control" type="text" name="maintenance_notes[]" aria-describedby="lumberCapacityArea" placeholder="Piezīme">
+									<input class="form-control" type="text" name="maintenance_notes[]" aria-describedby="lumberCapacityArea" placeholder="Piezīme" value="<?php echo isset($_SESSION['sawmill_prod']) ? $maintenance_notes[0] : ''; ?>">
 								</div>
 								<div class="col-md-1">
 									<button type="button" name="add" id="add" class="btn btn-success">+</button>
@@ -376,5 +380,6 @@ $(document).ready(function(){
 </script>
 
 <?php
+	unset($_SESSION['sawmill_prod']);
 	include_once "../footer.php";
 ?>

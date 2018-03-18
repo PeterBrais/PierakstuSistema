@@ -30,7 +30,7 @@
 									</span>
 								</label>
 								<div class="col-md-5">
-									<input class="form-control" type="text" name="name" aria-describedby="positionArea" value="<?php echo isset($_SESSION['position']) ? $name : ''; ?>">
+									<input class="form-control" type="text" name="name" aria-describedby="positionArea" value="<?php echo isset($_SESSION['position']) ? $name : ''; ?>" id="positionArea">
 									<small id="positionArea" class="form-text text-muted">
 										* Satur tikai latīņu burtus, ciparus un speciālos simbolus *
 									</small>

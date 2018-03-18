@@ -7,9 +7,9 @@
 	</label>
 	<div class="col-md-5">
 		<select class="custom-select" name="sorted_types[]">
-			<option selected value="0">Izvēlieties šķirošanas veidu</option>
-			<option value="1">Šķirots</option>
-			<option value="2">Garināts</option>
+			<option value="0" <?php echo (isset($_SESSION['sorting_prod']) && $sorted_types[0] == "0") ? 'selected' : ''; ?> >Izvēlieties šķirošanas veidu</option>
+			<option value="1" <?php echo (isset($_SESSION['sorting_prod']) && $sorted_types[0] == "1") ? 'selected' : ''; ?> >Šķirots</option>
+			<option value="2" <?php echo (isset($_SESSION['sorting_prod']) && $sorted_types[0] == "2") ? 'selected' : ''; ?> >Garināts</option>
 		</select>
 	</div>
 	<div class="col-md-4">
@@ -34,7 +34,7 @@
 		</span>
 	</label>
 	<div class="col-md-5">
-		<input class="form-control sorted_counts" type="number" min="0" name="sorted_count[]" aria-describedby="sawnCountArea" placeholder="Kopējais skaits">
+		<input class="form-control sorted_counts" type="number" min="0" name="sorted_count[]" aria-describedby="sawnCountArea" placeholder="Kopējais skaits" value="<?php echo isset($_SESSION['sorting_prod']) ? $sorted_count[0] : ''; ?>">
 		<small id="sawnCountArea" class="form-text text-muted">
 			* Satur tikai ciparus, kopējo (gab) skaitu *
 		</small>
@@ -63,13 +63,13 @@
 	<div class="col-md-5">
 		<div class="row">
 			<div class="col-md-4">
-				<input class="form-control sorted_thicknesses" type="number" min="0" name="sorted_thick[]" aria-describedby="timeFromArea" placeholder="Biezums">
+				<input class="form-control sorted_thicknesses" type="number" min="0" name="sorted_thick[]" aria-describedby="timeFromArea" placeholder="Biezums" value="<?php echo isset($_SESSION['sorting_prod']) ? $sorted_thick[0] : ''; ?>">
 			</div>
 			<div class="col-md-4">
-				<input class="form-control sorted_widths" type="number" min="0" name="sorted_width[]" aria-describedby="timeFromArea" placeholder="Platums">
+				<input class="form-control sorted_widths" type="number" min="0" name="sorted_width[]" aria-describedby="timeFromArea" placeholder="Platums" value="<?php echo isset($_SESSION['sorting_prod']) ? $sorted_width[0] : ''; ?>">
 			</div>
 			<div class="col-md-4">
-				<input class="form-control sorted_lengths" type="number" min="0" name="sorted_length[]" aria-describedby="timeFromArea" placeholder="Garums">
+				<input class="form-control sorted_lengths" type="number" min="0" name="sorted_length[]" aria-describedby="timeFromArea" placeholder="Garums" value="<?php echo isset($_SESSION['sorting_prod']) ? $sorted_length[0] : ''; ?>">
 			</div>
 		</div>
 		<small id="timeFromArea" class="form-text text-muted">
