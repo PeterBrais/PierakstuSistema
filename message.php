@@ -2,7 +2,7 @@
 	if(isset($_SESSION['error']))
 	{
 ?>
-		<div class="alert alert-danger" role="alert">
+		<div class="alert alert-danger alert_space" role="alert">
 			<?=$_SESSION['error']?>
 		</div>
 <?php
@@ -11,7 +11,7 @@
 	elseif(isset($_SESSION['success']))
 	{
 ?>
-		<div class="alert alert-success" role="alert">
+		<div class="alert alert-success alert_space" role="alert">
 			<?=$_SESSION['success']?>
 		</div>
 <?php
@@ -20,7 +20,7 @@
 	elseif(isset($_SESSION['warning']))
 	{
 ?>
-		<div class="alert alert-warning" role="alert">
+		<div class="alert alert-warning alert_space" role="alert">
 			<?=$_SESSION['warning']?>
 		</div>
 <?php

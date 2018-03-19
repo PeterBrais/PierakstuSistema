@@ -5,7 +5,7 @@
 ?>
 
 	<select class="custom-select mb-2" name="positions[]">
-		<option selected value="0">Izvēlieties amatu</option>
+		<option selected value="">Izvēlieties amatu</option>
 
 <?php
 	foreach($positions as $position)

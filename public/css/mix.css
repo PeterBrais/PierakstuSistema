@@ -41,8 +41,16 @@ body{
 	padding: 6px 12px;
 }
 
+.alert {
+	margin-bottom: 0;
+}
+
 .alert-size label {
 	all: unset;
+}
+
+.alert_space {
+	margin-bottom: 16px;
 }
 
 .table td, .table th {
