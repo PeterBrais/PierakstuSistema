@@ -5,14 +5,20 @@ $(document).ready(function(){
 		$.get('position_select.php', function(result){
 			var positionSelect = '<div class="offset-md-3 col-md-5 position-select">';
 			positionSelect += result+'</div>'+remove_btn+'<div class="col-md-3"></div>';
-			$('#position_selects').append(positionSelect);
+			$('#position_selects').append($(positionSelect).hide().fadeIn('slow'));
 		});
 	});
 
-	$(document).on('click', '.remove', function(){  
-		$(this).parent().prev('.position-select').remove();
-		$(this).parent().next().remove();
-		$(this).parent().remove();
+	$(document).on('click', '.remove', function(){
+		$(this).parent().prev('.position-select').fadeOut('slow', function(){
+			$(this).remove();
+		});
+		$(this).parent().next().fadeOut('slow', function(){
+			$(this).remove();
+		});
+		$(this).parent().fadeOut('slow', function(){
+			$(this).remove();
+		});
 	});
 
 	//Shows shift and rates input for sawmill workers
@@ -23,17 +29,29 @@ $(document).ready(function(){
 		var place_value = $(this).val();
 		if(place_value == "2")
 		{
-			$('#workplace_input').append(shift);
-			$('#workplace_input').append(rates);
+			$('#workplace_input').append($(shift).hide().fadeIn('slow'));
+			$('#workplace_input').append($(rates).hide().fadeIn('slow'));
 		}
 		else //Removes label and div from variable shift
 		{
-			$(this).parent().next().next().remove();
-			$(this).parent().next().next().remove();
-			$(this).parent().next().next().remove();
-			$(this).parent().next().next().remove();
-			$(this).parent().next().next().remove();
-			$(this).parent().next().next().remove();
+			$(this).parent().next().next().fadeOut(250, function(){
+				$(this).remove();
+			});
+			$(this).parent().next().next().next().fadeOut(250, function(){
+				$(this).remove();
+			});
+			$(this).parent().next().next().next().next().fadeOut(250, function(){
+				$(this).remove();
+			});
+			$(this).parent().next().next().next().next().next().fadeOut(250, function(){
+				$(this).remove();
+			});
+			$(this).parent().next().next().next().next().next().next().fadeOut(250, function(){
+				$(this).remove();
+			});
+			$(this).parent().next().next().next().next().next().next().next().fadeOut(250, function(){
+				$(this).remove();
+			});
 		}
 	});
 });

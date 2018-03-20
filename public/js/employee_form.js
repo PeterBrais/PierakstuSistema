@@ -6,9 +6,9 @@ $(function(){
 				error.addClass('alert alert-danger alert-size mb-1')
 				error.appendTo( element.parent().parent().parent().next() );
 			}
-			else if(element.type == 'select')
+			else if(element.attr("name") == "positions[]")
 			{
-				error.addClass('alert alert-danger alert-size')
+				error.addClass('alert alert-danger alert-size');
 				error.appendTo( element.parent().next().next() );
 			}
 			else
@@ -16,8 +16,6 @@ $(function(){
 				error.addClass('alert alert-danger alert-size')
 				error.appendTo( element.parent().next() );
 			}
-			error.addClass('alert alert-danger alert-size')
-			error.appendTo( element.parent().next() );
 		},
 		wrapper: 'div'
 	});
@@ -46,8 +44,8 @@ $(function(){
 					required: "Lūdzu aizpildiet Kubikmetra likmes lauku!",
 					number: "Kubikmetra likme drīkst saturēt tikai ciparus!",
 					min: "Kubikmetras likmei jābūt lielākai par nulli!",
-					max: "Kubikmetras likme jābūt mazākai par skaitli ar 12 cipariem!",
-					step: "Kubikmetras likme - maksimums 2 cipari aiz komata",
+					max: "Kubikmetras likme jābūt ne vairāk kā 12 ciparus garam!",
+					step: "Kubikmetras likme - maksimums 2 cipari aiz komata!",
 					IsValidFloatNumber: "Kubikmetras likmei jābūt lielākai par nulli!",
 					IsValidFloatNumberWithTwoDigitsAfterDot: "Kubikmetra likme drīkst saturēt tikai ciparus ar komatu!"
 				}
@@ -64,8 +62,8 @@ $(function(){
 					required: "Lūdzu aizpildiet Stundas likmes lauku!",
 					number: "Stundas likme drīkst saturēt tikai ciparus!",
 					min: "Stundas likmei jābūt lielākai par nulli!",
-					max: "Stundas likme jābūt mazākai par skaitli ar 12 cipariem!",
-					step: "Stundas likme - maksimums 2 cipari aiz komata",
+					max: "Stundas likme jābūt ne vairāk kā 12 ciparus garam!",
+					step: "Stundas likme - maksimums 2 cipari aiz komata!",
 					IsValidFloatNumber: "Stundas likmei jābūt lielākai par nulli!",
 					IsValidFloatNumberWithTwoDigitsAfterDot: "Stundas likme drīkst saturēt tikai ciparus ar komatu!"
 				}
@@ -80,7 +78,7 @@ $(function(){
 				name: {
 					required: true,
 					minlength: 3,
-					maxlength: 50,
+					maxlength: 255,
 					IsValidName: true
 				},
 				last_name: {

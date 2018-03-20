@@ -22,7 +22,7 @@
 				<div class="card">
 					<div class="card-body">
 						<h4 class="card-title text-center">Reģistrēt jaunu lietotāju</h4>
-						<form action="register" method="POST">
+						<form id="signup_form" action="register" method="POST">
 							<div class="form-group row">
 								<label class="col-md-2 offset-md-1 col-form-label">
 									Lietotājvārds
@@ -58,7 +58,7 @@
 									</span>
 								</label>
 								<div class="col-md-5">
-									<input class="form-control" type="password" name="pwd" placeholder="********" aria-describedby="pwdArea">
+									<input class="form-control" type="password" name="pwd" placeholder="********" aria-describedby="pwdArea" id="pwd_area">
 									<small id="pwdArea" class="form-text text-muted">
 										* Satur vismaz no vienu mazo un lielo latīņu burtu, ciparu un speciālo simbolu *
 									</small>
@@ -143,6 +143,8 @@
 			</div>
 		</div>
 	</div>
+
+<script src="../public/js/signup_form.js"></script> 
 
 <?php
 	unset($_SESSION['register']);

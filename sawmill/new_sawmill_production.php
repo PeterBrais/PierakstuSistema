@@ -201,11 +201,12 @@
 		}
 	}
 
-	if(count($maintenance_times) == 1 && count($maintenance_notes) == 1) //If only one maintenance
+	//Check maintenances
+	for($i=0; $i < count($maintenance_times); $i++)
 	{
-		if(!empty($maintenance_times[0]) && !empty($maintenance_notes[0]))	//Both filled - checks
+		if(!empty($maintenance_times[$i]) && !empty($maintenance_notes[$i]))
 		{
-			if(!Validate::IsValidIntegerNumber($maintenance_times[0]))
+			if(!Validate::IsValidIntegerNumber($maintenance_times[$i]))
 			{
 				$_SESSION['maintenance'] = "Remonta laiks drīkst sastāvēt tikai no cipariem!";
 				$_SESSION['sawmill_prod'] = $_POST;
@@ -213,7 +214,7 @@
 				exit();
 			}
 
-			if(!Validate::IsValidTextLength($maintenance_notes[0]))
+			if(!Validate::IsValidTextLength($maintenance_notes[$i]))
 			{
 				$_SESSION['maintenance'] = "Piezīme jābūt garumā no 3 simboliem līdz 255 simboliem!";
 				$_SESSION['sawmill_prod'] = $_POST;
@@ -221,7 +222,7 @@
 				exit();
 			}
 
-			if(!Validate::IsValidText($maintenance_notes[0]))
+			if(!Validate::IsValidText($maintenance_notes[$i]))
 			{
 				$_SESSION['maintenance'] = "Piezīme drīkst saturēt tikai latīņu burtus, ciparus un speciālos simbolus!";
 				$_SESSION['sawmill_prod'] = $_POST;
@@ -229,59 +230,12 @@
 				exit();
 			}
 		}
-		else if((empty($maintenance_times[0]) && !empty($maintenance_notes[0])) || (!empty($maintenance_times[0]) && empty($maintenance_notes[0]))) //One or other is filled
+		else if((empty($maintenance_times[$i]) && !empty($maintenance_notes[$i])) || (!empty($maintenance_times[$i]) && empty($maintenance_notes[$i]))) //One or other is filled
 		{
 			$_SESSION['maintenance'] = "Lūdzu ievadiet remonta laiku un piezīmi!";
 			$_SESSION['sawmill_prod'] = $_POST;
 			header("Location: add_sawmill_production");
 			exit();
-		}
-	}
-	else //More than one maintenances
-	{
-		foreach($maintenance_times as $maintenance_time)
-		{
-			if(empty($maintenance_time))
-			{
-				$_SESSION['maintenance'] = "Lūdzu ievadiet remonta laikus un piezīmes!";
-				$_SESSION['sawmill_prod'] = $_POST;
-				header("Location: add_sawmill_production");
-				exit();
-			}
-
-			if(!Validate::IsValidIntegerNumber($maintenance_time))
-			{
-				$_SESSION['maintenance'] = "Remonta laiks drīkst sastāvēt tikai no cipariem!";
-				$_SESSION['sawmill_prod'] = $_POST;
-				header("Location: add_sawmill_production");
-				exit();
-			}
-		}
-		foreach($maintenance_notes as $maintenance_note)
-		{
-			if(empty($maintenance_note))
-			{
-				$_SESSION['maintenance'] = "Lūdzu ievadiet remonta laikus un piezīmes!";
-				$_SESSION['sawmill_prod'] = $_POST;
-				header("Location: add_sawmill_production");
-				exit();
-			}
-
-			if(!Validate::IsValidTextLength($maintenance_note))
-			{
-				$_SESSION['maintenance'] = "Piezīme jābūt garumā no 3 simboliem līdz 255 simboliem!";
-				$_SESSION['sawmill_prod'] = $_POST;
-				header("Location: add_sawmill_production");
-				exit();
-			}
-
-			if(!Validate::IsValidText($maintenance_note))
-			{
-				$_SESSION['maintenance'] = "Piezīme drīkst saturēt tikai latīņu burtus, ciparus un speciālos simbolus!";
-				$_SESSION['sawmill_prod'] = $_POST;
-				header("Location: add_sawmill_production");
-				exit();
-			}
 		}
 	}
 
@@ -349,9 +303,9 @@
 	$sawmillProduction->Save();
 
 	//Saves sawmillproduction maintenance times and notes
-	if(!empty($maintenance_times[0]) && !empty($maintenance_notes[0]))
+	for($i=0; $i < count($maintenance_times); $i++)
 	{
-		for($i=0; $i<count($maintenance_times); $i++)
+		if(!empty($maintenance_times[$i]) && !empty($maintenance_notes[$i]))
 		{
 			$sawmillMaintenance = new SawmillMaintenance();
 			$sawmillMaintenance->time = $maintenance_times[$i];

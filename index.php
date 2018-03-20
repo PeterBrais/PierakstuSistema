@@ -21,7 +21,7 @@
 									<div class="form-group row">
 										<label class="col-md-2 offset-md-1 col-form-label">Lietotājvārds</label>
 										<div class="col-md-5">
-											<input class="form-control" type="text" name="usr" placeholder="Lietotājvārds">
+											<input class="form-control" type="text" name="usr" placeholder="Lietotājvārds" value="<?php echo isset($_SESSION['username_login']) ? $_SESSION['username_login'] : ''; unset($_SESSION['username_login']); ?>">
 										</div>
 									</div>
 									<div class="form-group row">

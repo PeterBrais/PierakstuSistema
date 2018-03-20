@@ -35,7 +35,7 @@
 						</td>
 						<td>
 							<select class="custom-select" name="nonworking[]">
-								<option selected value="0" style="font-weight:bold;">Izvēlēties citu iemeslu</option>
+								<option selected value="" style="font-weight:bold;">Izvēlēties citu iemeslu</option>
 								<option value="1">Atvaļinājums</option>
 								<option value="2">Slimības lapa</option>
 								<option value="3">Neapmeklējums</option>

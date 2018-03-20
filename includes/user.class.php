@@ -31,6 +31,7 @@ class User
 		if($resultCheck == 0)				//No such username found
 		{
 			$_SESSION['error'] = "Nepareizs lietotājvārds vai/un parole!";
+			$_SESSION['username_login'] = $username;
 			header("Location: /");
 			exit();		//Does not continues to read following code
 		}
@@ -43,6 +44,7 @@ class User
 		if($hashedPasswordCheck == false)
 		{
 			$_SESSION['error'] = "Nepareizs lietotājvārds vai/un parole!";
+			$_SESSION['username_login'] = $username;
 			header("Location: /");
 			exit();
 		}
@@ -76,7 +78,7 @@ class User
 
 		$resultCheck = mysqli_num_rows($result);
 
-		return $resultCheck == 1;
+		return $resultCheck >= 1;
 	}
 
 	function SetPassword($password)

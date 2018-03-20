@@ -24,7 +24,7 @@
 				<div class="card">
 					<div class="card-body">
 						<h4 class="card-title text-center">Pievienot jaunu kubatūras izmēru apaļkoka tilpuma aprēķiniem</h4>
-						<form action="new_beam_size" method="POST">
+						<form id="beam_form" action="new_beam_size" method="POST">
 							<div class="form-group row">
 								<label class="col-md-2 offset-md-1 col-form-label">
 									Izmērs
@@ -63,6 +63,8 @@
 			</div>
 		</div>
 	</div>
+
+<script src="../public/js/beam_form.js"></script> 
 
 <?php
 	unset($_SESSION['beam']);

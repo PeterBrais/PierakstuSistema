@@ -75,10 +75,10 @@ session_start();
 									</a>
 										<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
 										<a class="dropdown-item" href="/sorting/show_sorting_production">
-											Visas sašķirotās produkcijas
+											Visas produkcijas
 										</a>
 										<a class="dropdown-item" href="/sorting/add_sorting_production">
-											Jauna sašķirotā produkcija
+											Jauna produkcija
 										</a>
 									</div>
 								</div>

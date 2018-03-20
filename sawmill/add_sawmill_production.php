@@ -22,8 +22,7 @@
 				<div class="card">
 					<div class="card-body">
 						<h4 class="card-title text-center">Pievienot jaunu zāģētavas produkciju</h4>
-
-						<form action="new_sawmill_production" method="POST">
+						<form id="sawmill_form" action="new_sawmill_production" method="POST">
 							<div class="form-group row">
 								<label class="col-md-2 offset-md-1 col-form-label">
 									Datums
@@ -249,12 +248,9 @@
 							<div class="form-group row" id="maintenance_select">
 								<label class="col-md-2 offset-md-1 col-form-label">
 									Remontlaiks
-									<span id="show_required" class="text-danger" title="Šie lauki ir obligāti" style="display:none">
-										&#10033;
-									</span>
 								</label>
 								<div class="col-md-1">
-									<input class="form-control" type="text" name="maintenance_times[]" aria-describedby="lumberCapacityArea" placeholder="Laiks" value="<?php echo isset($_SESSION['sawmill_prod']) ? $maintenance_times[0] : ''; ?>">
+									<input class="form-control maintenance_times" type="text" name="maintenance_times[]" aria-describedby="lumberCapacityArea" placeholder="Laiks" value="<?php echo isset($_SESSION['sawmill_prod']) ? $maintenance_times[0] : ''; ?>">
 								</div>
 								<div class="col-md-4">
 									<input class="form-control" type="text" name="maintenance_notes[]" aria-describedby="lumberCapacityArea" placeholder="Piezīme" value="<?php echo isset($_SESSION['sawmill_prod']) ? $maintenance_notes[0] : ''; ?>">
@@ -315,69 +311,8 @@
 		</div>
 	</div>
 
-<script>  
-$(document).ready(function(){
-	var remove_btn = '<div class="col-md-4"><button type="button" class="btn btn-danger remove mt-2">X</button></div>';
-
-	$('#add').click(function(){ 
-		var maintenanceSelect = '<div class="offset-md-3 col-md-1"><input class="form-control mt-2" type="text" name="maintenance_times[]" placeholder="Laiks"></div><div class="col-md-4"><input class="form-control mt-2" type="text" name="maintenance_notes[]" placeholder="Piezīme"></div>'+remove_btn;
-		$('#maintenance_select').append(maintenanceSelect);
-	});
-
-	$(document).on('click', '.remove', function(){  
-		$(this).parent().prev().remove();
-		$(this).parent().prev().remove();
-		$(this).parent().remove();
-	}); 
-
-	//Show beam count and beam size multiplier
-	var measure_unit = ' m<sup>3</sup>';
-	$('#beam_count_input, #beam_size_select').change(function(){
-
-		var count = Number($('#beam_count_input').val());
-    	var size = $("#beam_size_select option:selected").text();
-
-		var capacity = count*size;
-		if(isNaN(capacity))
-		{
-			capacity = "0.000";
-			$('#beam_capacity').html(capacity+measure_unit);
-		}
-		else
-		{
-			capacity = capacity.toFixed(3);
-			$('#beam_capacity').html(capacity+measure_unit);
-		}
-	});
-
-	//Show required input field notification, when multiple fields are chosen
-	$(document).on('click', '#add, .remove', function(){
-		if($(".remove")[0])
-		{
-			$('#show_required').show();
-		}
-		else
-		{
-			$('#show_required').hide();
-		}
-	});
-
-	//Show all employees on selected shift
-	$('#employees_shift').change(function(){ //id from file: shift_select.php
-		var shift_id = $(this).val();
-
-		$.ajax({
-			url:"employee_times_table.php",
-			method:"POST",
-			data:{shift_id:shift_id},
-			success:function(data){
-				$('#table_show').html(data);
-			}
-		});
-	});
-
-});  
-</script>
+<script src="../public/js/add_sawmill_production.js"></script>
+<script src="../public/js/sawmill_form.js"></script>
 
 <?php
 	unset($_SESSION['sawmill_prod']);

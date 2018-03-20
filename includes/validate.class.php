@@ -24,7 +24,7 @@
 
 		static function IsValidIntegerNumber($number)
 		{
-			return preg_match("/^\d{1,11}+$/", $number);
+			return preg_match("/^\d{1,12}+$/", $number);
 		}
 
 		static function IsValidTextLength($text)
