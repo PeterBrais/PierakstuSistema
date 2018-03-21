@@ -41,6 +41,35 @@
 			}
 		}
 
+		public static function ExistsEmployeeWithID($id) //Checks if user with such ID exists
+		{
+			global $conn;
+
+			$sql = $conn->prepare("SELECT id FROM employees WHERE id=?");
+			$sql->bind_param('s', $id);
+			$sql->execute();
+			$result = $sql->get_result();
+
+			$resultCheck = mysqli_num_rows($result);
+
+			return $resultCheck >= 1;
+		}
+
+		public static function GetEmployeesData($id)	//Returns all employees with selected shift
+		{
+			global $conn;
+
+			$sql = $conn->prepare("SELECT employees.*, COUNT(employee_id) as pos_count FROM employees 
+									JOIN employees_positions
+									ON employees_positions.employee_id = employees.id
+									WHERE employees.id = ?");
+			$sql->bind_param('s', $id);
+			$sql->execute();
+			$result = $sql->get_result();
+
+			return mysqli_fetch_assoc($result);
+		}
+
 		public static function ExistsSortingEmployee($id)	//Finds if shift exists in database
 		{
 			global $conn;

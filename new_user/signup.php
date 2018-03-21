@@ -1,14 +1,15 @@
 <?php
 	include_once "../header.php";
 
-	if(!isset($_SESSION['id']) && ($_SESSION['role'] == "p"))
+	if(!isset($_SESSION['id']) && !isset($_SESSION['role']))	//Adding new user possible if user is logged in
 	{
 		header("Location: /");
 		exit();
 	}
-	if(isset($_SESSION['register']))
+	if(($_SESSION['role'] != "a") && ($_SESSION['role'] != "p"))	//Check if user is administrator
 	{
-		extract($_SESSION['register']);
+		header("Location: /");
+		exit();
 	}
 ?>
 

@@ -15,5 +15,10 @@
 			echo 'true';
 		}
 	}
+	else
+	{
+		header("Location: /");
+		exit();
+	}
 
 ?>

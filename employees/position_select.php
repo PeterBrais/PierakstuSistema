@@ -1,6 +1,6 @@
 <?php
 	include_once "../includes/manager.class.php";
-	
+
 	$positions = Manager::Positions();
 ?>
 

@@ -42,6 +42,7 @@
 							else
 							{
 								echo "Jūs esat pieteicies!";
+								//echo $_SESSION['role'];
 							}
 						?>
 					</div>

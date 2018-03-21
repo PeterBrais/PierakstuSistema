@@ -1,7 +1,12 @@
 <?php
 	include_once "../header.php";
 
-	if(!isset($_SESSION['id']) && ($_SESSION['role'] == "p") )	//Adding new beam size possible if user role is Manager
+	if(!isset($_SESSION['id']) && !isset($_SESSION['role']))	//Adding new beam size possible if user is logged in
+	{
+		header("Location: /");
+		exit();
+	}
+	if(($_SESSION['role'] != "p") && ($_SESSION['role'] != "a"))	//Check if user have permission
 	{
 		header("Location: /");
 		exit();

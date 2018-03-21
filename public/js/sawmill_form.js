@@ -1,13 +1,6 @@
 $(function(){
     jQuery.validator.setDefaults({
-
-		wrapper: 'div'
-	});
-
-	$().ready(function(){
-		//Validate sawmill production input form
-		$('#sawmill_form').validate({
-					errorPlacement: function(error, element) {
+		errorPlacement: function(error, element) {
 			if(element.attr("name") == "time_from" || element.attr("name") == "time_to")
 			{
 				error.addClass('alert alert-danger alert-size mb-1')
@@ -23,9 +16,9 @@ $(function(){
 				error.addClass('alert alert-danger alert-size mb-1')
 				error.appendTo( element.parent().next().next() );
 			}
-			else if(element.attr("name") == "working_hours[]" || element.attr("name") == "nonworking[]")
+			else if(element.hasClass( "working_hours_class" ) || element.hasClass( "nonworking_hours_class" ))
 			{
-				//error.addClass('alert alert-danger alert-size mb-1')
+				error.addClass('alert alert-danger alert-size mt-1')
 				error.appendTo( element.parent() );
 			}
 			else
@@ -34,6 +27,12 @@ $(function(){
 				error.appendTo( element.parent().next() );
 			}		
 		},
+		wrapper: 'div'
+	});
+
+	$().ready(function(){
+		//Validate sawmill production input form
+		$('#sawmill_form').validate({
 			rules: {
 				date: {
 					required: true,
@@ -92,18 +91,14 @@ $(function(){
 					IsValidText: true,
 				},
 				"maintenance_times[]": {
-					required: function(element){
-						return $('input[name="maintenance_notes[]"]').val() != "";
-					},
+					required: "maintenance_notes_class:filled",
 					number: true,
 					min: 0,
 					max: 99999999999,
 					IsValidIntegerNumber: true,
 				},
 				"maintenance_notes[]": {
-					required: function(element){
-						return $('input[name="maintenance_times[]"]').val() != "";
-					},
+					required: "maintenance_times_class:filled",
 					minlength: 3,
 					maxlength: 255,
 					IsValidText: true,
@@ -112,18 +107,13 @@ $(function(){
 					required: true,
 				},
 				"working_hours[]": {
-					required: function(element){
-						return $('select[name="nonworking[]"]').val() == '';
-					},
 					number: true,
 					min: 1,
 					max: 24,
-					//IsValidHours: true,
+					IsValidHours: true,
 				},
 				"nonworking[]": {
-					required: function(element){
-						return $('input[name="working_hours[]"]').val() == "";
-					},
+					// ChosenWorkplaceDropdown: true,
 				},
 			},
 			messages: {
@@ -166,13 +156,13 @@ $(function(){
 					IsValidIntegerNumber: "Zāģmateriālu skaits drīkst saturēt tikai ciparus!",
 				},
 				lumber_capacity: {
-					required: "Lūdzu aizpildiet 'Zāģmateriālu skaits' lauku!",
-					number: "Zāģmateriālu skaits drīkst saturēt tikai ciparus!",
-					min: "Zāģmateriālu skaitam jābūt lielākam par nulli!",
-					max: "Zāģmateriālu skaitam jābūt ne vairāk kā 12 ciparus garam!",
+					required: "Lūdzu aizpildiet 'Zāģmateriālu tilpums' lauku!",
+					number: "Zāģmateriālu tilpums drīkst saturēt tikai ciparus!",
+					min: "Zāģmateriālu tilpumam jābūt lielākam par nulli!",
+					max: "Zāģmateriālu tilpumam jābūt ne vairāk kā 12 ciparus garam!",
 					step: "Maksimums 3 cipari aiz komata",
-					IsValidFloatNumber: "Zāģmateriālu skaitam jābūt lielākam par nulli!",
-					IsValidFloatNumberWithThreeDigitsAfterDot: "Zāģmateriālu skaits drīkst saturēt tikai ciparus ar komatu",
+					IsValidFloatNumber: "Zāģmateriālu tilpumam jābūt lielākam par nulli!",
+					IsValidFloatNumberWithThreeDigitsAfterDot: "Zāģmateriālu tilpums drīkst saturēt tikai ciparus!",
 				},
 				note: {
 					minlength: "Citas piezīmes jābūt garumā no 3 simboliem līdz 255 simboliem!",
@@ -196,14 +186,13 @@ $(function(){
 					required: "Lūdzu izvēlieties maiņu!",
 				},
 				"working_hours[]": {
-					required: "Lūdzu aizpildiet tikai vienu ievadlauku katram darbiniekam!",
 					number: "Nostrādātās stundas drīkst sastāvēt tikai no cipariem!",
 					min: "Nostrādātām stundām jābūt lielākām par nulli!",
 					max: "Nostrādātās stundas nevar būt vairāk par 24",
 					IsValidHours: "Nostrādātās stundas drīkst sastāvēt tikai no cipariem!",
 				},
 				"nonworking[]": {
-					required: "Lūdzu aizpildiet tikai vienu ievadlauku katram darbiniekam!",
+					// ChosenWorkplaceDropdown: "Lūdzu aizpildiet tikai vienu ievadlauku katram darbiniekam!",
 				},
 			}
 		});

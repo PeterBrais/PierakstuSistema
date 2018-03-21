@@ -50,6 +50,10 @@ jQuery.validator.addMethod("IsValidIntegerNumber", function(value, element) {
 	return this.optional(element) || /^\d{1,12}$/.test(value);
 }, "Enter valid number");
 
+jQuery.validator.addMethod("IsValidInteger", function(value, element) {
+	return (value > 0);
+}, "Enter a valid value");
+
 jQuery.validator.addMethod("IsValidHours", function(value, element) {
 	return this.optional(element) || /^([1-9]|1[0-9]|2[0-4])$/.test(value);
 }, "Enter valid hours");

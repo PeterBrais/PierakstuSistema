@@ -3,6 +3,17 @@
 	include_once "../header.php";
 	include_once "../includes/manager.class.php";
 
+	if(!isset($_SESSION['id']) && !isset($_SESSION['role']))	//Check if user is logged in
+	{
+		header("Location: /");
+		exit();
+	}
+	if(($_SESSION['role'] != "a") && ($_SESSION['role'] != "p"))	//Check if user have permission to view data
+	{
+		header("Location: /");
+		exit();
+	}
+
 ?>
 
 <div class="container">

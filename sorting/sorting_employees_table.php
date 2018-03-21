@@ -26,11 +26,11 @@
 				<td><?=$employee['name']?></td>
 				<td><?=$employee['last_name']?></td>
 				<td>
-					<input class="form-control" type="number" min="1" max="24" step="1" name="working_hours[]">
+					<input class="form-control working_hours_class" type="number" min="1" max="24" step="1" name="working_hours[]">
 				</td>
 				<td>
-					<select class="custom-select" name="nonworking[]">
-						<option selected value="0" style="font-weight:bold;">Izvēlēties citu iemeslu</option>
+					<select class="custom-select nonworking_hours_class" name="nonworking[]">
+						<option selected value="" style="font-weight:bold;">Izvēlēties citu iemeslu</option>
 						<option value="1">Atvaļinājums</option>
 						<option value="2">Slimības lapa</option>
 						<option value="3">Neapmeklējums</option>

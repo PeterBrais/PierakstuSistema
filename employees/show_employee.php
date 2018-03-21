@@ -1,7 +1,17 @@
 <?php
-
 	include_once "../header.php";
 	include_once "../includes/manager.class.php";
+
+	if(!isset($_SESSION['id']) && !isset($_SESSION['role']))	//Check if user is logged in
+	{
+		header("Location: /");
+		exit();
+	}
+	if(($_SESSION['role'] != "p") && ($_SESSION['role'] != "a"))	//Check if user have permission to view data
+	{
+		header("Location: /");
+		exit();
+	}
 
 	$employees = Manager::Employees();
 
@@ -191,7 +201,5 @@
 </div>
 
 <?php
-
 	include_once "../footer.php";
-
 ?>

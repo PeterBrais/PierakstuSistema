@@ -2,7 +2,7 @@ $(document).ready(function(){
 	var remove_btn = '<div class="col-md-1"><button type="button" class="btn btn-danger remove mt-2">X</button></div><div class="col-md-3"></div>';
 
 	$('#add').click(function(){ 
-		var maintenanceSelect = '<div class="offset-md-3 col-md-1"><input class="form-control mt-2" type="text" name="maintenance_times[]" placeholder="Laiks"></div><div class="col-md-4"><input class="form-control mt-2" type="text" name="maintenance_notes[]" placeholder="Piezīme"></div>'+remove_btn;
+		var maintenanceSelect = '<div class="offset-md-3 col-md-1"><input class="form-control mt-2 maintenance_times_class" type="text" name="maintenance_times[]" placeholder="Laiks"></div><div class="col-md-4"><input class="form-control mt-2 maintenance_notes_class" type="text" name="maintenance_notes[]" placeholder="Piezīme"></div>'+remove_btn;
 		$('#maintenance_select').append($(maintenanceSelect).hide().fadeIn('slow'));
 	});
 
