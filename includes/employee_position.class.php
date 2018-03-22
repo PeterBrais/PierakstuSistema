@@ -33,5 +33,20 @@
 			}
 		}
 
+		function DeleteAllUserPositions($id){
+			try
+			{
+				$sql = $this->conn->prepare("DELETE FROM employees_positions WHERE employee_id = ?");
+				$sql->bind_param('s', $id);
+				$sql->execute();
+			}
+			catch(mysqli_sql_exception $e)
+			{
+				$_SESSION['error'] = "Radās kļūda ierakstot datus!";
+				header("Location: /");
+				exit();
+			}
+		}
+
 	}
 ?>

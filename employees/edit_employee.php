@@ -1,6 +1,7 @@
 <?php
 	include_once "../header.php";
 	include_once "../includes/employee.class.php";
+	include_once "../includes/manager.class.php";
 
 	if(!isset($_SESSION['id']) && !isset($_SESSION['role']))	//Editing employee data possible if user is logged in
 	{
@@ -24,6 +25,12 @@
 	{
 		header("Location: show_employee");
 		exit();
+	}
+
+	//Extract Session data
+	if(isset($_SESSION['employee']))
+	{
+		extract($_SESSION['employee']);
 	}
 
 	//Returns all users data
@@ -58,7 +65,10 @@
 							</u>
 						</h4>
 
-						<form id="employee_edit_form" action="" method="POST">
+						<form id="edit_employee_form" action="update_employee" method="POST">
+							<!-- Employees ID -->
+							<input type="hidden" name="employee_id" value="<?=$employee['id']?>">
+							<!-- Employees ID -->
 							<div class="form-group row">
 								<label class="col-md-2 offset-md-1 col-form-label">
 									Vārds
@@ -71,14 +81,14 @@
 								</div>
 								<div class="col-md-4">
 									<?php
-										if(isset($_SESSION['']))
+										if(isset($_SESSION['name']))
 										{
 									?>
 										<div class="alert alert-danger alert-size" role="alert">
-											<?=$_SESSION['']?>
+											<?=$_SESSION['name']?>
 										</div>
 									<?php
-											unset($_SESSION['']);
+											unset($_SESSION['name']);
 										}
 									?>
 								</div>
@@ -95,14 +105,14 @@
 								</div>
 								<div class="col-md-4">
 									<?php
-										if(isset($_SESSION['']))
+										if(isset($_SESSION['last_name']))
 										{
 									?>
 										<div class="alert alert-danger alert-size" role="alert">
-											<?=$_SESSION['']?>
+											<?=$_SESSION['last_name']?>
 										</div>
 									<?php
-											unset($_SESSION['']);
+											unset($_SESSION['last_name']);
 										}
 									?>
 								</div>
@@ -122,17 +132,6 @@
 									</select>
 								</div>
 								<div class="col-md-4">
-									<?php
-										if(isset($_SESSION['']))
-										{
-									?>
-										<div class="alert alert-danger alert-size" role="alert">
-											<?=$_SESSION['']?>
-										</div>
-									<?php
-											unset($_SESSION['']);
-										}
-									?>
 								</div>
 							</div>
 							<div class="form-group row">
@@ -154,14 +153,14 @@
 								</div>
 								<div class="col-md-4">
 									<?php
-										if(isset($_SESSION['']))
+										if(isset($_SESSION['rates']))
 										{
 									?>
 										<div class="alert alert-danger alert-size" role="alert">
-											<?=$_SESSION['']?>
+											<?=$_SESSION['rates']?>
 										</div>
 									<?php
-											unset($_SESSION['']);
+											unset($_SESSION['rates']);
 										}
 									?>
 								</div>
@@ -181,14 +180,14 @@
 								</div>
 								<div class="col-md-4">
 									<?php
-										if(isset($_SESSION['']))
+										if(isset($_SESSION['date_from']))
 										{
 									?>
 										<div class="alert alert-danger alert-size" role="alert">
-											<?=$_SESSION['']?>
+											<?=$_SESSION['date_from']?>
 										</div>
 									<?php
-											unset($_SESSION['']);
+											unset($_SESSION['date_from']);
 										}
 									?>
 								</div>
@@ -205,45 +204,67 @@
 								</div>
 								<div class="col-md-4">
 									<?php
-										if(isset($_SESSION['']))
+										if(isset($_SESSION['date_to']))
 										{
 									?>
 										<div class="alert alert-danger alert-size" role="alert">
-											<?=$_SESSION['']?>
+											<?=$_SESSION['date_to']?>
 										</div>
 									<?php
-											unset($_SESSION['']);
+											unset($_SESSION['date_to']);
 										}
 									?>
 								</div>
 							</div>
 							<div class="form-group row" id="position_selects">
 						<?php
-							$positions = $employee['pos_count'];
-							for($i = 0; $i < $positions; $i++)
-							{
+							$all_positions = Employee::GetAllPositions($employee['id']);
+							$i = 0;
+							foreach($all_positions as $all_position)
+							{	
 								if($i == 0)
 								{
+									$i++;
 						?>
 								<label class="col-md-2 offset-md-1 col-form-label">
 									Amats
 								</label>
 								<div class="col-md-5">
-									
+
+								<?php
+									$positions = Manager::Positions();
+								?>
+									<select class="custom-select mb-2" name="positions[]">
+										<option value="">Izvēlieties amatu</option>
+								<?php
+									foreach($positions as $position)
+									{
+										if($all_position['id'] == $position['id'])
+										{
+											echo '<option value="'.$position['id'].'" selected >'.$position['name'].'</option>';
+										}
+										else
+										{
+											echo '<option value="'.$position['id'].'"  >'.$position['name'].'</option>';
+										}
+									}
+								?>
+									</select>
+
 								</div>
 								<div class="col-md-1">
 									<button type="button" name="add" id="add" class="btn btn-success">+</button>
 								</div>
 								<div class="col-md-3">
 									<?php
-										if(isset($_SESSION['']))
+										if(isset($_SESSION['position']))
 										{
 									?>
 										<div class="alert alert-danger alert-size" role="alert">
-											<?=$_SESSION['']?>
+											<?=$_SESSION['position']?>
 										</div>
 									<?php
-											unset($_SESSION['']);
+											unset($_SESSION['position']);
 										}
 									?>
 								</div>
@@ -253,12 +274,43 @@
 								{
 						?>
 								<div class="offset-md-3 col-md-5 position-select">
-									...
+
+								<?php
+									$positions = Manager::Positions();
+								?>
+									<select class="custom-select mb-2" name="positions[]">
+										<option value="">Izvēlieties amatu</option>
+								<?php
+									foreach($positions as $position)
+									{
+										if($all_position['id'] == $position['id'])
+										{
+											echo '<option value="'.$position['id'].'" selected >'.$position['name'].'</option>';
+										}
+										else
+										{
+											echo '<option value="'.$position['id'].'"  >'.$position['name'].'</option>';
+										}
+									}
+								?>
+									</select>
 								</div>
 								<div class="col-md-1">
 									<button type="button" class="btn btn-danger remove">X</button>
 								</div>
-								<div class="col-md-3"></div>
+								<div class="col-md-3">
+									<?php
+										if(isset($_SESSION['position']))
+										{
+									?>
+										<div class="alert alert-danger alert-size" role="alert">
+											<?=$_SESSION['position']?>
+										</div>
+									<?php
+											unset($_SESSION['position']);
+										}
+									?>
+								</div>
 						<?php
 								}
 							}
@@ -276,6 +328,10 @@
 		</div>
 	</div>
 
+<script src="../public/js/edit_employee.js"></script>
+<script src="../public/js/edit_employee_form.js"></script>
+
 <?php
+	unset($_SESSION['employee']);
 	include_once "../footer.php";
 ?>
