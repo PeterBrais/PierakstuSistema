@@ -1,16 +1,30 @@
 <?php
-	include_once "../header.php";
 
-	if(!isset($_SESSION['id']) && !isset($_SESSION['role']))	//Adding new user possible if user is logged in
-	{
-		header("Location: /");
-		exit();
-	}
-	if(($_SESSION['role'] != "a") && ($_SESSION['role'] != "p"))	//Check if user is administrator
-	{
-		header("Location: /");
-		exit();
-	}
+// if(($_SESSION['role'] != "a"))	//Check if user is administrator
+// {
+// 	header("Location: /");
+// 	exit();
+// }
+
+include_once "../header.php";
+
+if(!isset($_SESSION['id']) && !isset($_SESSION['role']))	//Adding new user possible if user is logged in
+{
+	header("Location: /");
+	exit();
+}
+
+if(($_SESSION['role'] != "a") && ($_SESSION['active'] != 1))	//Check if user is administrator
+{
+	header("Location: /");
+	exit();
+}
+
+if(isset($_SESSION['register']))
+{
+	extract($_SESSION['register']);
+}
+
 ?>
 
 	<!-- Register -->
@@ -115,6 +129,7 @@
 								<div class="col-md-5">
 									<select class="custom-select" name="role">
 										<option value="0" <?php echo (isset($_SESSION['register']) && $role == "0") ? 'selected' : ''; ?> >Izvēlieties lietotāja lomu</option>
+										<option value="1" <?php echo (isset($_SESSION['register']) && $role == "1") ? 'selected' : ''; ?> >Darbinieks</option>
 										<option value="2" <?php echo (isset($_SESSION['register']) && $role == "2") ? 'selected' : ''; ?> >Pārvaldnieks</option>
 										<option value="3" <?php echo (isset($_SESSION['register']) && $role == "3") ? 'selected' : ''; ?> >Administrators</option>
 									</select>
@@ -132,7 +147,7 @@
 										}
 									?>
 								</div>
-							</div>	
+							</div>
 							<div class="form-group row">
 								<div class="col-md-3 offset-md-3">
 									<button class="btn btn-info" type="submit" name="submit">Reģistrēt</button>

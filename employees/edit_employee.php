@@ -66,9 +66,9 @@
 						</h4>
 
 						<form id="edit_employee_form" action="update_employee" method="POST">
-							<!-- Employees ID -->
+
 							<input type="hidden" name="employee_id" value="<?=$employee['id']?>">
-							<!-- Employees ID -->
+
 							<div class="form-group row">
 								<label class="col-md-2 offset-md-1 col-form-label">
 									Vārds
@@ -318,7 +318,7 @@
 							</div>
 							<div class="form-group row">
 								<div class="col-md-3 offset-md-3">
-									<button class="btn btn-info" type="submit" name="submit">Pievienot</button>
+									<button class="btn btn-info" type="submit" name="submit">Labot</button>
 								</div>
 							</div>
 						</form>

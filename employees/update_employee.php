@@ -97,6 +97,10 @@
 			exit();
 		}
 	}
+	else
+	{
+		$date_to = NULL;
+	}
 
 
 	//Check if user works in sawmill
@@ -114,9 +118,9 @@
 			}
 		}
 
-		$shift = $_POST['shift'];
-		$capacity_rate = $_POST['capacity_rate'];
-		$hour_rate = $_POST['hour_rate'];
+		$shift = htmlspecialchars($_POST['shift']);
+		$capacity_rate = htmlspecialchars($_POST['capacity_rate']);
+		$hour_rate = htmlspecialchars($_POST['hour_rate']);
 
 		if(empty($shift) || empty($capacity_rate) || empty($hour_rate))
 		{
@@ -194,27 +198,16 @@
 	}
 
 	//Object
-	$employee = new Employee();
-	$employee->name = $name;
-	$employee->last_name = $last_name;
-	$employee->shift = $shift;
-	$employee->capacity_rate = $capacity_rate;
-	$employee->hour_rate = $hour_rate;
-	$employee->working_from = $date_from;
-	$employee->working_to = $date_to;
-	$employee->id = $emp_id;
-	$employee->Update();
-	echo $emp_id.'<br>';
-	echo $name.'<br>';
-	echo $last_name.'<br>';
-	echo $shift.'<br>';
-	echo $capacity_rate.'<br>';
-	echo $hour_rate.'<br>';
-	echo $date_from.'<br>';
-	echo $date_to.'<br>';
-
-	die();
-
+	$update_employee = new Employee();
+	$update_employee->name = $name;
+	$update_employee->last_name = $last_name;
+	$update_employee->shift = $shift;
+	$update_employee->capacity_rate = $capacity_rate;
+	$update_employee->hour_rate = $hour_rate;
+	$update_employee->working_from = $date_from;
+	$update_employee->working_to = $date_to;
+	$update_employee->id = $emp_id;
+	$update_employee->Update();
 
 	$employee_position = new EmployeePosition();
 	$employee_position->DeleteAllUserPositions($emp_id);

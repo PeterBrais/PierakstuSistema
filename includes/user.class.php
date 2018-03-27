@@ -5,6 +5,7 @@ include "config.php";
 class User
 {
 	private $conn;
+	public $id;
 	public $username;
 	private $password;
 	public $role;
@@ -21,10 +22,10 @@ class User
 
 	function Login($username, $password)
 	{
-		$sql = $this->conn->prepare("SELECT * FROM users WHERE username=?");
+		$sql = $this->conn->prepare("SELECT * FROM users WHERE username = ?");
 		$sql->bind_param('s', $username); 	//Binds parameter, transforms to string
 		$sql->execute();
-		$result = $sql->get_result();		//Gets all reasults
+		$result = $sql->get_result();		//Gets all results
 
 		$resultCheck = mysqli_num_rows($result);	//Counts all rows
 
@@ -81,6 +82,20 @@ class User
 		return $resultCheck >= 1;
 	}
 
+	public static function CurrentUserUsernameExists($username, $id)	//Returns true if username from other user in DB already exists
+	{
+		global $conn;
+
+		$sql = $conn->prepare("SELECT username FROM users WHERE username = ? AND id <> ?");
+		$sql->bind_param('ss', $username, $id); //Binds parameter, transforms to string
+		$sql->execute();
+		$result = $sql->get_result();
+
+		$resultCheck = mysqli_num_rows($result);
+
+		return $resultCheck >= 1;
+	}
+
 	function SetPassword($password)
 	{
 		$this->password = password_hash($password, PASSWORD_DEFAULT);
@@ -93,6 +108,40 @@ class User
 			$sql = $this->conn->prepare("INSERT INTO users VALUES (DEFAULT, ?, ?, ?, ?, ?)");
 			$sql->bind_param('sssis', $this->username, $this->password, $this->role, $this->active, $this->created);
 			$sql->execute();
+		}
+		catch(mysqli_sql_exception $e)
+		{	
+			$_SESSION['error'] = "Radās kļūda ierakstot datus!";
+			header("Location: /");
+			exit();
+		}
+	}
+
+	function Update()	//Updates existing users data
+	{
+		try
+		{
+			$sql = $this->conn->prepare("UPDATE users SET username = ?, role = ? WHERE users.id = ?");
+			$sql->bind_param('sss', $this->username, $this->role, $this->id);
+			$sql->execute();
+			$sql->close();
+		}
+		catch(mysqli_sql_exception $e)
+		{	
+			$_SESSION['error'] = "Radās kļūda ierakstot datus!";
+			header("Location: /");
+			exit();
+		}
+	}
+
+	function Delete()
+	{
+		try
+		{
+			$sql = $this->conn->prepare("UPDATE users SET active = ? WHERE users.id = ?");
+			$sql->bind_param('is', $this->active, $this->id);
+			$sql->execute();
+			$sql->close();
 		}
 		catch(mysqli_sql_exception $e)
 		{	

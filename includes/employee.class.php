@@ -45,11 +45,10 @@
 		{
 			try
 			{
-				$sql = $this->conn->prepare("UPDATE employees SET name = ?, last_name = ?, shift = ?,
-				 capacity_rate = ?, hour_rate = ?, working_from = ?, working_to = ? WHERE id = ? ");
-				$sql->bind_param('sssddssi', $this->name, $this->last_name, $this->shift, $this->capacity_rate, $this->hour_rate, $this->working_from, $this->working_to, $this->id);
+				$sql = $this->conn->prepare("UPDATE employees SET name = ?, last_name = ?, shift = ?, capacity_rate = ?, hour_rate = ?, working_from = ?, working_to = ? WHERE employees.id = ?");
+				$sql->bind_param('sssddsss', $this->name, $this->last_name, $this->shift, $this->capacity_rate, $this->hour_rate, $this->working_from, $this->working_to, $this->id);
 				$sql->execute();
-				//$sql->close();
+				$sql->close();
 			}
 			catch(mysqli_sql_exception $e)
 			{	

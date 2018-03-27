@@ -42,6 +42,10 @@
 	{
 		$role = "a";
 	}
+	elseif($role == "1")
+	{
+		$role = "l";
+	}
 	else
 	{
 		$_SESSION['usr_role'] = "Lūdzu izvēlieties lietotāja lomu!";
@@ -114,3 +118,5 @@
 	$_SESSION['success'] = "Reģistrācija veiksmīga!";
 	header("Location: /");
 	exit();
+
+?>
