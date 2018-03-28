@@ -1,5 +1,6 @@
 <?php
 session_start();
+ob_start(); //Output buffering
 ?>
 
 <!DOCTYPE html>
@@ -50,7 +51,6 @@ session_start();
 								<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
 									<a class="dropdown-item" href="/users/show_users">Visi lietotāji</a>
 									<a class="dropdown-item" href="/users/signup">Jauns lietotājs</a>
-									<!-- <a class="dropdown-item" href="/users/edit_user">Jauns amats</a> -->
 								</div>
 							</div>
 
@@ -61,6 +61,7 @@ session_start();
 								<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
 									<a class="dropdown-item" href="/employees/show_employee">Visi darbinieki</a>
 									<a class="dropdown-item" href="/employees/add_employee">Jauns darbinieks</a>
+									<a class="dropdown-item" href="/employees/show_positions">Visi amati</a>
 									<a class="dropdown-item" href="/employees/add_position">Jauns amats</a>
 								</div>
 							</div>
@@ -99,17 +100,17 @@ session_start();
 				</ul>
 
 				<ul class="navbar-nav ml-auto">
-					<?php
-						if(isset($_SESSION['id']))
-						{
-					?>
+				<?php
+					if(isset($_SESSION['id']))
+					{
+				?>
 						<div class="user-name">
 							<?=$_SESSION['username']?>
 						</div>
 						<a href="/logout" class="btn btn-warning" name="logout">Iziet</a>
-					<?php
-						}
-					?>
+				<?php
+					}
+				?>
 				</ul>
 			</div>
 		</div>

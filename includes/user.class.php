@@ -150,6 +150,23 @@ class User
 			exit();
 		}
 	}
+
+	function UpdatePassword()
+	{
+		try
+		{
+			$sql = $this->conn->prepare("UPDATE users SET password = ? WHERE users.id = ?");
+			$sql->bind_param('ss', $this->password, $this->id);
+			$sql->execute();
+			$sql->close();
+		}
+		catch(mysqli_sql_exception $e)
+		{	
+			$_SESSION['error'] = "Radās kļūda ierakstot datus!";
+			header("Location: /");
+			exit();
+		}
+	}
 }
 
 ?>

@@ -21,13 +21,6 @@
 		exit();
 	}
 
-	//Admin cannot block himself
-	if(($_GET['id']) == ($_SESSION['id']))
-	{
-		header("Location: /");
-		exit();
-	}
-
 	//Check if users ID exists in database
 	$user_id = $_GET['id'];
 	if(!Administrator::ExistsUserWithID($user_id))
@@ -40,7 +33,7 @@
 	$user = Administrator::GetUsersData($user_id);
 ?>
 
-	<!-- Block user -->
+	<!-- Unblock user -->
 	<div class="container">
 		<div class="row cont-space">
 			<div class="col-md-12">
@@ -50,10 +43,10 @@
 				<div class="card">
 					<div class="card-body">
 						<h4 class="card-title text-center">
-							Bloķēt lietotāju: <u>'<?=$user['username']?>'</u>
+							Atbloķēt lietotāju: <u>'<?=$user['username']?>'</u>
 						</h4>
 
-						<form id="block_user_form" action="block" method="POST">
+						<form id="unblock_user_form" action="unblock" method="POST">
 
 							<input type="hidden" name="user_id" value="<?=$user['id']?>">
 
@@ -67,7 +60,7 @@
 								<div class="col-md-5">
 									<input class="form-control" type="password" name="pwd" aria-describedby="pwdArea">
 									<small id="pwdArea" class="form-text text-muted">
-										* Apstiprināt konta bloķēšanu ievadot paroli *
+										* Apstiprināt konta atbloķēšanu ievadot paroli *
 									</small>
 								</div>
 								<div class="col-md-4">
@@ -78,7 +71,7 @@
 									<div class="form-check">
 										<label class="form-check-label">
 											<input class="form-check-input" name="agree" type="checkbox">
-											Apstiprināt un bloķēt!
+											Apstiprināt un atbloķēt!
 										</label>
 									</div>
 								</div>
@@ -87,7 +80,7 @@
 							</div>
 							<div class="form-group row">
 								<div class="col-md-3 offset-md-3">
-									<button class="btn btn-info" type="submit" name="submit">Bloķēt</button>
+									<button class="btn btn-info" type="submit" name="submit">Atbloķēt</button>
 								</div>
 							</div>
 						</form>
@@ -97,7 +90,7 @@
 		</div>
 	</div>
 
-<script src="../public/js/block_user_form.js"></script>
+<script src="../public/js/unblock_user_form.js"></script>
 
 <?php
 	include_once "../footer.php";

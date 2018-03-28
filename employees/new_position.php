@@ -61,3 +61,5 @@
 	$_SESSION['success'] = "Amats pievienots veiksmīgi!";
 	header("Location: add_position");
 	exit();
+
+?>

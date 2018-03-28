@@ -1,27 +1,46 @@
 <?php
-
 	include_once "../header.php";
+	include_once "../includes/administrator.class.php";
 
-	if(!isset($_SESSION['id']) && !isset($_SESSION['role']))	//Adding new user possible if user is logged in
+	if(!isset($_SESSION['id']) && !isset($_SESSION['role']))	//Editing user data possible if user is logged in
 	{
 		header("Location: /");
 		exit();
 	}
 
-	if(($_SESSION['role'] != "a") || ($_SESSION['active'] != 1))	//Check if user is administrator
+	if(($_SESSION['role'] != "a") || ($_SESSION['active'] != 1))	//Check if user is Administrator and not blocked
 	{
 		header("Location: /");
 		exit();
 	}
 
-	if(isset($_SESSION['register']))
+	//Check if ID is set
+	if(!isset($_GET['id']))		
 	{
-		extract($_SESSION['register']);
+		header("Location: show_users");
+		exit();
 	}
 
+	//Check if users ID exists in database
+	$user_id = $_GET['id'];
+	if(!Administrator::ExistsUserWithID($user_id))
+	{
+		header("Location: show_users");
+		exit();
+	}
+
+	//Returns all users data
+	$user = Administrator::GetUsersData($user_id);
+
+	//Admin cannot change other admins password except first admin
+	if((($_GET['id'] != $_SESSION['id']) && ($user['role'] == "a") && ($user['active'] == 1)) && ($_SESSION['id'] != 1))
+	{
+		header("Location: /");
+		exit();
+	}
 ?>
 
-	<!-- Register -->
+	<!-- Change user password -->
 	<div class="container">
 		<div class="row cont-space">
 			<div class="col-md-12">
@@ -30,38 +49,44 @@
 				</div>
 				<div class="card">
 					<div class="card-body">
-						<h4 class="card-title text-center">Reģistrēt jaunu lietotāju</h4>
-						<form id="signup_form" action="register" method="POST">
+						<h4 class="card-title text-center">
+							Mainīt paroli lietotājam: <u>'<?=$user['username']?>'</u>
+						</h4>
+
+						<form id="reset_user_form" action="change" method="POST">
+
+							<input type="hidden" name="user_id" value="<?=$user['id']?>">
+
 							<div class="form-group row">
 								<label class="col-md-2 offset-md-1 col-form-label">
-									Lietotājvārds
+									Jūsu parole
 									<span class="text-danger" title="Šis lauks ir obligāts">
 										&#10033;
 									</span>
 								</label>
 								<div class="col-md-5">
-									<input class="form-control" type="text" name="usr" aria-describedby="userArea" value="<?php echo isset($_SESSION['register']) ? $usr : ''; ?>">
-									<small id="userArea" class="form-text text-muted">
-										* Satur tikai latīņu burtus un ciparus *
+									<input class="form-control" type="password" name="current_pwd" aria-describedby="currentPwdArea">
+									<small id="pwdArea" class="form-text text-muted">
+										* Apstiprināt ievadot jūsu pašreizējo paroli *
 									</small>
 								</div>
 								<div class="col-md-4">
 									<?php
-										if(isset($_SESSION['usr_name']))
+										if(isset($_SESSION['current_pwd']))
 										{
 									?>
 										<div class="alert alert-danger alert-size" role="alert">
-											<?=$_SESSION['usr_name']?>
+											<?=$_SESSION['current_pwd']?>
 										</div>
 									<?php
-											unset($_SESSION['usr_name']);
+											unset($_SESSION['current_pwd']);
 										}
 									?>
 								</div>
 							</div>
 							<div class="form-group row">
 								<label class="col-md-2 offset-md-1 col-form-label">
-									Parole
+									Jaunā parole
 									<span class="text-danger" title="Šis lauks ir obligāts">
 										&#10033;
 									</span>
@@ -88,7 +113,7 @@
 							</div>
 							<div class="form-group row">
 								<label class="col-md-2 offset-md-1 col-form-label">
-									Parole atkārtoti
+									Jaunā parole atkārtoti
 									<span class="text-danger" title="Šis lauks ir obligāts">
 										&#10033;
 									</span>
@@ -96,7 +121,7 @@
 								<div class="col-md-5">
 									<input class="form-control" type="password" name="pwd2" placeholder="********" aria-describedby="pwdArea2">
 									<small id="pwdArea2" class="form-text text-muted">
-										* Ievadītā parole atkārtoti *
+										* Ievadītā jaunā parole atkārtoti *
 									</small>
 								</div>
 								<div class="col-md-4">
@@ -114,37 +139,8 @@
 								</div>
 							</div>
 							<div class="form-group row">
-								<label class="col-md-2 offset-md-1 col-form-label">
-									Loma
-									<span class="text-danger" title="Šis lauks ir obligāts">
-										&#10033;
-									</span>
-								</label>
-								<div class="col-md-5">
-									<select class="custom-select" name="role">
-										<option value="0" <?php echo (isset($_SESSION['register']) && $role == "0") ? 'selected' : ''; ?> >Izvēlieties lietotāja lomu</option>
-										<option value="1" <?php echo (isset($_SESSION['register']) && $role == "1") ? 'selected' : ''; ?> >Darbinieks</option>
-										<option value="2" <?php echo (isset($_SESSION['register']) && $role == "2") ? 'selected' : ''; ?> >Pārvaldnieks</option>
-										<option value="3" <?php echo (isset($_SESSION['register']) && $role == "3") ? 'selected' : ''; ?> >Administrators</option>
-									</select>
-								</div>
-								<div class="col-md-4">
-									<?php
-										if(isset($_SESSION['usr_role']))
-										{
-									?>
-										<div class="alert alert-danger alert-size" role="alert">
-											<?=$_SESSION['usr_role']?>
-										</div>
-									<?php
-											unset($_SESSION['usr_role']);
-										}
-									?>
-								</div>
-							</div>
-							<div class="form-group row">
 								<div class="col-md-3 offset-md-3">
-									<button class="btn btn-info" type="submit" name="submit">Reģistrēt</button>
+									<button class="btn btn-info" type="submit" name="submit">Mainīt</button>
 								</div>
 							</div>
 						</form>
@@ -154,9 +150,8 @@
 		</div>
 	</div>
 
-<script src="../public/js/signup_form.js"></script> 
+<script src="../public/js/reset_user_form.js"></script>
 
 <?php
-	unset($_SESSION['register']);
 	include_once "../footer.php";
 ?>

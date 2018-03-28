@@ -8,7 +8,7 @@
 		exit();
 	}
 
-	if(($_SESSION['role'] != "a") && ($_SESSION['active'] != 1))	//Check if user is Administrator and not blocked
+	if(($_SESSION['role'] != "a") || ($_SESSION['active'] != 1))	//Check if user is Administrator and not blocked
 	{
 		header("Location: /");
 		exit();
@@ -33,6 +33,7 @@
 								<th>Nr.p.k</th>
 								<th>Lietotājvārds</th>
 								<th>Reģistrējies</th>
+								<th>Mainīt paroli</th>
 								<th>Labot</th>
 								<th>Bloķēt</th>
 							</tr>
@@ -50,14 +51,33 @@
 									<td><?=$user['username']?></td>
 									<td><?=$user['created']?></td>
 									<td>
+									<?php
+										if(($user['id'] == $_SESSION['id']) || ($_SESSION['id'] == 1))
+										{
+									?>
+											<a href="reset?id=<?=$user['id']?>" class="btn btn-warning">
+												Mainīt paroli
+											</a>
+									<?php
+										}
+									?>
+									</td>
+									<td>
 										<a href="edit_user?id=<?=$user['id']?>" class="btn btn-info">
 											Labot datus
 										</a>
 									</td>
 									<td>
-										<a href="block_user?id=<?=$user['id']?>" class="btn btn-danger">
-											Bloķēt
-										</a>
+									<?php
+										if(($user['id']) != ($_SESSION['id']))
+										{
+									?>
+											<a href="block_user?id=<?=$user['id']?>" class="btn btn-danger">
+												Bloķēt
+											</a>
+									<?php
+										}
+									?>
 									</td>
 								</tr>
 					<?php
@@ -191,7 +211,21 @@
 								<tr>
 									<th><?=$i++?></th>
 									<td><?=$user['username']?></td>
-									<td><?=$user['role']?></td>
+									<td>
+									<?php 
+										if($user['role'] == "a"){
+											echo "Administrators";
+										}
+										else if($user['role'] == "p")
+										{
+											echo "Pārvaldnieks";
+										}
+										else if($user['role'] == "l")
+										{
+											echo "Darbinieks";
+										}
+									?>
+									</td>
 									<td><?=$user['created']?></td>
 									<td>
 										<a href="reset?id=<?=$user['id']?>" class="btn btn-warning">

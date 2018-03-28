@@ -21,6 +21,19 @@
 			return mysqli_fetch_all($sql, MYSQLI_ASSOC);
 		}
 
+		public static function GetPositionData($id)	//Returns all position data with ID
+		{
+			global $conn;
+
+			$sql = $conn->prepare("SELECT positions.* FROM positions 
+									WHERE positions.id = ?");
+			$sql->bind_param('s', $id);
+			$sql->execute();
+			$result = $sql->get_result();
+
+			return mysqli_fetch_assoc($result);
+		}
+
 		public static function BeamSizes()	//Returns all entered beam sizes from Database
 		{
 			global $conn;

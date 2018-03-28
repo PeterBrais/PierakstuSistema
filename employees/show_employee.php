@@ -16,7 +16,7 @@
 	$employees = Manager::Employees();
 
 ?>
-
+<!-- Shows all employees -->
 <div class="container">
 	<div class="row cont-space">
 		<div class="col-md-12">
@@ -106,7 +106,7 @@
 					<table class="table table-bordered table-hover">
 						<thead class="thead-default table-active">
 							<tr>
-								<th>Nr. p. k</th>
+								<th>Nr.p.k</th>
 								<th>Vārds</th>
 								<th>Uzvārds</th>
 								<th>Amats</th>
@@ -153,7 +153,7 @@
 					<table class="table table-bordered table-hover">
 						<thead class="thead-default table-active">
 							<tr>
-								<th>Nr. p. k</th>
+								<th>Nr.p.k</th>
 								<th>Vārds</th>
 								<th>Uzvārds</th>
 								<th>Amats</th>

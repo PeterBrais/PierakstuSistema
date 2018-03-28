@@ -8,7 +8,7 @@
 		exit();
 	}
 
-	if(($_SESSION['role'] != "a") && ($_SESSION['active'] != 1))	//Check if user is Administrator and not blocked
+	if(($_SESSION['role'] != "a") || ($_SESSION['active'] != 1))	//Check if user is Administrator and not blocked
 	{
 		header("Location: /");
 		exit();
@@ -48,7 +48,7 @@
 				<div class="card">
 					<div class="card-body">
 						<h4 class="card-title text-center">
-							Labot: <u>'<?=$user['username']?>'</u>. Loma: 
+							Labot lietotāja: <u>'<?=$user['username']?>'</u> datus. Loma: 
 							<u>
 							<?php 
 								if($user['role'] == "a"){

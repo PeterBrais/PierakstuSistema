@@ -57,7 +57,7 @@ body{
 	vertical-align: middle;
 }
 
-.table thead th {
+.table thead th, .table tbody td {
 	vertical-align: middle;
 	text-align: center;
 }
