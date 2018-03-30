@@ -11,33 +11,27 @@ $(function(){
 		//Validate user update input form
 		$('#edit_position_form').validate({
 			rules: {
-				usr: {
+				name: {
 					required: true,
 					minlength: 3,
-					maxlength: 50,
-					IsValidUsername: true,
+					maxlength: 40,
+					IsValidText: true,
 					remote: {
-						url: "current_username_check",
+						url: "current_position_check",
 						type: "post",
 						data: {
-							id: function(){return $('input[name=user_id]').val();}, //Extra parameter: id
+							id: function(){return $('input[name=position_id]').val();}, //Extra parameter: id
 						},
 					},
 				},
-				role: {
-					ChosenRoleDropdown: true,
-				},
 			},
 			messages: {
-				usr: {
-					required: "Lūdzu aizpildiet Lietotājvārds lauku!",
-					minlength: "Lietotājvārdam jābūt garumā no 3 simboliem līdz 50 simboliem!",
-					maxlength: "Lietotājvārdam jābūt garumā no 3 simboliem līdz 50 simboliem!",
-					IsValidUsername: "Lietotājvārds drīkst saturēt tikai latīņu burtus un ciparus!",
-					remote: "Lietotājvārds jau eksistē!",
-				},
-				role: {
-					ChosenRoleDropdown: "Lūdzu izvēlieties lietotāja lomu!",
+				name: {
+					required: "Lūdzu aizpildiet Amats lauku!",
+					minlength: "Amats jābūt garumā no 3 simboliem līdz 40 simboliem!",
+					maxlength: "Amats jābūt garumā no 3 simboliem līdz 40 simboliem!",
+					IsValidText: "Amats drīkst saturēt tikai latīņu burtus, ciparus un speciālos simbolus!",
+					remote: "Amats jau eksistē!",
 				},
 			}
 		});
