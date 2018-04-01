@@ -1,7 +1,7 @@
 <?php
 	include_once "../header.php";
 	include_once "../includes/manager.class.php";
-	include_once "../includes/position.class.php";
+	include_once "../includes/beam_size.class.php";
 
 	if(!isset($_SESSION['id']) && !isset($_SESSION['role']))	//Check if user is logged in
 	{
@@ -14,11 +14,11 @@
 		exit();
 	}
 
-	//Returns all positions
-	$positions = Manager::Positions();
+	//Returns all beam sizes
+	$sizes = Manager::BeamSizes();
 ?>
 
-<!-- Shows all positions -->
+<!-- Shows all beam sizes -->
 <div class="container">
 	<div class="row cont-space">
 		<div class="col-md-12">
@@ -27,12 +27,12 @@
 			</div>
 			<div class="card">
 				<div class="card-body">
-					<h4 class="card-title text-center">Visi amati</h4>
+					<h4 class="card-title text-center">Visi kubatūras izmēri</h4>
 					<table class="table table-bordered table-hover">
 						<thead class="thead-default table-active">
 							<tr>
 								<th>Nr.p.k</th>
-								<th>Amats</th>
+								<th>Izmērs</th>
 								<?php
 									if(($_SESSION['role'] == "a" || $_SESSION['role'] == "p") && ($_SESSION['active'] == 1))
 									{
@@ -47,27 +47,27 @@
 						<tbody>
 					<?php
 						$i = 1;
-						foreach($positions as $position)
+						foreach($sizes as $size)
 						{
 					?>
 							<tr>
 								<th><?=$i++?></th>
-								<td><?=$position['name']?></td>
+								<td><?=$size['size']?></td>
 								<?php
 									if(($_SESSION['role'] == "a" || $_SESSION['role'] == "p") && ($_SESSION['active'] == 1))
 									{
 								?>
 										<td>
-											<a href="edit_position?id=<?=$position['id']?>" class="btn btn-info">
+											<a href="edit_beam_size?id=<?=$size['id']?>" class="btn btn-info">
 												Labot
 											</a>
 										</td>
 										<td>
 										<?php
-											if(!Position::IsPositionUsed($position['id']))
+											if(!BeamSize::IsSizeUsed($size['id']))
 											{
 										?>
-												<a href="delete_position?id=<?=$position['id']?>" class="btn btn-danger">
+												<a href="delete_beam_size?id=<?=$size['id']?>" class="btn btn-danger">
 													Dzēst
 												</a>
 										<?php

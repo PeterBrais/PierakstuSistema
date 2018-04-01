@@ -20,7 +20,7 @@
 	//Check if position is set
 	if(empty($position))
 	{
-		$_SESSION['new_position'] = "Lūdzu aizpildiet Amats lauku!";
+		$_SESSION['new_position'] = "Lūdzu aizpildiet Izmērs lauku!";
 		$_SESSION['position'] = $_POST;
 		header("Location: add_position");
 		exit();

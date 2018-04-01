@@ -77,6 +77,7 @@ ob_start(); //Output buffering
 									<a class="dropdown-item" href="/sawmill/add_sawmill_production">
 										Jauna produkcija
 									</a>
+									<a class="dropdown-item" href="/sawmill/show_beam_sizes">Visi tilpumi</a>
 									<a class="dropdown-item" href="/sawmill/add_beam_size">Jauns tilpums</a>
 								</div>
 							</div>

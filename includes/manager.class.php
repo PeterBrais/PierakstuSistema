@@ -43,6 +43,19 @@
 			return mysqli_fetch_all($sql, MYSQLI_ASSOC);
 		}
 
+		public static function GetBeamSizeData($id)	//Returns all beam size data with ID
+		{
+			global $conn;
+
+			$sql = $conn->prepare("SELECT beam_sizes.* FROM beam_sizes 
+									WHERE beam_sizes.id = ?");
+			$sql->bind_param('s', $id);
+			$sql->execute();
+			$result = $sql->get_result();
+
+			return mysqli_fetch_assoc($result);
+		}
+
 		public static function Employees()	//Returns all employees from Database
 		{
 			global $conn;

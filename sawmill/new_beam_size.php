@@ -62,3 +62,5 @@
 	$_SESSION['success'] = "Izmērs pievienots!";
 	header("Location: add_beam_size");
 	exit();
+
+?>
