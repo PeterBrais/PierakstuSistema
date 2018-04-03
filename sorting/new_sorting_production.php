@@ -361,6 +361,7 @@
 			$employees_sorting_procutions->Save();
 
 			$working_times->date = $date;
+			$working_times->invoice = $invoice
 			$working_times->working_hours = $working_hours[$i];
 			$working_times->employee_id = $ids[$i];
 			$working_times->Save();
@@ -391,6 +392,7 @@
 			}
 
 			$times->date = $date;
+			$times->invoice = $invoice;
 			$times->pregnancy = NULL;
 			$times->employee_id = $ids[$i];
 			$times->Save();

@@ -90,7 +90,7 @@
 			}
 		}
 
-		function Update()
+		function Update()	//Updates positions data
 		{
 			try
 			{
@@ -107,7 +107,7 @@
 			}
 		}
 
-		function Delete()
+		function Delete()	//Deletes position from database
 		{
 			try
 			{

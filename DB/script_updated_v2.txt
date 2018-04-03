@@ -35,6 +35,7 @@ CREATE TABLE employees_positions (
 CREATE TABLE times (
 	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	date DATE NOT NULL,
+	invoice INT NULL,
 	vacation CHAR(2) NULL DEFAULT '0',
 	sick_leave CHAR(2) NULL DEFAULT '0',
 	nonattendace CHAR(2) NULL DEFAULT '0',
@@ -46,6 +47,7 @@ CREATE TABLE times (
 CREATE TABLE working_times (
 	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	date DATE NOT NULL,
+	invoice INT NULL,
 	working_hours INT NULL,
 	overtime_hours INT NULL,
 	holiday_hours INT NULL,
@@ -61,7 +63,6 @@ CREATE TABLE beam_sizes (
 CREATE TABLE sawmill_productions (
 	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	date DATE NOT NULL,
-	hours INT NOT NULL,
 	time_from VARCHAR(10) NOT NULL,
 	time_to VARCHAR(10) NOT NULL,
 	invoice INT NOT NULL,
@@ -95,7 +96,6 @@ CREATE TABLE employees_sawmill_productions (
 CREATE TABLE sorting_productions (
 	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	date DATE NOT NULL,
-	hours INT NOT NULL,
 	time_from VARCHAR(10) NOT NULL,
 	time_to VARCHAR(10) NOT NULL,
 	invoice INT NOT NULL,
@@ -104,7 +104,7 @@ CREATE TABLE sorting_productions (
 	length INT NOT NULL,
 	count INT NOT NULL,
 	capacity DECIMAL(12,3) NOT NULL,
-	defect_count INT NULL,
+	defect_count INT NULL
 );
 
 CREATE TABLE sorted_production (

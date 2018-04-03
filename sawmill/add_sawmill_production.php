@@ -11,6 +11,7 @@
 		header("Location: /");
 		exit();
 	}
+	
 	if(isset($_SESSION['sawmill_prod']))
 	{
 		extract($_SESSION['sawmill_prod']);

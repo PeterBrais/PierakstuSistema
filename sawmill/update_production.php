@@ -13,7 +13,14 @@
 	include_once "../includes/beam_size.class.php";
 /****************** Includes ******************/
 
-	$inputs = ['date', 'time_from', 'time_to', 'invoice', 'beam_count', 'sizes', 'lumber_count', 'lumber_capacity', 'note', 'maintenance_times', 'maintenance_notes', 'shifts'];
+	//Check if sawmill production in database exists
+	if(!SawmillProduction::ExistsProductionWithInvoiceAndID($_POST['sawmill_production_id'], $_POST['sawmill_production_invoice']))
+	{
+		header("Location: show_sawmill_production");
+		exit();
+	}
+
+	$inputs = ['sawmill_production_id', 'sawmill_production_invoice', 'date', 'time_from', 'time_to', 'invoice', 'beam_count', 'sizes', 'lumber_count', 'lumber_capacity', 'note', 'maintenance_times', 'maintenance_notes', 'shifts'];
 
 	foreach($inputs as $input)
 	{
@@ -25,6 +32,8 @@
 	}
 
 	//Sets variables
+	$sawmill_production_id = htmlspecialchars($_POST['sawmill_production_id']);
+	$sawmill_production_invoice = htmlspecialchars($_POST['sawmill_production_invoice']);
 	$date = htmlspecialchars($_POST['date']);
 	$time_from = htmlspecialchars($_POST['time_from']);
 	$time_to = htmlspecialchars($_POST['time_to']);
@@ -52,11 +61,11 @@
 
 	//Error handlers
 	//Check if fields are empty
-	if(empty($date) || empty($time_from) || empty($time_to) || empty($invoice) || empty($beam_count) || empty($lumber_count) || empty($lumber_capacity) || empty($shift))
+	if(empty($sawmill_production_id) || empty($sawmill_production_invoice) || empty($date) || empty($time_from) || empty($time_to) || empty($invoice) || empty($beam_count) || empty($lumber_count) || empty($lumber_capacity) || empty($shift))
 	{
 		$_SESSION['error'] = "Lūdzu aizpildiet visus obligātos laukus!";
-		$_SESSION['sawmill_prod'] = $_POST;
-		header("Location: add_sawmill_production");
+		$_SESSION['edit_sawmill_prod'] = $_POST;
+		header("Location: edit_production?id=$sawmill_production_id");
 		exit();
 	}
 
@@ -64,8 +73,8 @@
 	if(!Manager::ExistsShift($shift))
 	{
 		$_SESSION['error'] = "Radās kļūda, lūdzu mēģiniet vēlreiz!";
-		$_SESSION['sawmill_prod'] = $_POST;
-		header("Location: add_sawmill_production");
+		$_SESSION['edit_sawmill_prod'] = $_POST;
+		header("Location: edit_production?id=$sawmill_production_id");
 		exit();
 	}
 
@@ -89,8 +98,8 @@
 	if(!Validate::IsValidDate($date))
 	{
 		$_SESSION['date'] = "Lūdzu ievadiet korektu datumu, formā: gggg-mm-dd vai gggg/mm/dd!";
-		$_SESSION['sawmill_prod'] = $_POST;
-		header("Location: add_sawmill_production");
+		$_SESSION['edit_sawmill_prod'] = $_POST;
+		header("Location: edit_production?id=$sawmill_production_id");
 		exit();
 	}
 
@@ -98,15 +107,15 @@
 	if(!Validate::IsValidTime($time_from))
 	{
 		$_SESSION['time'] = "Lūdzu ievadiet korektu laiku, formā: hh:mm!";
-		$_SESSION['sawmill_prod'] = $_POST;
-		header("Location: add_sawmill_production");
+		$_SESSION['edit_sawmill_prod'] = $_POST;
+		header("Location: edit_production?id=$sawmill_production_id");
 		exit();
 	}
 	if(!Validate::IsValidTime($time_to))
 	{
 		$_SESSION['time'] = "Lūdzu ievadiet korektu laiku, formā: hh:mm!";
-		$_SESSION['sawmill_prod'] = $_POST;
-		header("Location: add_sawmill_production");
+		$_SESSION['edit_sawmill_prod'] = $_POST;
+		header("Location: edit_production?id=$sawmill_production_id");
 		exit();
 	}
 
@@ -114,17 +123,17 @@
 	if(!Validate::IsValidIntegerNumber($invoice))
 	{
 		$_SESSION['invoice'] = "Ievadītais pavadzīmes numurs ir neatbilstošs! Tas var sastāvēt tikai no cipariem!";
-		$_SESSION['sawmill_prod'] = $_POST;
-		header("Location: add_sawmill_production");
+		$_SESSION['edit_sawmill_prod'] = $_POST;
+		header("Location: edit_production?id=$sawmill_production_id");
 		exit();
 	}
 
 	//Checks if entered invoice number already exists
-	if(SawmillProduction::ExistsInvoice($invoice))	
+	if(SawmillProduction::CurrentInvoiceExists($invoice, $sawmill_production_id))	
 	{
 		$_SESSION['invoice'] = "Pavadzīme ar šādu numuru jau eksistē!";
-		$_SESSION['sawmill_prod'] = $_POST;
-		header("Location: add_sawmill_production");
+		$_SESSION['edit_sawmill_prod'] = $_POST;
+		header("Location: edit_production?id=$sawmill_production_id");
 		exit();
 	}
 
@@ -132,8 +141,8 @@
 	if(!Validate::IsValidIntegerNumber($beam_count))
 	{
 		$_SESSION['beam_count'] = "Apaļkoku skaits drīkst sastāvēt tikai no cipariem!";
-		$_SESSION['sawmill_prod'] = $_POST;
-		header("Location: add_sawmill_production");
+		$_SESSION['edit_sawmill_prod'] = $_POST;
+		header("Location: edit_production?id=$sawmill_production_id");
 		exit();
 	}
 
@@ -141,15 +150,15 @@
 	if(empty($beam_size))
 	{
 		$_SESSION['beam_size'] = "Lūdzu izvēlieties kubatūras izmēru";
-		$_SESSION['sawmill_prod'] = $_POST;
-		header("Location: add_sawmill_production");
+		$_SESSION['edit_sawmill_prod'] = $_POST;
+		header("Location: edit_production?id=$sawmill_production_id");
 		exit();
 	}
 	else if(!BeamSize::ExistsId($beam_size)) //Checks if position with this id exists
 	{
 		$_SESSION['error'] = "Radās kļūda, lūdzu mēģiniet vēlreiz!";
-		$_SESSION['sawmill_prod'] = $_POST;
-		header("Location: add_sawmill_production");
+		$_SESSION['edit_sawmill_prod'] = $_POST;
+		header("Location: edit_production?id=$sawmill_production_id");
 		exit();
 	}
 
@@ -157,8 +166,8 @@
 	if(!Validate::IsValidIntegerNumber($lumber_count))
 	{
 		$_SESSION['lumber_count'] = "Zāģmatariālu skaits drīkst sastāvēt tikai no cipariem!";
-		$_SESSION['sawmill_prod'] = $_POST;
-		header("Location: add_sawmill_production");
+		$_SESSION['edit_sawmill_prod'] = $_POST;
+		header("Location: edit_production?id=$sawmill_production_id");
 		exit();
 	}
 
@@ -169,15 +178,15 @@
 	if(!Validate::IsValidFloatNumber($lumber_capacity))
 	{
 		$_SESSION['lumber_capacity'] = "Zāģmatariālu tilpums drīkst saturēt tikai ciparus ar komatu! (Maksimums 3 cipari aiz komata)";
-		$_SESSION['sawmill_prod'] = $_POST;
-		header("Location: add_sawmill_production");
+		$_SESSION['edit_sawmill_prod'] = $_POST;
+		header("Location: edit_production?id=$sawmill_production_id");
 		exit();
 	}
 	if($lumber_capacity <= 0)
 	{
 		$_SESSION['lumber_capacity'] = "Zāģmatariālu tilpums drīkst saturēt tikai ciparus ar komatu! (Maksimums 3 cipari aiz komata)";
-		$_SESSION['sawmill_prod'] = $_POST;
-		header("Location: add_sawmill_production");
+		$_SESSION['edit_sawmill_prod'] = $_POST;
+		header("Location: edit_production?id=$sawmill_production_id");
 		exit();
 	}
 
@@ -187,16 +196,16 @@
 		if(!Validate::IsValidTextLength($note))
 		{
 			$_SESSION['note'] = "Citas piezīmes jābūt garumā no 3 simboliem līdz 255 simboliem!";
-			$_SESSION['sawmill_prod'] = $_POST;
-			header("Location: add_sawmill_production");
+			$_SESSION['edit_sawmill_prod'] = $_POST;
+			header("Location: edit_production?id=$sawmill_production_id");
 			exit();
 		}
 
 		if(!Validate::IsValidText($note))
 		{
 			$_SESSION['note'] = "Citas piezīmes drīkst saturēt tikai latīņu burtus, ciparus un speciālos simbolus!";
-			$_SESSION['sawmill_prod'] = $_POST;
-			header("Location: add_sawmill_production");
+			$_SESSION['edit_sawmill_prod'] = $_POST;
+			header("Location: edit_production?id=$sawmill_production_id");
 			exit();
 		}
 	}
@@ -209,32 +218,32 @@
 			if(!Validate::IsValidIntegerNumber($maintenance_times[$i]))
 			{
 				$_SESSION['maintenance'] = "Remonta laiks drīkst sastāvēt tikai no cipariem!";
-				$_SESSION['sawmill_prod'] = $_POST;
-				header("Location: add_sawmill_production");
+				$_SESSION['edit_sawmill_prod'] = $_POST;
+				header("Location: edit_production?id=$sawmill_production_id");
 				exit();
 			}
 
 			if(!Validate::IsValidTextLength($maintenance_notes[$i]))
 			{
 				$_SESSION['maintenance'] = "Piezīme jābūt garumā no 3 simboliem līdz 255 simboliem!";
-				$_SESSION['sawmill_prod'] = $_POST;
-				header("Location: add_sawmill_production");
+				$_SESSION['edit_sawmill_prod'] = $_POST;
+				header("Location: edit_production?id=$sawmill_production_id");
 				exit();
 			}
 
 			if(!Validate::IsValidText($maintenance_notes[$i]))
 			{
 				$_SESSION['maintenance'] = "Piezīme drīkst saturēt tikai latīņu burtus, ciparus un speciālos simbolus!";
-				$_SESSION['sawmill_prod'] = $_POST;
-				header("Location: add_sawmill_production");
+				$_SESSION['edit_sawmill_prod'] = $_POST;
+				header("Location: edit_production?id=$sawmill_production_id");
 				exit();
 			}
 		}
 		else if((empty($maintenance_times[$i]) && !empty($maintenance_notes[$i])) || (!empty($maintenance_times[$i]) && empty($maintenance_notes[$i]))) //One or other is filled
 		{
 			$_SESSION['maintenance'] = "Lūdzu ievadiet remonta laiku un piezīmi!";
-			$_SESSION['sawmill_prod'] = $_POST;
-			header("Location: add_sawmill_production");
+			$_SESSION['edit_sawmill_prod'] = $_POST;
+			header("Location: edit_production?id=$sawmill_production_id");
 			exit();
 		}
 	}
@@ -245,8 +254,8 @@
 		if(empty($working_hours[$i]) && empty($nonworking[$i]))
 		{
 			$_SESSION['shift'] = "Lūdzu aizpildiet darbinieku tabulu!";
-			$_SESSION['sawmill_prod'] = $_POST;
-			header("Location: add_sawmill_production");
+			$_SESSION['edit_sawmill_prod'] = $_POST;
+			header("Location: edit_production?id=$sawmill_production_id");
 			exit();
 		}
 		else if(!empty($working_hours[$i]) && empty($nonworking[$i]))
@@ -255,8 +264,8 @@
 			if(!Validate::IsValidHours($working_hours[$i]))
 			{
 				$_SESSION['shift'] = "Nostrādātās darba stundas drīkst sastāvēt tikai no cipariem!";
-				$_SESSION['sawmill_prod'] = $_POST;
-				header("Location: add_sawmill_production");
+				$_SESSION['edit_sawmill_prod'] = $_POST;
+				header("Location: edit_production?id=$sawmill_production_id");
 				exit();
 			}
 		}
@@ -266,16 +275,16 @@
 			if($nonworking[$i] != "1" && $nonworking[$i] != "2" && $nonworking[$i] != "3")
 			{
 				$_SESSION['error'] = "Lūdzu mēģiniet vēlreiz!";
-				$_SESSION['sawmill_prod'] = $_POST;
-				header("Location: add_sawmill_production");
+				$_SESSION['edit_sawmill_prod'] = $_POST;
+				header("Location: edit_production?id=$sawmill_production_id");
 				exit();
 			}
 		}
 		else
 		{
 			$_SESSION['shift'] = "Lūdzu aizpildiet tikai vienu ievadlauku katram darbiniekam!";
-			$_SESSION['sawmill_prod'] = $_POST;
-			header("Location: add_sawmill_production");
+			$_SESSION['edit_sawmill_prod'] = $_POST;
+			header("Location: edit_production?id=$sawmill_production_id");
 			exit();
 		}
 	}
@@ -287,7 +296,7 @@
 
 	$percentage = round($percentage, 2);
 
-	//Saves sawmill production
+	//Saves updated sawmill production data
 	$sawmillProduction = new SawmillProduction();
 	$sawmillProduction->date = $date;
 	$sawmillProduction->time_from = $time_from;
@@ -300,31 +309,38 @@
 	$sawmillProduction->percentage = $percentage;
 	$sawmillProduction->note = $note;
 	$sawmillProduction->beam_size_id = $beam_size;
-	$sawmillProduction->Save();
+	$sawmillProduction->id = $sawmill_production_id;
+	$sawmillProduction->Update();
 
-	//Saves sawmillproduction maintenance times and notes
+	//Updates sawmill production maintenance times and notes
+	$sawmillMaintenance = new SawmillMaintenance();
+	$sawmillMaintenance->DeleteAllSawmillProductionMaintenances($sawmill_production_id);
 	for($i=0; $i < count($maintenance_times); $i++)
 	{
 		if(!empty($maintenance_times[$i]) && !empty($maintenance_notes[$i]))
 		{
-			$sawmillMaintenance = new SawmillMaintenance();
 			$sawmillMaintenance->time = $maintenance_times[$i];
 			$sawmillMaintenance->note = $maintenance_notes[$i];
-			$sawmillMaintenance->sawmill_production_id = $sawmillProduction->id;
+			$sawmillMaintenance->sawmill_production_id = $sawmill_production_id;
 			$sawmillMaintenance->Save();
 		}
 	}
 
 	//Saves data to tables: employees_sawmill_productions, working_times, times
-	$employees_sawmill_procutions = new EmployeeSawmillProductions();
+	$employees_sawmill_productions = new EmployeeSawmillProductions();
+	$employees_sawmill_productions->DeleteAllSawmillProductionEmployees($sawmill_production_id);
+
 	$working_times = new WorkingTimes();
+	$working_times->DeleteAllWorkingEmployees($sawmill_production_invoice);
+
 	$times = new Times();
+	$times->DeleteAllNonWorkingEmployees($sawmill_production_invoice);
 
 	for($i = 0; $i < count($ids); $i++)
 	{
-		$employees_sawmill_procutions->employee_id = $ids[$i];
-		$employees_sawmill_procutions->sawmill_id = $sawmillProduction->id;
-		$employees_sawmill_procutions->Save();
+		$employees_sawmill_productions->employee_id = $ids[$i];
+		$employees_sawmill_productions->sawmill_id = $sawmillProduction->id;
+		$employees_sawmill_productions->Save();
 
 		if($working_hours[$i] != '' && $working_hours > 0)
 		{
@@ -363,8 +379,9 @@
 		}
 	}
 
+
 	$_SESSION['success'] = "Zāģētavas produkcija pievienota veiksmīgi!";
 	header("Location: show_sawmill_production");
 	exit();
-		
+
 ?>

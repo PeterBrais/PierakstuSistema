@@ -20,6 +20,7 @@
 					<th rowspan="2">Ef.</th>
 					<th rowspan="2">Remonts</th>
 					<th rowspan="2">Piezīmes</th>
+					<th rowspan="2">Labot</th>
 				</tr>
 				<tr>
 					<th>Skaits (gab)</th>
@@ -61,6 +62,11 @@
 						</ul>
 					</td>
 					<td><?=$production['note']?></td>
+					<td>
+						<a href="edit_production?id=<?=$production['id']?>" class="btn btn-info">
+							Labot
+						</a>
+					</td>
 				</tr>
 	<?php
 		}
@@ -96,6 +102,7 @@
 							}
 						?>
 					</td>
+					<td></td>
 				</tr>
 			</tbody>
 		</table>

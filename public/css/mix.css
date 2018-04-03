@@ -81,3 +81,12 @@ body{
     background-color: #588e00;
 	color: #000;
 }
+
+@media (min-width: 800px) {
+  .container-scroll {
+    overflow-x: auto;
+  }
+  .container-scroll > .row {
+    width: 133.33333333%; /* = 100% * 4/3 */
+  }
+}

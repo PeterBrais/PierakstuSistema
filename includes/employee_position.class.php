@@ -33,7 +33,7 @@
 			}
 		}
 
-		function DeleteAllUserPositions($id){
+		function DeleteAllUserPositions($id){	//Deletes sub table data M:M relations
 			try
 			{
 				$sql = $this->conn->prepare("DELETE FROM employees_positions WHERE employee_id = ?");

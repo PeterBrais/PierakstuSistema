@@ -71,6 +71,7 @@
 
 			return $resultCheck >= 1;
 		}
+		
 		public static function ExistsEmployeesWorkplaceSawmillWithID($id) //Check if user works in Sawmill
 		{
 			global $conn;
