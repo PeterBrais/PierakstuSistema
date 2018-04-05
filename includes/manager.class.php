@@ -199,24 +199,102 @@
 			return mysqli_fetch_all($result, MYSQLI_ASSOC);
 		}
 
-		public static function GetEmployeeProductionsMaintenances($date_string, $shift, $id)
+		public static function GetEmployeeProductionsMaintenances($date_string, $id)	//Returns all employees maintenances
 		{
 			global $conn;
 
-			$sql = $conn->prepare("SELECT employees.id, (SELECT SUM(sawmill_maintenance.time) FROM 							sawmill_maintenance
-									JOIN sawmill_productions
-									ON sawmill_productions.id = sawmill_maintenance.sawmill_production_id
-									JOIN employees_sawmill_productions
-									ON employees_sawmill_productions.sawmill_id = sawmill_productions.id
-									JOIN employees
-									ON employees.id = employees_sawmill_productions.employee_id
-									JOIN working_times
-									ON employees.id = working_times.employee_id
-									WHERE DATE_FORMAT(sawmill_productions.date, '%Y-%m') = ? AND employees.shift = ? AND 
-									sawmill_productions.date = working_times.date) AS maintanence
+			$sql = $conn->prepare("SELECT SUM(sawmill_maintenance.time) as maintenance
 									FROM employees
-									WHERE employees.id = ?");
-			$sql->bind_param('sss', $date_string, $shift, $id);
+									JOIN employees_sawmill_productions
+									ON employees_sawmill_productions.employee_id = employees.id
+									JOIN sawmill_productions
+									ON sawmill_productions.id = employees_sawmill_productions.sawmill_id
+									JOIN sawmill_maintenance
+									ON sawmill_maintenance.sawmill_production_id = sawmill_productions.id
+									WHERE employees.id = ? AND 
+									DATE_FORMAT(sawmill_productions.date, '%Y-%m') = ? AND 
+									EXISTS (SELECT * FROM working_times WHERE employees.id = working_times.employee_id
+									AND sawmill_productions.date = working_times.date 
+									AND sawmill_productions.invoice = working_times.invoice)");
+			$sql->bind_param('ss', $id, $date_string);
+			$sql->execute();
+			$result = $sql->get_result();
+
+			return mysqli_fetch_assoc($result);
+		}
+
+		public static function GetEmployeeProductionsCapacity($date_string, $id)	//Returns all employees amount of work done
+		{
+			global $conn;
+
+			$sql = $conn->prepare("SELECT SUM(sawmill_productions.lumber_capacity) as capacity
+									FROM employees
+									JOIN employees_sawmill_productions
+									ON employees_sawmill_productions.employee_id = employees.id
+									JOIN sawmill_productions
+									ON sawmill_productions.id = employees_sawmill_productions.sawmill_id
+									WHERE employees.id = ? AND 
+									DATE_FORMAT(sawmill_productions.date, '%Y-%m') = ? AND
+									EXISTS (SELECT * FROM working_times WHERE employees.id = working_times.employee_id
+									AND sawmill_productions.date = working_times.date 
+									AND sawmill_productions.invoice = working_times.invoice)");
+			$sql->bind_param('ss', $id, $date_string);
+			$sql->execute();
+			$result = $sql->get_result();
+
+			return mysqli_fetch_assoc($result);
+		}
+
+		public static function GetEmployeeProductionsDaysWorked($date_string, $id)	//Returns all employees days worked and all productions
+		{
+			global $conn;
+
+			$sql = $conn->prepare("SELECT COUNT(DISTINCT working_times.date) as working, 
+									(SELECT COUNT(DISTINCT sawmill_productions.date) FROM employees
+									JOIN employees_sawmill_productions
+									ON employees_sawmill_productions.employee_id = employees.id
+									JOIN sawmill_productions
+									ON sawmill_productions.id = employees_sawmill_productions.sawmill_id
+									JOIN working_times
+									ON working_times.employee_id = employees.id
+									WHERE employees.id = ? AND 
+									DATE_FORMAT(sawmill_productions.date, '%Y-%m') = ?) as all_productions
+									FROM employees
+									JOIN employees_sawmill_productions
+									ON employees_sawmill_productions.employee_id = employees.id
+									JOIN sawmill_productions
+									ON sawmill_productions.id = employees_sawmill_productions.sawmill_id
+									JOIN working_times
+									ON working_times.employee_id = employees.id
+									WHERE employees.id = ? AND 
+									DATE_FORMAT(sawmill_productions.date, '%Y-%m') = ? 
+									AND employees.id = working_times.employee_id 
+									AND sawmill_productions.date = working_times.date 
+									AND sawmill_productions.invoice = working_times.invoice");
+			$sql->bind_param('ssss', $id, $date_string, $id, $date_string);
+			$sql->execute();
+			$result = $sql->get_result();
+
+			return mysqli_fetch_assoc($result);
+		}
+
+		public static function GetEmployeeProductionsDaysNonWorked($date_string, $id)	//Returns all employees non working days
+		{
+			global $conn;
+
+			$sql = $conn->prepare("SELECT times.* FROM employees
+									JOIN employees_sawmill_productions
+									ON employees_sawmill_productions.employee_id = employees.id
+									JOIN sawmill_productions
+									ON sawmill_productions.id = employees_sawmill_productions.sawmill_id
+									JOIN times
+									ON times.employee_id = employees.id
+									WHERE employees.id = ? AND 
+									DATE_FORMAT(sawmill_productions.date, '%Y-%m') = ? 
+									AND employees.id = times.employee_id 
+									AND sawmill_productions.date = times.date 
+									AND sawmill_productions.invoice = times.invoice");
+			$sql->bind_param('ss', $id, $date_string);
 			$sql->execute();
 			$result = $sql->get_result();
 

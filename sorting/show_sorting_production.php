@@ -16,7 +16,7 @@
 
 ?>
 
-<div class="container">
+<div class="container container-scroll">
 	<div class="row cont-space">
 		<div class="col-md-12">
 			<div id="message">

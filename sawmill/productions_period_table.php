@@ -117,11 +117,12 @@
 				<th rowspan="2">V. Uzvārds</th>
 				<th rowspan="2">Amats</th>
 				<th rowspan="2">Maiņa</th>
-				<th colspan="3">Darba aprēķins</th>
+				<th colspan="4">Darba aprēķins</th>
 				<th rowspan="2">...</th>
 			</tr>
 			<tr>
 				<th>Dienas</th>
+				<th>Nestrādātās dienas</th>
 				<th>m<sup>3</sup></th>
 				<th>h</th>
 			</tr>
@@ -147,13 +148,64 @@
 					?>
 					</td>
 					<td><?=$employee['shift']?></td>
-					<td></td>
-					<td></td>
 					<td>
 					<?php
-						$maint = Manager::GetEmployeeProductionsMaintenances($date_string, $employee['shift'], $employee['id']);
-						foreach ($maint as $maints) {
-							echo $maints['maintanence'];
+						$worked = Manager::GetEmployeeProductionsDaysWorked($date_string, $employee['id']);
+						echo $worked['all_productions'];
+						echo " / ";
+						echo $worked['working'];
+					?>
+					</td>
+					<td>
+					<?php
+						echo "<small>";
+						$nonworked_days = Manager::GetEmployeeProductionsDaysNonWorked($date_string, $employee['id']);
+						echo "Atvaļinājums: ";
+						foreach($nonworked_days as $nonworked_day)
+						{
+							if(isset($nonworked_day['vacation']))
+							{
+								echo $nonworked_day['date']." ";
+							}
+						}
+						echo '<br>';
+						echo "Slimība: ";
+						foreach($nonworked_days as $nonworked_day)
+						{
+							if(isset($nonworked_day['sick_leave']))
+							{
+								echo $nonworked_day['date']." ";
+							}
+						}
+						echo '<br>';
+						echo "Neapmeklējums: ";
+						foreach($nonworked_days as $nonworked_day)
+						{
+							if(isset($nonworked_day['nonattendace']))
+							{
+								echo $nonworked_day['date']." ";
+							}
+						}
+						echo "</small>";
+					?>
+					</td>
+					<td>
+					<?php
+						$capacity = Manager::GetEmployeeProductionsCapacity($date_string, $employee['id']);
+						echo $capacity['capacity'];
+					?>
+					</td>
+					<td>
+					<?php
+						$maintenance = Manager::GetEmployeeProductionsMaintenances($date_string, $employee['id']);
+						if(!isset($maintenance['maintenance']))
+						{
+							echo "0 min";
+						}
+						else
+						{
+							echo $maintenance['maintenance']." min / ";
+							echo round($maintenance['maintenance']/60, 3)." h";
 						}
 					?>
 					</td>
@@ -177,13 +229,64 @@
 					?>
 					</td>
 					<td><?=$employee['shift']?></td>
-					<td></td>
-					<td></td>
 					<td>
 					<?php
-						$maint = Manager::GetEmployeeProductionsMaintenances($date_string, $employee['shift'], $employee['id']);
-						foreach ($maint as $maints) {
-							echo $maints['maintanence'];
+						$worked = Manager::GetEmployeeProductionsDaysWorked($date_string, $employee['id']);
+						echo $worked['all_productions'];
+						echo " / ";
+						echo $worked['working'];
+					?>
+					</td>
+					<td>
+					<?php
+						echo "<small>";
+						$nonworked_days = Manager::GetEmployeeProductionsDaysNonWorked($date_string, $employee['id']);
+						echo "Atvaļinājums: ";
+						foreach($nonworked_days as $nonworked_day)
+						{
+							if(isset($nonworked_day['vacation']))
+							{
+								echo $nonworked_day['date']." ";
+							}
+						}
+						echo '<br>';
+						echo "Slimība: ";
+						foreach($nonworked_days as $nonworked_day)
+						{
+							if(isset($nonworked_day['sick_leave']))
+							{
+								echo $nonworked_day['date']." ";
+							}
+						}
+						echo '<br>';
+						echo "Neapmeklējums: ";
+						foreach($nonworked_days as $nonworked_day)
+						{
+							if(isset($nonworked_day['nonattendace']))
+							{
+								echo $nonworked_day['date']." ";
+							}
+						}
+						echo "</small>";
+					?>
+					</td>
+					<td>
+					<?php
+						$capacity = Manager::GetEmployeeProductionsCapacity($date_string, $employee['id']);
+						echo $capacity['capacity'];
+					?>
+					</td>
+					<td>
+					<?php
+						$maintenance = Manager::GetEmployeeProductionsMaintenances($date_string, $employee['id']);
+						if(!isset($maintenance['maintenance']))
+						{
+							echo "0 min";
+						}
+						else
+						{
+							echo $maintenance['maintenance']." min / ";
+							echo round($maintenance['maintenance']/60, 3)." h";
 						}
 					?>
 					</td>

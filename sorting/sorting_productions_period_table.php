@@ -80,7 +80,7 @@
 						<?=$production['thickness']?> x <?=$production['width']?> x <?=$production['length']?>
 					</td>
 					<td><?=$sorted_production['capacity']?></td>
-					<td><?=$sorted_production['capacity_per_piece']?></td>
+					<td><?=$sorted_production['capacity_piece']?></td>
 					<td>
 						<ol class="list-space">
 							<?php
