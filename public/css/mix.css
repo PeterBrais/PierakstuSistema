@@ -82,6 +82,15 @@ body{
 	color: #000;
 }
 
+.signature, .signature:focus {
+    border: 0;
+    border-bottom: 1px solid #000;
+	width: 50%;
+    box-shadow: none;
+    -webkit-box-shadow: none;
+    outline: -webkit-focus-ring-color auto 0px;
+}
+
 @media (min-width: 800px) {
   .container-scroll {
     overflow-x: auto;

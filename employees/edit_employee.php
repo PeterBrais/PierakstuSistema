@@ -33,7 +33,7 @@
 		extract($_SESSION['employee']);
 	}
 
-	//Returns all users data
+	//Returns aemployees data
 	$employee = Employee::GetEmployeesData($user_id);
 ?>
 

@@ -118,7 +118,7 @@
 				<th rowspan="2">Amats</th>
 				<th rowspan="2">Maiņa</th>
 				<th colspan="4">Darba aprēķins</th>
-				<th rowspan="2">...</th>
+				<th rowspan="2">Atskaite</th>
 			</tr>
 			<tr>
 				<th>Dienas</th>
@@ -165,7 +165,7 @@
 						{
 							if(isset($nonworked_day['vacation']))
 							{
-								echo $nonworked_day['date']." ";
+								echo $nonworked_day['date'].", ";
 							}
 						}
 						echo '<br>';
@@ -174,7 +174,7 @@
 						{
 							if(isset($nonworked_day['sick_leave']))
 							{
-								echo $nonworked_day['date']." ";
+								echo $nonworked_day['date'].", ";
 							}
 						}
 						echo '<br>';
@@ -183,7 +183,7 @@
 						{
 							if(isset($nonworked_day['nonattendace']))
 							{
-								echo $nonworked_day['date']." ";
+								echo $nonworked_day['date'].", ";
 							}
 						}
 						echo "</small>";
@@ -209,7 +209,11 @@
 						}
 					?>
 					</td>
-					<td></td>
+					<td>
+						<a href="report?id=<?=$employee['id']?>&period=<?=$date_string?>" class="btn btn-success">
+							Skatīt
+						</a>
+					</td>
 				</tr>
 	<?php
 			}
@@ -246,7 +250,7 @@
 						{
 							if(isset($nonworked_day['vacation']))
 							{
-								echo $nonworked_day['date']." ";
+								echo $nonworked_day['date'].", ";
 							}
 						}
 						echo '<br>';
@@ -255,7 +259,7 @@
 						{
 							if(isset($nonworked_day['sick_leave']))
 							{
-								echo $nonworked_day['date']." ";
+								echo $nonworked_day['date'].", ";
 							}
 						}
 						echo '<br>';
@@ -264,7 +268,7 @@
 						{
 							if(isset($nonworked_day['nonattendace']))
 							{
-								echo $nonworked_day['date']." ";
+								echo $nonworked_day['date'].", ";
 							}
 						}
 						echo "</small>";
@@ -290,7 +294,11 @@
 						}
 					?>
 					</td>
-					<td></td>
+					<td>
+						<a href="report?id=<?=$employee['id']?>&period=<?=$date_string?>" class="btn btn-success">
+							Skatīt
+						</a>
+					</td>
 				</tr>
 	<?php
 			}

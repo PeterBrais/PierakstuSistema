@@ -40,9 +40,6 @@ ob_start(); //Output buffering
 							<li class="nav-item">
 								<a class="nav-link" href="/">Sākums</a>
 							</li>
-							<!-- <li class="nav-item">
-								<a class="nav-link" href="/new_user/signup">Jauns lietotājs</a>
-							</li> -->
 
 							<div class="dropdown nav-item">
 								<a class="nav-link dropdown-toggle" href="" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

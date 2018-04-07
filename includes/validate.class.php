@@ -22,6 +22,11 @@
 			return preg_match("/^\d{4}[\-\/\s]?((((0[13578])|(1[02]))[\-\/\s]?(([0-2][0-9])|(3[01])))|(((0[469])|(11))[\-\/\s]?(([0-2][0-9])|(30)))|(02[\-\/\s]?[0-2][0-9]))$/", $text);
 		}
 
+		static function IsValidPeriod($text)
+		{
+			return preg_match("/^\d{4}[-](0[1-9]|1[012])$/", $text);
+		}
+
 		static function IsValidIntegerNumber($number)
 		{
 			return preg_match("/^\d{1,12}+$/", $number);
