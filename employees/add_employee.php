@@ -81,6 +81,33 @@
 									?>
 								</div>
 							</div>
+							<div class="form-group row">
+								<label class="col-md-2 offset-md-1 col-form-label">
+									Personas Kods
+									<span class="text-danger" title="Šis lauks ir obligāts">
+										&#10033;
+									</span>
+								</label>
+								<div class="col-md-5">
+									<input class="form-control" type="text" name="person_no" aria-describedby="personNoArea" value="<?php echo isset($_SESSION['employee']) ? $person_no : ''; ?>">
+									<small id="personNoArea" class="form-text text-muted">
+										* Sastāv no 6 cipariem, defises un 5 cipariem *
+									</small>
+								</div>
+								<div class="col-md-4">
+									<?php
+										if(isset($_SESSION['person_no']))
+										{
+									?>
+										<div class="alert alert-danger alert-size" role="alert">
+											<?=$_SESSION['person_no']?>
+										</div>
+									<?php
+											unset($_SESSION['person_no']);
+										}
+									?>
+								</div>
+							</div>
 							<div class="form-group row" id="workplace_input">
 								<label class="col-md-2 offset-md-1 col-form-label">
 									Darbavieta
@@ -136,6 +163,30 @@
 										}
 									?>
 								</div>	
+							</div>
+							<div class="form-group row">
+								<label class="col-md-2 offset-md-1 col-form-label">
+									Darbu nodošanas - Pieņemšanas akta Nr.
+								</label>
+								<div class="col-md-5">
+									<input class="form-control" type="text" name="act_no" aria-describedby="actNoArea" value="<?php echo isset($_SESSION['employee']) ? $act_no : ''; ?>">
+									<small id="actNoArea" class="form-text text-muted">
+										* Aktuāls tikai zāģētavas un šķirotavas darbiniekiem *
+									</small>
+								</div>
+								<div class="col-md-4">
+									<?php
+										if(isset($_SESSION['act_no']))
+										{
+									?>
+										<div class="alert alert-danger alert-size" role="alert">
+											<?=$_SESSION['act_no']?>
+										</div>
+									<?php
+											unset($_SESSION['act_no']);
+										}
+									?>
+								</div>
 							</div>
 							<div class="form-group row">
 								<div class="col-md-3 offset-md-3">

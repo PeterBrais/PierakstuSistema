@@ -20,8 +20,9 @@ $(function(){
 		wrapper: 'div'
 	});
 
+
 	$().ready(function(){
-		//Validate new employee input form
+		//Validate employee update input form
 		$('#edit_employee_form').validate({
 			rules: {
 				name: {
@@ -35,6 +36,19 @@ $(function(){
 					minlength: 3,
 					maxlength: 50,
 					IsValidName: true
+				},
+				person_no: {
+					required: true,
+					minlength: 12,
+					maxlength: 12,
+					IsValidPersonNo: true,
+					remote: {
+						url: "current_person_no_check",
+						type: "post",
+						data: {
+							id: function(){return $('input[name=employee_id]').val();}, //Extra parameter: id
+						},
+					},
 				},
 				place: {
 					ChosenWorkplaceDropdown: true
@@ -71,6 +85,13 @@ $(function(){
 					date: true,
 					IsValidDate: true,
 				},
+				act_no: {
+					required: true,
+					number: true,
+					min: 0,
+					max: 1000,
+					IsValidActNo: true,
+				},
 			},
 			messages: {
 				name: {
@@ -84,6 +105,13 @@ $(function(){
 					minlength: "Uzvārds jābūt garumā no 3 simboliem līdz 50 simboliem!",
 					maxlength: "Uzvārds jābūt garumā no 3 simboliem līdz 50 simboliem!",
 					IsValidName: "Uzvārds drīkst saturēt tikai latīņu burtus!",
+				},
+				person_no: {
+					required: "Lūdzu aizpildiet 'Personas Kods' lauku!",
+					minlength: "Personas kodam jābūt 12 ciparus garam!",
+					maxlength: "Personas kodam jābūt 12 ciparus garam!",
+					IsValidPersonNo: "Personas kods drīkst sastāvēt no 11 cipariem un defises!",
+					remote: "Darbinieks ar šādu personas kodu jau eksistē!",
 				},
 				place: {
 					ChosenWorkplaceDropdown: "Lūdzu izvēlieties darba vietu!",
@@ -119,6 +147,13 @@ $(function(){
 					date: "Lūdzu ievadiet korektu datumu (GGGG-MM-DD vai GGGG-MM-DD)!",
 					IsValidDate: "Lūdzu ievadiet korektu datumu (GGGG-MM-DD vai GGGG-MM-DD)!",
 				},
+				act_no: {
+					required: "Lūdzu aizpildiet 'Darbu nodošanas - Pieņemšanas akta Nr.' lauku!",
+					number: "Nr. drīkst saturēt tikai ciparus!",
+					min: "Nr. jābūt lielākam par nulli!",
+					max: "Nr. jābūt ne vairāk kā 4 ciparus garam!",
+					IsValidActNo: "Nr. drīkst saturēt tikai ciparus!",
+				}
 			}
 		});
 	});

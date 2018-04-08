@@ -16,7 +16,7 @@
 		exit();
 	}
 
-	$inputs = ['name', 'last_name', 'employee_id', 'date_from', 'date_to', 'positions'];
+	$inputs = ['name', 'last_name', 'employee_id', 'date_from', 'date_to', 'positions', 'person_no'];
 
 	foreach($inputs as $input)
 	{
@@ -34,8 +34,9 @@
 	$date_from = htmlspecialchars($_POST['date_from']);
 	$date_to = htmlspecialchars($_POST['date_to']);
 	$positions = $_POST['positions'];
+	$person_no = htmlspecialchars($_POST['person_no']);
 
-	if(empty($name) || empty($last_name) || empty($emp_id) || empty($date_from))
+	if(empty($name) || empty($last_name) || empty($emp_id) || empty($date_from) || empty($person_no))
 	{
 		$_SESSION['error'] = "Lūdzu aizpildiet visus obligātos laukus!";
 		$_SESSION['employee'] = $_POST;
@@ -102,12 +103,29 @@
 		$date_to = NULL;
 	}
 
+	//Check if person id is correct
+	if(!Validate::IsValidPersonNumber($person_no))
+	{
+		$_SESSION['person_no'] = "Personas kods drīkst sastāvēt no 11 cipariem un defises!";
+		$_SESSION['employee'] = $_POST;
+		header("Location: add_employee");
+		exit();
+	}
+
+	//Check if person id already exists
+	if(Employee::CurrentPersonNoExists($person_no, $emp_id))
+	{
+		$_SESSION['person_no'] = "Darbinieks ar šādu personas kodu jau eksistē!";
+		$_SESSION['position'] = $_POST;
+		header("Location: add_position");
+		exit();
+	}
 
 	//Check if user works in sawmill
 	if(Employee::ExistsEmployeesWorkplaceSawmillWithID($emp_id))
 	{
 		//If user works in sawmill then check inputs
-		$inputs = ['shift', 'capacity_rate', 'hour_rate'];
+		$inputs = ['shift', 'capacity_rate', 'hour_rate', 'act_no'];
 
 		foreach($inputs as $input)
 		{
@@ -121,8 +139,9 @@
 		$shift = htmlspecialchars($_POST['shift']);
 		$capacity_rate = htmlspecialchars($_POST['capacity_rate']);
 		$hour_rate = htmlspecialchars($_POST['hour_rate']);
+		$act_no = htmlspecialchars($_POST['act_no']);
 
-		if(empty($shift) || empty($capacity_rate) || empty($hour_rate))
+		if(empty($shift) || empty($capacity_rate) || empty($hour_rate) || empty($act_no))
 		{
 			$_SESSION['error'] = "Lūdzu aizpildiet visus obligātos laukus!";
 			$_SESSION['employee'] = $_POST;
@@ -170,9 +189,52 @@
 			header("Location: edit_employee?id=$emp_id");
 			exit();
 		}
+
+		//Check if act of transfer and adoption of works is valid
+		if(!Validate::IsValidActNumber($act_no))
+		{
+			$_SESSION['act_no'] = "Nr. drīkst saturēt tikai ciparus!";
+			$_SESSION['employee'] = $_POST;
+			header("Location: add_employee");
+			exit();
+		}
 	}
 	else
 	{
+		if(Employee::ExistsSortingEmployee($emp_id))
+		{
+
+			if(!isset($_POST['act_no']))
+			{
+				header("Location: /");
+				exit();
+			}
+
+			$act_no = htmlspecialchars($_POST['act_no']);
+
+			if(empty($act_no))
+			{
+				$_SESSION['error'] = "Lūdzu aizpildiet visus obligātos laukus!";
+				$_SESSION['employee'] = $_POST;
+				header("Location: add_employee");
+				exit();
+			}
+
+			//Check if act of transfer and adoption of works is valid
+			if(!Validate::IsValidActNumber($act_no))
+			{
+				$_SESSION['act_no'] = "Nr. drīkst saturēt tikai ciparus!";
+				$_SESSION['employee'] = $_POST;
+				header("Location: add_employee");
+				exit();
+			}
+		}
+		else
+		{
+			$act_no = NULL;
+		}
+
+
 		$shift = NULL;
 		$capacity_rate = NULL;
 		$hour_rate = NULL;
@@ -201,6 +263,8 @@
 	$update_employee = new Employee();
 	$update_employee->name = $name;
 	$update_employee->last_name = $last_name;
+	$update_employee->person_id = $person_no;
+	$update_employee->act_number = $act_no;
 	$update_employee->shift = $shift;
 	$update_employee->capacity_rate = $capacity_rate;
 	$update_employee->hour_rate = $hour_rate;

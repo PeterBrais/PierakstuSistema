@@ -57,3 +57,12 @@ jQuery.validator.addMethod("IsValidInteger", function(value, element) {
 jQuery.validator.addMethod("IsValidHours", function(value, element) {
 	return this.optional(element) || /^([1-9]|1[0-9]|2[0-4])$/.test(value);
 }, "Enter valid hours");
+
+jQuery.validator.addMethod("IsValidPersonNo", function(value, element) {
+	return this.optional(element) || /^\d{6}-\d{5}$/.test(value);
+}, "Enter valid hours");
+
+jQuery.validator.addMethod("IsValidActNo", function(value, element) {
+	return this.optional(element) || /^([0-9][0-9]{0,2}|1000)$/.test(value);
+}, "Enter valid hours");
+

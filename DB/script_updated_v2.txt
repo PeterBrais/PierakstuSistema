@@ -11,12 +11,15 @@ CREATE TABLE employees (
 	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(50) NOT NULL,
     last_name VARCHAR(50) NOT NULL,
+	person_id CHAR(12) NOT NULL,
     place VARCHAR(12) NOT NULL,
+	act_number VARCHAR(10) NULL,
 	shift CHAR(2) NULL,
 	capacity_rate DECIMAL(12,2) NULL,
 	hour_rate DECIMAL(12,2) NULL,
 	working_from DATE NULL,
-	working_to DATE NULL
+	working_to DATE NULL,
+	UNIQUE (person_id)
 );
 
 CREATE TABLE positions (

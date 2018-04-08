@@ -116,6 +116,16 @@
 			}
 			return true;
 		}
+
+		static function IsValidActNumber($number)
+		{
+			return preg_match("/^([0-9][0-9]{0,2}|1000)$/", $number);
+		}
+
+		static function IsValidPersonNumber($number)
+		{
+			return preg_match("/^\d{6}-\d{5}$/", $number);
+		}
 	}
 
 ?>

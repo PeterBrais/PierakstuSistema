@@ -68,6 +68,53 @@ $(function(){
 					IsValidFloatNumberWithTwoDigitsAfterDot: "Stundas likme drīkst saturēt tikai ciparus ar komatu!"
 				}
 			});
+			$('input[name="act_no"]').rules('add', {
+				required: true,
+				number: true,
+				min: 0,
+				max: 1000,
+				IsValidActNo: true,
+				messages: {
+					required: "Lūdzu aizpildiet 'Darbu nodošanas - Pieņemšanas akta Nr.' lauku!",
+					number: "Nr. drīkst saturēt tikai ciparus!",
+					min: "Nr. jābūt lielākam par nulli!",
+					max: "Nr. jābūt ne vairāk kā 4 ciparus garam!",
+					IsValidActNo: "Nr. drīkst saturēt tikai ciparus!",
+				}
+			});
+		}
+		else if(place_value == "3")
+		{
+			$('input[name="act_no"]').rules('add', {
+				required: true,
+				number: true,
+				min: 0,
+				max: 1000,
+				IsValidActNo: true,
+				messages: {
+					required: "Lūdzu aizpildiet 'Darbu nodošanas - Pieņemšanas akta Nr.' lauku!",
+					number: "Nr. drīkst saturēt tikai ciparus!",
+					min: "Nr. jābūt lielākam par nulli!",
+					max: "Nr. jābūt ne vairāk kā 4 ciparus garam!",
+					IsValidActNo: "Nr. drīkst saturēt tikai ciparus!",
+				}
+			});
+		}
+		else if(place_value == "1")
+		{
+			$('input[name="act_no"]').rules('add', {
+				required: false,
+				number: true,
+				min: 0,
+				max: 1000,
+				IsValidActNo: true,
+				messages: {
+					number: "Nr. drīkst saturēt tikai ciparus!",
+					min: "Nr. jābūt lielākam par nulli!",
+					max: "Nr. jābūt ne vairāk kā 4 ciparus garam!",
+					IsValidActNo: "Nr. drīkst saturēt tikai ciparus!",
+				}
+			});
 		}
 	});
 
@@ -87,6 +134,16 @@ $(function(){
 					maxlength: 50,
 					IsValidName: true
 				},
+				person_no: {
+					required: true,
+					minlength: 12,
+					maxlength: 12,
+					IsValidPersonNo: true,
+					remote: {
+						url: "check_person_no",
+						type: "post"
+					},
+				},
 				place: {
 					ChosenWorkplaceDropdown: true
 				},
@@ -104,6 +161,13 @@ $(function(){
 					minlength: "Uzvārds jābūt garumā no 3 simboliem līdz 50 simboliem!",
 					maxlength: "Uzvārds jābūt garumā no 3 simboliem līdz 50 simboliem!",
 					IsValidName: "Uzvārds drīkst saturēt tikai latīņu burtus!"
+				},
+				person_no: {
+					required: "Lūdzu aizpildiet 'Personas Kods' lauku!",
+					minlength: "Personas kodam jābūt 12 ciparus garam!",
+					maxlength: "Personas kodam jābūt 12 ciparus garam!",
+					IsValidPersonNo: "Personas kods drīkst sastāvēt no 11 cipariem un defises!",
+					remote: "Darbinieks ar šādu personas kodu jau eksistē!"
 				},
 				place: {
 					ChosenWorkplaceDropdown: "Lūdzu izvēlieties darba vietu!"

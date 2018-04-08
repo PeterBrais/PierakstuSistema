@@ -48,7 +48,7 @@
 					<div class="card-body">
 						<h4 class="card-title text-center">
 							Labot: <u>'<?=$employee['name']?> <?=$employee['last_name']?>'</u>. Strādā: 
-							<u>
+							<u id="employee_place_dsd">
 							<?php 
 								if($employee['place'] == "Zagetava"){
 									echo "'Zāģētava'";
@@ -72,6 +72,9 @@
 							<div class="form-group row">
 								<label class="col-md-2 offset-md-1 col-form-label">
 									Vārds
+									<span class="text-danger" title="Šis lauks ir obligāts">
+										&#10033;
+									</span>
 								</label>
 								<div class="col-md-5">
 									<input class="form-control" type="text" name="name" aria-describedby="nameArea" value="<?php echo isset($_SESSION['employee']) ? $name : $employee['name']; ?>">
@@ -96,6 +99,9 @@
 							<div class="form-group row">
 								<label class="col-md-2 offset-md-1 col-form-label">
 									Uzvārds
+									<span class="text-danger" title="Šis lauks ir obligāts">
+										&#10033;
+									</span>
 								</label>
 								<div class="col-md-5">
 									<input class="form-control" type="text" name="last_name" aria-describedby="lastNameArea" value="<?php echo isset($_SESSION['employee']) ? $last_name : $employee['last_name']; ?>">
@@ -117,6 +123,33 @@
 									?>
 								</div>
 							</div>
+							<div class="form-group row">
+								<label class="col-md-2 offset-md-1 col-form-label">
+									Personas Kods
+									<span class="text-danger" title="Šis lauks ir obligāts">
+										&#10033;
+									</span>
+								</label>
+								<div class="col-md-5">
+									<input class="form-control" type="text" name="person_no" aria-describedby="personNoArea" value="<?php echo isset($_SESSION['employee']) ? $person_no : $employee['person_id']; ?>">
+									<small id="personNoArea" class="form-text text-muted">
+										* Sastāv no 6 cipariem, defises un 5 cipariem *
+									</small>
+								</div>
+								<div class="col-md-4">
+									<?php
+										if(isset($_SESSION['person_no']))
+										{
+									?>
+										<div class="alert alert-danger alert-size" role="alert">
+											<?=$_SESSION['person_no']?>
+										</div>
+									<?php
+											unset($_SESSION['person_no']);
+										}
+									?>
+								</div>
+							</div>
 						<?php
 							if($employee['place'] == "Zagetava")
 							{
@@ -124,6 +157,9 @@
 							<div class="form-group row">
 								<label class="col-md-2 offset-md-1 col-form-label">
 									Maiņa
+									<span class="text-danger" title="Šis lauks ir obligāts">
+										&#10033;
+									</span>
 								</label>
 								<div class="col-md-5">
 									<select class="custom-select" name="shift">
@@ -137,6 +173,9 @@
 							<div class="form-group row">
 								<label class="col-md-2 offset-md-1 col-form-label">
 									Likmes
+									<span class="text-danger" title="Šis lauks ir obligāts">
+										&#10033;
+									</span>
 								</label>
 								<div class="col-md-5">
 									<div class="row">
@@ -171,6 +210,9 @@
 							<div class="form-group row">
 								<label class="col-md-2 offset-md-1 col-form-label">
 									Strādā no
+									<span class="text-danger" title="Šis lauks ir obligāts">
+										&#10033;
+									</span>
 								</label>
 								<div class="col-md-5">
 									<input class="form-control" type="text" name="date_from" aria-describedby="dateArea" placeholder="2000/01/01" value="<?php echo isset($_SESSION['employee']) ? $date_from : $employee['working_from']; ?>">
@@ -228,6 +270,9 @@
 						?>
 								<label class="col-md-2 offset-md-1 col-form-label">
 									Amats
+									<span class="text-danger" title="Šis lauks ir obligāts">
+										&#10033;
+									</span>
 								</label>
 								<div class="col-md-5">
 
@@ -316,6 +361,37 @@
 							}
 						?>
 							</div>
+						<?php
+							if(($employee['place'] == "Zagetava") || $employee['place'] == "Skirotava")
+							{
+						?>
+							<div class="form-group row">
+								<label class="col-md-2 offset-md-1 col-form-label">
+									Darbu nodošanas - Pieņemšanas akta Nr.
+								</label>
+								<div class="col-md-5">
+									<input id="act_number_id" class="form-control" type="text" name="act_no" aria-describedby="actNoArea" value="<?php echo isset($_SESSION['employee']) ? $act_no : $employee['act_number']; ?>">
+									<small id="actNoArea" class="form-text text-muted">
+										* Aktuāls tikai zāģētavas un šķirotavas darbiniekiem *
+									</small>
+								</div>
+								<div class="col-md-4">
+									<?php
+										if(isset($_SESSION['act_no']))
+										{
+									?>
+										<div class="alert alert-danger alert-size" role="alert">
+											<?=$_SESSION['act_no']?>
+										</div>
+									<?php
+											unset($_SESSION['act_no']);
+										}
+									?>
+								</div>
+							</div>
+						<?php
+							}
+						?>
 							<div class="form-group row">
 								<div class="col-md-3 offset-md-3">
 									<button class="btn btn-info" type="submit" name="submit">Labot</button>

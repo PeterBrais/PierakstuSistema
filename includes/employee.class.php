@@ -8,6 +8,8 @@
 		public $id;
 		public $name;
 		public $last_name;
+		public $person_id;
+		public $act_number;
 		public $place;
 		public $shift;
 		public $capacity_rate;
@@ -27,8 +29,8 @@
 		{
 			try
 			{
-				$sql = $this->conn->prepare("INSERT INTO employees VALUES (DEFAULT, ?, ?, ?, ?, ?, ?, ?, ?)");
-				$sql->bind_param('ssssddss', $this->name, $this->last_name, $this->place, $this->shift, $this->capacity_rate, $this->hour_rate, $this->working_from, $this->working_to);
+				$sql = $this->conn->prepare("INSERT INTO employees VALUES (DEFAULT, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+				$sql->bind_param('ssssssddss', $this->name, $this->last_name, $this->person_id, $this->place, $this->act_number, $this->shift, $this->capacity_rate, $this->hour_rate, $this->working_from, $this->working_to);
 				$sql->execute();
 
 				$this->id = $this->conn->insert_id;
@@ -45,8 +47,8 @@
 		{
 			try
 			{
-				$sql = $this->conn->prepare("UPDATE employees SET name = ?, last_name = ?, shift = ?, capacity_rate = ?, hour_rate = ?, working_from = ?, working_to = ? WHERE employees.id = ?");
-				$sql->bind_param('sssddsss', $this->name, $this->last_name, $this->shift, $this->capacity_rate, $this->hour_rate, $this->working_from, $this->working_to, $this->id);
+				$sql = $this->conn->prepare("UPDATE employees SET name = ?, last_name = ?, person_id = ?, act_number = ?, shift = ?, capacity_rate = ?, hour_rate = ?, working_from = ?, working_to = ? WHERE employees.id = ?");
+				$sql->bind_param('sssssddsss', $this->name, $this->last_name, $this->person_id, $this->act_number, $this->shift, $this->capacity_rate, $this->hour_rate, $this->working_from, $this->working_to, $this->id);
 				$sql->execute();
 				$sql->close();
 			}
@@ -62,7 +64,7 @@
 		{
 			global $conn;
 
-			$sql = $conn->prepare("SELECT id FROM employees WHERE id=?");
+			$sql = $conn->prepare("SELECT id FROM employees WHERE id = ?");
 			$sql->bind_param('s', $id);
 			$sql->execute();
 			$result = $sql->get_result();
@@ -118,8 +120,36 @@
 		{
 			global $conn;
 
-			$sql = $conn->prepare("SELECT id FROM employees WHERE id=? AND place = 'Skirotava'");
+			$sql = $conn->prepare("SELECT id FROM employees WHERE id = ? AND place = 'Skirotava'");
 			$sql->bind_param('s', $id);
+			$sql->execute();
+			$result = $sql->get_result();
+
+			$resultCheck = mysqli_num_rows($result);
+
+			return $resultCheck >= 1;
+		}
+
+		public static function ExistsPersonNo($person_id)	//Finds if employee with person_id exists
+		{
+			global $conn;
+
+			$sql = $conn->prepare("SELECT person_id FROM employees WHERE person_id = ?");
+			$sql->bind_param('s', $person_id);
+			$sql->execute();
+			$result = $sql->get_result();
+
+			$resultCheck = mysqli_num_rows($result);
+
+			return $resultCheck >= 1;
+		}
+
+		public static function CurrentPersonNoExists($person_id, $id)	//Returns true if position from other user in DB already exists
+		{
+			global $conn;
+
+			$sql = $conn->prepare("SELECT person_id FROM employees WHERE person_id = ? AND id <> ?");
+			$sql->bind_param('ss', $person_id, $id); //Binds parameter, transforms to string
 			$sql->execute();
 			$result = $sql->get_result();
 
