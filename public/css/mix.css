@@ -91,6 +91,11 @@ body{
     outline: -webkit-focus-ring-color auto 0px;
 }
 
+.border-between {
+	border-bottom-style: solid;
+    border-bottom-color: hsl(89, 43%, 51%);
+}
+
 @media (min-width: 800px) {
   .container-scroll {
     overflow-x: auto;

@@ -106,3 +106,5 @@
 		<p class="form-control-static sorted_capacities_pieces"> m<sup>3</sup></p>
 	</div>
 </div>
+<h5 class="text-center">Šķirotavas darbinieki</h5>
+<?php include_once "sorting_employees_table.php"; ?>

@@ -61,7 +61,7 @@
 						<div class="offset-md-1 col-md-11">
 							<p class="font-weight-bold">
 								DARBU NODOŠANAS - PIEŅEMŠANAS AKTS Nr. DAL
-								<span class="text-danger">.....</span> /420-17
+								<?=$employee['act_number']?> /420-17
 								<span class="font-weight-normal ml-2">
 									(Rīkojums Nr. SRM-14-782-rp 03.09.2014.)
 								</span>
@@ -133,7 +133,7 @@
 								<br>
 								<span class="font-italic">(darbinieka vārds, uzvārds)</span>
 								<br>
-								<span class="text-danger">.....</span>
+								<?=$employee['person_id']?>
 								<br>
 								<span class="font-italic">(personas kods)</span>	
 							</p>
@@ -299,30 +299,7 @@
 		</div>
 	</div>
 
-<!-- <script src="../public/js/edit_employee.js"></script> -->
-<script>
-$(document).ready(function(){
-
-	var summ = Number($('#summ').html());
-
-	$('#efficiency_rate').on('input', function(){
-		var efficiency = Number($('#efficiency_rate').val())
-
-		var total = ((summ/100)*efficiency)+summ;
-		if(isNaN(total))
-		{
-			total = "0.00";
-			$('#total_summ').html(total);
-		}
-		else
-		{
-			total = total.toFixed(2);
-			$('#total_summ').html(total);
-		}
-	});
-	
-});
-</script>
+<script src="../public/js/sawmill_employee_report.js"></script>
 
 <?php
 	include_once "../footer.php";

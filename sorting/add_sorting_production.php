@@ -1,16 +1,18 @@
 <?php
 	include_once "../header.php";
 
-	if(!isset($_SESSION['id']) && !isset($_SESSION['role']))	//Adding new sorting production possible if user is logged in
+	if(!isset($_SESSION['id']) && !isset($_SESSION['role']))	//Check if user is logged in
 	{
 		header("Location: /");
 		exit();
 	}
-	if(($_SESSION['role'] != "a") && ($_SESSION['role'] != "p"))	//Check if user have permission
+
+	if(($_SESSION['role'] != "p") && ($_SESSION['role'] != "a") && ($_SESSION['active'] != 1))	//Check if user have permission add new sorting production
 	{
 		header("Location: /");
 		exit();
 	}
+
 	if(isset($_SESSION['sorting_prod']))
 	{
 		extract($_SESSION['sorting_prod']);
@@ -216,15 +218,19 @@
 							<div id="sorted_select">
 								<?php include_once "sorted_production_inputs.php"; ?>
 							</div>
+
+							<!-- <h5 class="text-center">Šķirotavas darbinieki</h5>
+							<?php include_once "sorting_employees_table.php"; ?> -->
+
 							<div class="form-group row">
 								<div class="offset-md-3 col-md-4">
-									<button type="button" name="add" id="add" class="btn btn-success">Pievienot sašķiroto produkciju</button>
+									<button type="button" name="add" id="add" class="btn btn-success">Pievienot vēl sašķiroto produkciju</button>
 								</div>
 							</div>
 							<hr>
 
-							<h5 class="text-center">Šķirotavas darbinieki</h5>
-							<?php include_once "sorting_employees_table.php"; ?>
+							<!-- <h5 class="text-center">Šķirotavas darbinieki</h5>
+							<?php include_once "sorting_employees_table.php"; ?> -->
 							
 							<div class="form-group row">
 								<div class="col-md-3 offset-md-3">

@@ -117,6 +117,18 @@
 			return true;
 		}
 
+		static function IsArrayEmptyFromTo($array, $from_index, $to_index)
+		{
+			for($i = $from_index; $i < $to_index; $i++)
+			{
+				if(!empty($array[$i]))
+				{
+					return false;
+				}
+			}
+			return true;
+		}
+
 		static function IsValidActNumber($number)
 		{
 			return preg_match("/^([0-9][0-9]{0,2}|1000)$/", $number);

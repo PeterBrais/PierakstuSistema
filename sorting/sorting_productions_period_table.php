@@ -14,7 +14,6 @@
 					<th>Pavadzīmes Nr.</th>
 					<th>Datums</th>
 					<th>Laiks</th>
-					<th>H</th>
 					<th>
 						Izmērs <abbr title="Biezums x Platums x Garums">(BxPxG)</abbr>
 					</th>
@@ -30,6 +29,7 @@
 					<th>Tilpums (m<sup>3</sup>)</th>
 					<th>m<sup>3</sup>/gab</th>
 					<th>Darba veicēji</th>
+					<th>Labot</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -40,7 +40,6 @@
 			foreach($productions as $production)
 			{
 				$rows = $production['total_sorted'];
-				++$rows;
 	?>
 			<tr>
 				<td rowspan="<?=$rows?>"><?=$invoice['invoice']?></td>
@@ -48,7 +47,6 @@
 				<td rowspan="<?=$rows?>">
 					<?=$production['time_from']?> - <?=$production['time_to']?>
 				</td>
-				<td rowspan="<?=$rows?>">Stundas</td>
 				<td rowspan="<?=$rows?>">
 					<?=$production['thickness']?> x <?=$production['width']?> x <?=$production['length']?>
 				</td>
@@ -67,48 +65,85 @@
 					?>			
 				</td>
 				<td rowspan="<?=$rows?>"><?=$production['capacity']?></td>
+	<?php
+		$sorted_productions = Manager::GetSortedProductionsByID($production['id']);
+		$k = 0;
+		foreach($sorted_productions as $sorted_production)
+		{
+			if($k == 0)
+			{
+	?>
+				<td><?=$sorted_production['type']?></td>
+				<td><?=$sorted_production['count']?></td>
+				<td>
+					<?=$production['thickness']?> x <?=$production['width']?> x <?=$production['length']?>
+				</td>
+				<td><?=$sorted_production['capacity']?></td>
+				<td><?=$sorted_production['capacity_piece']?></td>
+				<td>
+					<ol class="list-space">
+						<?php
+							$workers = Manager::GetAllSortingProductionWorkers($production['id']);
+							foreach($workers as $worker)
+							{
+								echo '<li>';
+								echo $worker['name'];
+								echo " ";
+								echo $worker['last_name'];
+								echo '</li>';
+							}
+						?>
+					</ol>
+				</td>
+				<td rowspan="<?=$rows?>">
+					<a href="edit_production?id=<?=$production['id']?>" class="btn btn-info">
+						Labot
+					</a>
+				</td>
 			</tr>
-			<?php
-				$sorted_productions = Manager::GetSortedProductionsByID($production['id']);
-				foreach($sorted_productions as $sorted_production)
-				{
-			?>
-				<tr>
-					<td><?=$sorted_production['type']?></td>
-					<td><?=$sorted_production['count']?></td>
-					<td>
-						<?=$production['thickness']?> x <?=$production['width']?> x <?=$production['length']?>
-					</td>
-					<td><?=$sorted_production['capacity']?></td>
-					<td><?=$sorted_production['capacity_piece']?></td>
-					<td>
-						<ol class="list-space">
-							<?php
-								$workers = Manager::GetAllSortingProductionWorkers($production['id']);
-								foreach($workers as $worker)
-								{
-									echo '<li>';
-									echo $worker['name'];
-									echo " ";
-									echo $worker['last_name'];
-									echo '</li>';
-								}
-							?>
-						</ol>
-					</td>
-				</tr>
-			<?php
-				}
+	<?php
+			} 
+			else
+			{
+	?>
+			<tr>
+				<td><?=$sorted_production['type']?></td>
+				<td><?=$sorted_production['count']?></td>
+				<td>
+					<?=$production['thickness']?> x <?=$production['width']?> x <?=$production['length']?>
+				</td>
+				<td><?=$sorted_production['capacity']?></td>
+				<td><?=$sorted_production['capacity_piece']?></td>
+				<td>
+					<ol class="list-space">
+						<?php
+							$workers = Manager::GetAllSortingProductionWorkers($production['id']);
+							foreach($workers as $worker)
+							{
+								echo '<li>';
+								echo $worker['name'];
+								echo " ";
+								echo $worker['last_name'];
+								echo '</li>';
+							}
+						?>
+					</ol>
+				</td>
+			</tr>
+	<?php
 			}
-			?>
+			$k++;
+		}
+			}
+		?>
 			<tr class="table-light">
-				<td colspan="12"></td>
+				<td colspan="13"></td>
 			</tr>
 	<?php
 		}
 	?>
 				<tr class="table-info">
-					<td colspan="5" class="text-right"><strong> Kopā: </strong></td>
+					<td colspan="4" class="text-right"><strong> Kopā: </strong></td>
 					<td>
 						<?php
 							echo $total['count'];
@@ -131,6 +166,7 @@
 					<td><?=$total['sorted_count']?></td>
 					<td></td>
 					<td><?=$total['sorted_capacity']?></td>
+					<td></td>
 					<td></td>
 					<td></td>
 				</tr>

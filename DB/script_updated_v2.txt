@@ -110,7 +110,7 @@ CREATE TABLE sorting_productions (
 	defect_count INT NULL
 );
 
-CREATE TABLE sorted_production (
+CREATE TABLE sorted_productions (
 	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	type CHAR(2) NOT NULL,
 	count INT NOT NULL,
@@ -123,10 +123,10 @@ CREATE TABLE sorted_production (
 	FOREIGN KEY (sorting_id) REFERENCES sorting_productions(id)
 );
 
-CREATE TABLE employees_sorting_productions (
+CREATE TABLE employees_sorted_productions (
 	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	employee_id INT NOT NULL,
-    sorting_id INT NOT NULL,
+    sorted_id INT NOT NULL,
     FOREIGN KEY (employee_id) REFERENCES employees(id),
-    FOREIGN KEY (sorting_id) REFERENCES sorting_productions(id)
+    FOREIGN KEY (sorted_id) REFERENCES sorted_productions(id)
 );

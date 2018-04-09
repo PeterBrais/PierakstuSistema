@@ -2,12 +2,12 @@
 
 	include "config.php";
 
-	class EmployeeSortingProductions
+	class EmployeeSortedProductions
 	{
 		private $conn;
 		public $id;
 		public $employee_id;
-		public $sorting_id;
+		public $sorted_id;
 
 		function __construct()
 		{
@@ -19,8 +19,8 @@
 		{
 			try
 			{
-				$sql = $this->conn->prepare("INSERT INTO employees_sorting_productions VALUES (DEFAULT, ?, ?)");
-				$sql->bind_param('ii', $this->employee_id, $this->sorting_id);
+				$sql = $this->conn->prepare("INSERT INTO employees_sorted_productions VALUES (DEFAULT, ?, ?)");
+				$sql->bind_param('ii', $this->employee_id, $this->sorted_id);
 				$sql->execute();
 
 				$this->id = $this->conn->insert_id;

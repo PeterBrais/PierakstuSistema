@@ -1,7 +1,9 @@
 $(document).ready(function(){
 	//Add more sorted production
-	$('#add').click(function(){ 
-		var Sorting = $(`<hr><div class="form-group row">
+	$('#add').click(function(){
+		var Sorting = $(`<div class="border-between"></div>
+						<h5 class="text-center">Sašķirotā produkcija</h5>
+						<div class="form-group row">
 							<label class="col-md-2 offset-md-1 col-form-label">
 								Veids
 								<span class="text-danger" title="Šis lauks ir obligāts">
@@ -72,8 +74,16 @@ $(document).ready(function(){
 							<div class="col-md-4">
 								<button type="button" class="btn btn-danger remove mb-2">Noņemt</button>
 							</div>
-						</div>`).hide().fadeIn('slow');
+						</div>
+						<h5 class="text-center">Šķirotavas darbinieki</h5>`).hide().fadeIn('slow');
+		
 	$('#sorted_select').append(Sorting);
+	$.ajax({
+			url: 'sorting_employees_table.php',
+			success: function(html) {
+				$("#sorted_select").append(html);
+			}
+		});
 	});
 
 	$(document).on('click', '.remove', function(){
@@ -93,6 +103,18 @@ $(document).ready(function(){
 			$(this).remove();
 		});
 		$(this).parent().parent().prev().prev().prev().prev().prev().fadeOut('slow', function(){
+			$(this).remove();
+		});
+		$(this).parent().parent().prev().prev().prev().prev().prev().prev().fadeOut('slow', function(){
+			$(this).remove();
+		});
+		$(this).parent().parent().prev().prev().prev().prev().prev().prev().fadeOut('slow', function(){
+			$(this).remove();
+		});
+		$(this).parent().parent().next().fadeOut('slow', function(){
+			$(this).remove();
+		});
+		$(this).parent().parent().next().next().fadeOut('slow', function(){
 			$(this).remove();
 		});
 	});

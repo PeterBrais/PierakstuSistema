@@ -25,7 +25,7 @@
 		{
 			try
 			{
-				$sql = $this->conn->prepare("INSERT INTO sorted_production VALUES (DEFAULT, ?, ?, ?, ?, ?, ?, ?, ?)");
+				$sql = $this->conn->prepare("INSERT INTO sorted_productions VALUES (DEFAULT, ?, ?, ?, ?, ?, ?, ?, ?)");
 				$sql->bind_param('siiiiddi', $this->type, $this->count, $this->thickness, $this->width, $this->length, $this->capacity, $this->capacity_per_piece, $this->sorting_id);
 				$sql->execute();
 

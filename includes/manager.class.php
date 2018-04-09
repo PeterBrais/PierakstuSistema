@@ -348,9 +348,9 @@
 			global $conn;
 
 			$sql = $conn->prepare("SELECT sorting_productions.*,
-									(SELECT COUNT(sorted_production.sorting_id) 
-									FROM sorted_production
-									WHERE sorting_productions.id = sorted_production.sorting_id) as total_sorted
+									(SELECT COUNT(sorted_productions.sorting_id) 
+									FROM sorted_productions
+									WHERE sorting_productions.id = sorted_productions.sorting_id) as total_sorted
 									FROM sorting_productions
 									WHERE sorting_productions.invoice = ?
 									ORDER BY date, time_from, time_to ASC");
@@ -388,13 +388,13 @@
 				WHERE DATE_FORMAT(sorting_productions.date, '%Y-%m') = ?) AS capacity,
 				(SELECT SUM(sorting_productions.defect_count) FROM sorting_productions
 				WHERE DATE_FORMAT(sorting_productions.date, '%Y-%m') = ?) AS defect_count,
-				(SELECT SUM(sorted_production.count) FROM sorted_production
+				(SELECT SUM(sorted_productions.count) FROM sorted_productions
 				JOIN sorting_productions
-				ON sorting_productions.id = sorted_production.sorting_id
+				ON sorting_productions.id = sorted_productions.sorting_id
 				WHERE DATE_FORMAT(sorting_productions.date, '%Y-%m') = ?) AS sorted_count,
-				(SELECT SUM(sorted_production.capacity) FROM sorted_production
+				(SELECT SUM(sorted_productions.capacity) FROM sorted_productions
 				JOIN sorting_productions
-				ON sorting_productions.id = sorted_production.sorting_id
+				ON sorting_productions.id = sorted_productions.sorting_id
 				WHERE DATE_FORMAT(sorting_productions.date, '%Y-%m') = ?) AS sorted_capacity
 				FROM sorting_productions");
 			$sql->bind_param('sssss', $date_string, $date_string, $date_string, $date_string, $date_string);
@@ -409,9 +409,9 @@
 		{
 			global $conn;
 
-			$sql = $conn->prepare("SELECT * FROM sorted_production
-									WHERE sorted_production.sorting_id = ?
-									ORDER BY sorted_production.id");
+			$sql = $conn->prepare("SELECT * FROM sorted_productions
+									WHERE sorted_productions.sorting_id = ?
+									ORDER BY sorted_productions.id");
 			$sql->bind_param('s', $production_id);
 			$sql->execute();
 			$result = $sql->get_result();
@@ -425,11 +425,11 @@
 
 			$sql = $conn->prepare("SELECT employees.id, employees.name, employees.last_name
 									FROM employees
-									JOIN employees_sorting_productions
-									ON employees.id = employees_sorting_productions.employee_id
-									JOIN sorting_productions
-									ON employees_sorting_productions.sorting_id = sorting_productions.id
-									WHERE sorting_productions.id = ?
+									JOIN employees_sorted_productions
+									ON employees.id = employees_sorted_productions.employee_id
+									JOIN sorted_productions
+									ON employees_sorted_productions.sorted_id = sorted_productions.id
+									WHERE sorted_productions.id = ?
 									ORDER BY employees.id");
 			$sql->bind_param('s', $production_id);
 			$sql->execute();
