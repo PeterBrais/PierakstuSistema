@@ -73,6 +73,26 @@
 			return $resultCheck >= 1;
 		}
 
+		public static function IsPositionOperatorOrAssistant($id)	//Check if users position is operator or assistant
+		{
+			global $conn;
+
+			$sql = $conn->prepare("SELECT positions.id FROM positions
+									JOIN employees_positions
+									ON employees_positions.position_id = positions.id
+									JOIN employees
+									ON employees_positions.employee_id = employees.id
+									WHERE employees.id = ? AND
+									(positions.name LIKE '%Pakošanas operators%' OR positions.name LIKE '%Zāģēšanas iecirkņa palīgstrādnieks%')");
+			$sql->bind_param('s', $id);
+			$sql->execute();
+			$result = $sql->get_result();
+
+			$resultCheck = mysqli_num_rows($result);
+
+			return $resultCheck >= 1;
+		}
+
 		function Save()	//Inserts data into database
 		{
 			try

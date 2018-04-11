@@ -18,5 +18,15 @@ $(document).ready(function(){
 			$('#total_summ').html(total);
 		}
 	});
+
+	//Input border style change
+	$('#order_input').blur(function(){
+		if ($(this).val()) {
+			$(this).addClass('bordered');   
+		}
+	});
+	$('#order_input').focus(function(){
+		$(this).removeClass('bordered');  
+	});
 	
 });

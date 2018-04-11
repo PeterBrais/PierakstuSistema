@@ -5,6 +5,13 @@
 	$productions = Manager::GetSawmillProductionsByDate($date_string);
 	$employees = Manager::GetSawmillEmployeesByDate($date_string);
 	$total = Manager::GetAllSawmillProductionSummByDate($date_string);
+
+	//Gets month number
+	$period_month_number = date('n', strtotime($date_string));
+	$period_month_number = $period_month_number-1;
+
+	//Employee count
+	$employee_count = count($employees);
 ?>
 	<div class="card-body">
 		<h4 class="card-title text-center">Zāģētavas produkcijas</h4>
@@ -114,6 +121,7 @@
 		<thead class="thead-default table-active">
 			<tr>
 				<th rowspan="2">Nr.p.k</th>
+				<th rowspan="2">Dal Nr.</th>
 				<th rowspan="2">V. Uzvārds</th>
 				<th rowspan="2">Amats</th>
 				<th rowspan="2">Maiņa</th>
@@ -137,6 +145,12 @@
 	?>
 				<tr>
 					<th><?=$i++?></th>
+					<td>
+					<?php
+						$emp_serial_number = 600+(($period_month_number * $employee_count)+($i-1));
+						echo $emp_serial_number;
+					?>
+					</td>
 					<td><?=$employee['name']?> <?=$employee['last_name']?></td>
 					<td>
 					<?php
@@ -169,7 +183,7 @@
 							}
 						}
 						echo '<br>';
-						echo "Slimība: ";
+						echo "Slimības lapa: ";
 						foreach($nonworked_days as $nonworked_day)
 						{
 							if(isset($nonworked_day['sick_leave']))
@@ -191,8 +205,13 @@
 					</td>
 					<td>
 					<?php
-						$capacity = Manager::GetEmployeeProductionsCapacity($date_string, $employee['id']);
-						echo $capacity['capacity'];
+						$capacities = Manager::GetEmployeeProductionsCapacity($date_string, $employee['id']);
+						$total_capacity = 0;
+						foreach($capacities as $capacity)
+						{
+							$total_capacity = $total_capacity + round((($capacity['lumber_capacity']/8)*$capacity['working_hours']), 3);
+						}
+						echo $total_capacity;
 					?>
 					</td>
 					<td>
@@ -210,7 +229,7 @@
 					?>
 					</td>
 					<td>
-						<a href="report?id=<?=$employee['id']?>&period=<?=$date_string?>" class="btn btn-success">
+						<a href="report?id=<?=$employee['id']?>&period=<?=$date_string?>&s=<?=$emp_serial_number?>" class="btn btn-success">
 							Skatīt
 						</a>
 					</td>
@@ -222,6 +241,12 @@
 	?>
 				<tr class="table-success">
 					<th><?=$i++?></th>
+					<td>
+					<?php
+						$emp_serial_number = 600+(($period_month_number * $employee_count)+($i-1));
+						echo $emp_serial_number;
+					?>
+					</td>
 					<td><?=$employee['name']?> <?=$employee['last_name']?></td>
 					<td>
 					<?php
@@ -254,7 +279,7 @@
 							}
 						}
 						echo '<br>';
-						echo "Slimība: ";
+						echo "Slimības lapa: ";
 						foreach($nonworked_days as $nonworked_day)
 						{
 							if(isset($nonworked_day['sick_leave']))
@@ -276,8 +301,13 @@
 					</td>
 					<td>
 					<?php
-						$capacity = Manager::GetEmployeeProductionsCapacity($date_string, $employee['id']);
-						echo $capacity['capacity'];
+						$capacities = Manager::GetEmployeeProductionsCapacity($date_string, $employee['id']);
+						$total_capacity = 0;
+						foreach($capacities as $capacity)
+						{
+							$total_capacity = $total_capacity + round((($capacity['lumber_capacity']/8)*$capacity['working_hours']), 3);
+						}
+						echo $total_capacity;
 					?>
 					</td>
 					<td>
@@ -295,7 +325,7 @@
 					?>
 					</td>
 					<td>
-						<a href="report?id=<?=$employee['id']?>&period=<?=$date_string?>" class="btn btn-success">
+						<a href="report?id=<?=$employee['id']?>&period=<?=$date_string?>&s=<?=$emp_serial_number?>" class="btn btn-success">
 							Skatīt
 						</a>
 					</td>

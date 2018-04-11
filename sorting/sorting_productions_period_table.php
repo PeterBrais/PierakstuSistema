@@ -184,7 +184,7 @@
 				<th rowspan="2">Amats</th>
 				<th colspan="4">Darba aprēķins</th>
 				<th colspan="2">Stundas</th>
-				<th rowspan="2">...</th>
+				<th rowspan="2">Atskaite</th>
 			</tr>
 			<tr>
 				<th>Līdz 0,0089 m3</th>
@@ -219,7 +219,11 @@
 				<td></td>
 				<td></td>
 				<td></td>
-				<td></td>
+				<td>
+					<a href="report?id=<?=$employee['id']?>&period=<?=$date_string?>" class="btn btn-success">
+						Skatīt
+					</a>
+				</td>
 			</tr>
 	<?php
 		}

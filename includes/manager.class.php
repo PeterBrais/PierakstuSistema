@@ -227,18 +227,72 @@
 		{
 			global $conn;
 
-			$sql = $conn->prepare("SELECT SUM(sawmill_productions.lumber_capacity) as capacity
+			$sql = $conn->prepare("SELECT sawmill_productions.id, sawmill_productions.lumber_capacity,
+									working_times.working_hours
 									FROM employees
 									JOIN employees_sawmill_productions
 									ON employees_sawmill_productions.employee_id = employees.id
 									JOIN sawmill_productions
 									ON sawmill_productions.id = employees_sawmill_productions.sawmill_id
+									JOIN working_times
+									ON employees.id = working_times.employee_id
 									WHERE employees.id = ? AND 
 									DATE_FORMAT(sawmill_productions.date, '%Y-%m') = ? AND
-									EXISTS (SELECT * FROM working_times WHERE employees.id = working_times.employee_id
+									employees.id = working_times.employee_id
 									AND sawmill_productions.date = working_times.date 
-									AND sawmill_productions.invoice = working_times.invoice)");
+									AND sawmill_productions.invoice = working_times.invoice");
 			$sql->bind_param('ss', $id, $date_string);
+			$sql->execute();
+			$result = $sql->get_result();
+
+			return mysqli_fetch_all($result, MYSQLI_ASSOC);
+		}
+
+		public static function GetOperatorsAndAssistantsFromProduction($production_id, $shift)	//Returns all attended (operators and assistants) employees from current production
+		{
+			global $conn;
+
+			$sql = $conn->prepare("SELECT COUNT(employees.id) as emp_count FROM employees
+									JOIN employees_positions
+									ON employees.id = employees_positions.employee_id
+									JOIN positions
+									ON employees_positions.position_id = positions.id
+									JOIN employees_sawmill_productions
+									ON employees_sawmill_productions.employee_id = employees.id
+									JOIN sawmill_productions
+									ON sawmill_productions.id = employees_sawmill_productions.sawmill_id
+									JOIN working_times
+									ON employees.id = working_times.employee_id
+									WHERE sawmill_productions.id = ? AND 
+									(positions.name LIKE '%Pakošanas operators%' OR positions.name LIKE '%Zāģēšanas iecirkņa palīgstrādnieks%')
+									AND employees.place = 'Zagetava' AND employees.shift = ?
+									AND employees.id = working_times.employee_id
+									AND sawmill_productions.date = working_times.date 
+									AND sawmill_productions.invoice = working_times.invoice");
+			$sql->bind_param('ss', $production_id, $shift);
+			$sql->execute();
+			$result = $sql->get_result();
+
+			return mysqli_fetch_assoc($result);
+		}
+
+		public static function GetNonAttendedEmployeeCapacityRatesFromProduction($production_id, $shift)	//Returns sum of nonattended employees capacity rates from current production
+		{
+			global $conn;
+
+			$sql = $conn->prepare("SELECT SUM(employees.capacity_rate) as rates FROM employees
+									JOIN employees_sawmill_productions
+									ON employees_sawmill_productions.employee_id = employees.id
+									JOIN sawmill_productions
+									ON sawmill_productions.id = employees_sawmill_productions.sawmill_id
+									JOIN times
+									ON employees.id = times.employee_id
+									WHERE sawmill_productions.id = ?
+									AND employees.place = 'Zagetava' AND employees.shift = ?
+									AND employees.id = times.employee_id
+									AND sawmill_productions.date = times.date 
+									AND sawmill_productions.invoice = times.invoice");
+			$sql->bind_param('ss', $production_id, $shift);
 			$sql->execute();
 			$result = $sql->get_result();
 

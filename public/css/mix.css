@@ -96,6 +96,10 @@ body{
     border-bottom-color: hsl(89, 43%, 51%);
 }
 
+.bordered {
+	border: 0;
+}
+
 @media (min-width: 800px) {
   .container-scroll {
     overflow-x: auto;

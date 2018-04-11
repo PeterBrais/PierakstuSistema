@@ -8,7 +8,7 @@
 	}
 	if(($_SESSION['role'] != "p") && ($_SESSION['role'] != "a"))	//Check if user have permission
 	{
-		header("Location: /");
+		header("Location: 404");
 		exit();
 	}
 	if(isset($_SESSION['position']))

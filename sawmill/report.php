@@ -3,6 +3,7 @@
 	include_once "../includes/employee.class.php";
 	include_once "../includes/manager.class.php";
 	include_once "../includes/validate.class.php";
+	include_once "../includes/position.class.php";
 
 	if(!isset($_SESSION['id']) && !isset($_SESSION['role']))	//View data only allowed when user is logged in
 	{
@@ -13,11 +14,11 @@
 	//Check if user have permission
 	if(($_SESSION['role'] != "p") && ($_SESSION['role'] != "a") && ($_SESSION['active'] != 1))	
 	{
-		header("Location: /");
+		header("Location: 404");
 		exit();
 	}
 
-	if(!isset($_GET['id']) || !isset($_GET['period']))		//Check if user ID and month (period) is set
+	if(!isset($_GET['id']) || !isset($_GET['period']) || !isset($_GET['s']))		//Check if user ID and month (period) is set
 	{
 		header("Location: show_sawmill_production");
 		exit();
@@ -38,9 +39,16 @@
 		header("Location: show_sawmill_production");
 		exit();
 	}
+	$serial_number = $_GET['s'];
 
 	//Returns employees data
 	$employee = Employee::GetEmployeesData($user_id);
+
+	//Get month number from period
+	$period_year_number = date('y', strtotime($period));
+
+	//Returns employees positions
+	$positions = Manager::EmployeePositions($employee['id']);
 ?>
 	
 	<!-- Show report of employee -->
@@ -61,9 +69,9 @@
 						<div class="offset-md-1 col-md-11">
 							<p class="font-weight-bold">
 								DARBU NODOŠANAS - PIEŅEMŠANAS AKTS Nr. DAL
-								<?=$employee['act_number']?> /420-17
+								<?=$serial_number?> /420-<?=$period_year_number?>
 								<span class="font-weight-normal ml-2">
-									(Rīkojums Nr. SRM-14-782-rp 03.09.2014.)
+									<input type="text" id="order_input" style="width:350px;" placeholder="Rīkojuma Nr.">
 								</span>
 							</p>
 							<p class="font-weight-bold">
@@ -199,8 +207,13 @@
 										<td>m<sup>3</sup></td>
 										<td>
 										<?php
-											$capacity = Manager::GetEmployeeProductionsCapacity($period, $employee['id']);
-											echo $capacity['capacity'];
+											$capacities = Manager::GetEmployeeProductionsCapacity($period, $employee['id']);
+											$total_capacity = 0;
+											foreach($capacities as $capacity)
+											{
+												$total_capacity = $total_capacity + round((($capacity['lumber_capacity']/8)*$capacity['working_hours']), 3);
+											}
+											echo $total_capacity;
 										?>
 										</td>
 										<td>
@@ -208,8 +221,56 @@
 										</td>
 										<td>
 										<?php
-											$total_m3 = round(($capacity['capacity'] * $employee['capacity_rate']), 2);
-											echo $total_m3;
+											$capacities = Manager::GetEmployeeProductionsCapacity($period, $employee['id']);
+											$capacity_per_production = 0;
+											$total_sum = 0;
+											$rate_per_emp = 0;
+
+											if(Position::IsPositionOperatorOrAssistant($employee['id']))
+											{
+												//1. capacity_per_production = (lumber_capacity / 8) * hours_worked
+												//2. all_attended_workers = count / rates
+												//3. capacity_rate = capacity_rate + all_attended_workers
+												//4. total = total + (capacity_per_production * capacity_rate)
+												//5. print sum -> total
+												foreach($capacities as $capacity)
+												{
+													$capacity_per_production = round((($capacity['lumber_capacity']/8)*$capacity['working_hours']), 3);
+
+													//Get COUNT of all attended employees and SUM of nonattended employees rate
+													$employee_count = Manager::GetOperatorsAndAssistantsFromProduction($capacity['id'], $employee['id']);
+													$employee_rates = Manager::GetNonAttendedEmployeeCapacityRatesFromProduction($capacity['id'], $employee['id']);
+
+													if($employee_rates['rates'] != NULL)
+													{
+														$rate_per_emp = $employee_count['emp_count'] / $employee_rates['rates'];
+													}
+													else
+													{
+														$rate_per_emp = 0;
+													}
+
+													
+													$total_sum = $total_sum + (round(($capacity_per_production * ($rate_per_emp + $employee['capacity_rate'])), 2));
+													$rate_per_emp = 0;
+													$capacity_per_production = 0;
+
+												}
+											}
+											else
+											{
+												//1. capacity_per_production = (lumber_capacity / 8) * hours_worked
+												//2. total = total + (capacity_per_production * capacity_rate)
+												//3. print sum -> total
+												foreach($capacities as $capacity)
+												{
+													$capacity_per_production = round((($capacity['lumber_capacity']/8)*$capacity['working_hours']), 3);
+													$total_sum = $total_sum + (round(($capacity_per_production * $employee['capacity_rate']), 2));
+													$capacity_per_production = 0;
+												}
+											}
+
+											echo $total_sum;
 										?>
 										</td>
 									</tr>
@@ -256,7 +317,7 @@
 										</td>
 										<td id="summ">
 										<?php
-											echo $total_m3+$total_h;
+											 echo $total_sum+$total_h;
 										?>
 										</td>
 									</tr>
@@ -276,7 +337,7 @@
 								Darbu nodeva <input type="text" class="signature"><br><br>
 							<?php
 								$resultstr = array();
-								$positions = Manager::EmployeePositions($employee['id']);
+								
 								foreach($positions as $position)
 								{
 									$resultstr[] = " ".$position['name'];
