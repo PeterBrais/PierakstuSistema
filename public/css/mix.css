@@ -97,7 +97,7 @@ body{
 }
 
 .bordered {
-	border: 0;
+	border: 0px solid #fff;
 }
 
 @media (min-width: 800px) {

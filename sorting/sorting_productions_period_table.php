@@ -41,99 +41,135 @@
 			{
 				$rows = $production['total_sorted'];
 	?>
-			<tr>
-				<td rowspan="<?=$rows?>"><?=$invoice['invoice']?></td>
-				<td rowspan="<?=$rows?>"><?=$production['date']?></td>
-				<td rowspan="<?=$rows?>">
-					<?=$production['time_from']?> - <?=$production['time_to']?>
-				</td>
-				<td rowspan="<?=$rows?>">
-					<?=$production['thickness']?> x <?=$production['width']?> x <?=$production['length']?>
-				</td>
-				<td rowspan="<?=$rows?>"><?=$production['count']?> - 
-					<?php
-						if(!isset($production['defect_count']))
-						{
-							echo "0";
-						}
-						else
-						{
-							echo $production['defect_count'];
-						}
-						$total_count = $production['count'] - $production['defect_count'];
-						echo " = ".$total_count;
-					?>			
-				</td>
-				<td rowspan="<?=$rows?>"><?=$production['capacity']?></td>
-	<?php
-		$sorted_productions = Manager::GetSortedProductionsByID($production['id']);
-		$k = 0;
-		foreach($sorted_productions as $sorted_production)
-		{
-			if($k == 0)
-			{
-	?>
-				<td><?=$sorted_production['type']?></td>
-				<td><?=$sorted_production['count']?></td>
-				<td>
-					<?=$production['thickness']?> x <?=$production['width']?> x <?=$production['length']?>
-				</td>
-				<td><?=$sorted_production['capacity']?></td>
-				<td><?=$sorted_production['capacity_piece']?></td>
-				<td>
-					<ol class="list-space">
+				<tr>
+					<td rowspan="<?=$rows?>"><?=$invoice['invoice']?></td>
+					<td rowspan="<?=$rows?>"><?=$production['date']?></td>
+					<td rowspan="<?=$rows?>">
+						<?=$production['time_from']?> - <?=$production['time_to']?>
+					</td>
+					<td rowspan="<?=$rows?>">
+						<?=$production['thickness']?> x <?=$production['width']?> x <?=$production['length']?>
+					</td>
+					<td rowspan="<?=$rows?>"><?=$production['count']?> - 
 						<?php
-							$workers = Manager::GetAllSortingProductionWorkers($production['id']);
-							foreach($workers as $worker)
+							if(!isset($production['defect_count']))
 							{
-								echo '<li>';
-								echo $worker['name'];
-								echo " ";
-								echo $worker['last_name'];
-								echo '</li>';
+								echo "0";
 							}
-						?>
-					</ol>
-				</td>
-				<td rowspan="<?=$rows?>">
-					<a href="edit_production?id=<?=$production['id']?>" class="btn btn-info">
-						Labot
-					</a>
-				</td>
-			</tr>
-	<?php
-			} 
-			else
-			{
-	?>
-			<tr>
-				<td><?=$sorted_production['type']?></td>
-				<td><?=$sorted_production['count']?></td>
-				<td>
-					<?=$production['thickness']?> x <?=$production['width']?> x <?=$production['length']?>
-				</td>
-				<td><?=$sorted_production['capacity']?></td>
-				<td><?=$sorted_production['capacity_piece']?></td>
-				<td>
-					<ol class="list-space">
-						<?php
-							$workers = Manager::GetAllSortingProductionWorkers($production['id']);
-							foreach($workers as $worker)
+							else
 							{
-								echo '<li>';
-								echo $worker['name'];
-								echo " ";
-								echo $worker['last_name'];
-								echo '</li>';
+								echo $production['defect_count'];
 							}
-						?>
-					</ol>
-				</td>
-			</tr>
+							$total_count = $production['count'] - $production['defect_count'];
+							echo " = ".$total_count;
+						?>			
+					</td>
+					<td rowspan="<?=$rows?>"><?=$production['capacity']?></td>
+			<?php
+				$sorted_productions = Manager::GetSortedProductionsByID($production['id']);
+				$k = 0;
+				foreach($sorted_productions as $sorted_production)
+				{
+					if($k == 0)
+					{
+			?>
+							<td>
+							<?php
+								if($sorted_production['type'] == "W")
+								{
+									echo "Mērcēts";
+								}
+								else
+								{
+									echo $sorted_production['type'];
+								}
+							?>					
+							</td>
+							<td><?=$sorted_production['count']?></td>
+							<td>
+								<?=$sorted_production['thickness']?> x <?=$sorted_production['width']?> x <?=$sorted_production['length']?>
+							</td>
+							<td><?=$sorted_production['capacity']?></td>
+							<td><?=$sorted_production['capacity_piece']?></td>
+							<td>
+							<?php
+								if($sorted_production['type'] != "W")
+								{
+									echo '<ol class="list-space">';
+									$workers = Manager::GetAllSortingProductionWorkers($sorted_production['id']);
+									foreach($workers as $worker)
+									{
+										echo '<li>';
+										echo $worker['name'];
+										echo " ";
+										echo $worker['last_name'];
+										echo '</li>';
+									}
+									echo '</ol>';
+								}
+								else
+								{
+									echo "-";
+								}
+							?>
+							</td>
+							<td rowspan="<?=$rows?>">
+								<a href="edit_production?id=<?=$production['id']?>" class="btn btn-info">
+									Labot
+								</a>
+							</td>
+						</tr>
+				<?php
+					} 
+					else
+					{
+				?>
+						<tr>
+							<td>
+							<?php
+								if($sorted_production['type'] == "W")
+								{
+									echo "Mērcēts";
+								}
+								else
+								{
+									echo $sorted_production['type'];
+								}
+							?>					
+							</td>
+							<td><?=$sorted_production['count']?></td>
+							<td>
+								<?=$sorted_production['thickness']?> x <?=$sorted_production['width']?> x <?=$sorted_production['length']?>
+							</td>
+							<td><?=$sorted_production['capacity']?></td>
+							<td><?=$sorted_production['capacity_piece']?></td>
+							<td>
+							<?php
+								if($sorted_production['type'] != "W")
+								{
+									echo '<ol class="list-space">';
+									$workers = Manager::GetAllSortingProductionWorkers($sorted_production['id']);
+									foreach($workers as $worker)
+									{
+										echo '<li>';
+										echo $worker['name'];
+										echo " ";
+										echo $worker['last_name'];
+										echo '</li>';
+									}
+									echo '</ol>';
+								}
+								else
+								{
+									echo "-";
+								}
+							?>
+							</td>
+						</tr>
 	<?php
-			}
-			$k++;
-		}
+					}
+					$k++;
+				}
 			}
 		?>
 			<tr class="table-light">

@@ -13,7 +13,6 @@ CREATE TABLE employees (
     last_name VARCHAR(50) NOT NULL,
 	person_id CHAR(12) NOT NULL,
     place VARCHAR(12) NOT NULL,
-	act_number VARCHAR(10) NULL,
 	shift CHAR(2) NULL,
 	capacity_rate DECIMAL(12,2) NULL,
 	hour_rate DECIMAL(12,2) NULL,
@@ -107,7 +106,8 @@ CREATE TABLE sorting_productions (
 	length INT NOT NULL,
 	count INT NOT NULL,
 	capacity DECIMAL(12,3) NOT NULL,
-	defect_count INT NULL
+	defect_count INT NULL,
+	reserved BIT NOT NULL DEFAULT 0,
 );
 
 CREATE TABLE sorted_productions (
@@ -118,7 +118,7 @@ CREATE TABLE sorted_productions (
 	width INT NOT NULL,
 	length INT NOT NULL,
 	capacity DECIMAL(12,3) NOT NULL,
-	capacity_piece DECIMAL(5,5) NOT NULL,
+	capacity_piece DECIMAL(7,5) NOT NULL,
 	sorting_id INT NOT NULL,
 	FOREIGN KEY (sorting_id) REFERENCES sorting_productions(id)
 );

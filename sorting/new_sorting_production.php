@@ -169,75 +169,6 @@
 		$defect_count = NULL;
 	}
 
-	//Check if employee working times table is empty
-	if(Validate::IsArrayEmpty($working_hours) && Validate::IsArrayEmpty($nonworking))
-	{
-		$_SESSION['error'] = "Lūdzu aizpildiet darbinieku tabulu!";
-		$_SESSION['sorting_prod'] = $_POST;
-		header("Location: add_sorting_production");
-		exit();
-	}
-
-	//Check if array from one one value to other is filled
-	for($i = 0; $i < count($sorted_counts); $i++)
-	{ 
-		$j = $i*$employees_count;
-		if(Validate::IsArrayEmptyFromTo($working_hours, $j, $employees_occasion) && Validate::IsArrayEmptyFromTo($nonworking, $j, $employees_occasion))
-		{
-			$_SESSION['error'] = "Lūdzu aizpildiet darbinieku tabulu!";
-			$_SESSION['sorting_prod'] = $_POST;
-			header("Location: add_sorting_production");
-			exit();
-		}
-
-		for($k = $i*$employees_count; $k < $employees_occasion; $k++)
-		{
-			if(!Employee::ExistsSortingEmployee($ids[$k])) //Checks if employee with this id exists
-			{
-				$_SESSION['error'] = "Radās kļūda, lūdzu mēģiniet vēlreiz!";
-				$_SESSION['sorting_prod'] = $_POST;
-				header("Location: add_sorting_production");
-				exit();
-			}
-
-			if(!empty($working_hours[$k]) && !empty($nonworking[$k]))
-			{
-				$_SESSION['error'] = "Lūdzu aizpildiet tikai vienu darbinieka ievadlauku!";
-				$_SESSION['sorting_prod'] = $_POST;
-				header("Location: add_sorting_production");
-				exit();
-			}
-
-			if(!empty($working_hours[$k]) && empty($nonworking[$k]))
-			{
-				//Check if working hour is number
-				if(!Validate::IsValidHours($working_hours[$k]))
-				{
-					$_SESSION['error'] = "Darbinieka nostrādātās darba stundas drīkst sastāvēt tikai no cipariem!";
-					$_SESSION['sorting_prod'] = $_POST;
-					header("Location: add_sorting_production");
-					exit();
-				}
-			}
-
-			if(empty($working_hours[$k]) && !empty($nonworking[$k]))
-			{
-				//Check nonworking select values
-				if($nonworking[$k] != "1" && $nonworking[$k] != "2" && $nonworking[$k] != "3")
-				{
-					$_SESSION['error'] = "Radās kļūda, lūdzu mēģiniet vēlreiz!";
-					$_SESSION['sorting_prod'] = $_POST;
-					header("Location: add_sorting_production");
-					exit();
-				}
-			}
-		}
-
-		$employees_occasion = $employees_count + $employees_occasion;
-	}
-
-	$employees_occasion = $employees_count;
-
 	// Check sorted productions inputs
 	for($i = 0; $i < count($sorted_counts); $i++)
 	{
@@ -258,7 +189,7 @@
 			exit();
 		}
 
-		if($types[$i] != "1" && $types[$i] != "2")
+		if($types[$i] != "1" && $types[$i] != "2" && $types[$i] != "3")
 		{
 			$_SESSION['error'] = "Lūdzu mēģiniet vēlreiz!";
 			$_SESSION['sorting_prod'] = $_POST;
@@ -327,6 +258,85 @@
 		}
 	}
 
+	//Check if array from one one value to other is filled
+	for($i = 0; $i < count($sorted_counts); $i++)
+	{
+		$j = $i*$employees_count;
+
+		if($types[$i] == "1" || $types[$i] == "2")
+		{
+			if(Validate::IsArrayEmptyFromTo($working_hours, $j, $employees_occasion) && Validate::IsArrayEmptyFromTo($nonworking, $j, $employees_occasion))
+			{
+				$_SESSION['error'] = "Lūdzu aizpildiet darbinieku tabulu!";
+				$_SESSION['sorting_prod'] = $_POST;
+				header("Location: add_sorting_production");
+				exit();
+			}
+
+			for($k = $i*$employees_count; $k < $employees_occasion; $k++)
+			{
+				if(!Employee::ExistsSortingEmployee($ids[$k])) //Checks if employee with this id exists
+				{
+					$_SESSION['error'] = "Radās kļūda, lūdzu mēģiniet vēlreiz!";
+					$_SESSION['sorting_prod'] = $_POST;
+					header("Location: add_sorting_production");
+					exit();
+				}
+
+				if(!empty($working_hours[$k]) && !empty($nonworking[$k]))
+				{
+					$_SESSION['error'] = "Lūdzu aizpildiet tikai vienu darbinieka ievadlauku!";
+					$_SESSION['sorting_prod'] = $_POST;
+					header("Location: add_sorting_production");
+					exit();
+				}
+
+				if(!empty($working_hours[$k]) && empty($nonworking[$k]))
+				{
+					//Check if working hour is number
+					if(!Validate::IsValidHours($working_hours[$k]))
+					{
+						$_SESSION['error'] = "Darbinieka nostrādātās darba stundas drīkst sastāvēt tikai no cipariem!";
+						$_SESSION['sorting_prod'] = $_POST;
+						header("Location: add_sorting_production");
+						exit();
+					}
+				}
+
+				if(empty($working_hours[$k]) && !empty($nonworking[$k]))
+				{
+					//Check nonworking select values
+					if($nonworking[$k] != "1" && $nonworking[$k] != "2" && $nonworking[$k] != "3")
+					{
+						$_SESSION['error'] = "Radās kļūda, lūdzu mēģiniet vēlreiz!";
+						$_SESSION['sorting_prod'] = $_POST;
+						header("Location: add_sorting_production");
+						exit();
+					}
+				}
+			}
+		}
+		else if($types[$i] == "3")
+		{
+			for($k = $i*$employees_count; $k < $employees_occasion; $k++)
+			{
+				$working_hours[$k] = NULL;
+				$nonworking[$k] = NULL;
+			}
+		}
+		else
+		{
+			$_SESSION['error'] = "Radās kļūda, lūdzu mēģiniet vēlreiz!";
+			$_SESSION['sorting_prod'] = $_POST;
+			header("Location: add_sorting_production");
+			exit();
+		}
+
+		$employees_occasion = $employees_count + $employees_occasion;
+	}
+
+	$employees_occasion = $employees_count;
+
 
 	$sawn_capacity = round((($thickness * $width * $length)/1000000000)*$sawn_count, 3);
 
@@ -342,6 +352,7 @@
 	$sortingProduction->count = $sawn_count;
 	$sortingProduction->capacity = $sawn_capacity;
 	$sortingProduction->defect_count = $defect_count;
+	$sortingProduction->reserved = 0;
 	$sortingProduction->Save();
 
 	//Saves sorted productions
@@ -351,75 +362,95 @@
 		$sorted_capacity[$i] = round((($sorted_thicknesses[$i]*$sorted_widths[$i]*$sorted_lengths[$i])/1000000000)*$sorted_counts[$i], 3);
 		$sorted_capacity_piece[$i] = round(($sorted_thicknesses[$i]*$sorted_widths[$i]*$sorted_lengths[$i])/1000000000, 5);
 
-		if($types[$i] == "1")
+		if($types[$i] == "1" || $types[$i] == "2")
 		{
-			$sortedProduction->type = "S";
-		}
-		elseif($types[$i] == "2")
-		{
-			$sortedProduction->type = "G";
-		}
-
-		$sortedProduction->count = $sorted_counts[$i];
-		$sortedProduction->thickness = $sorted_thicknesses[$i];
-		$sortedProduction->width = $sorted_widths[$i];
-		$sortedProduction->length = $sorted_lengths[$i];
-		$sortedProduction->capacity = $sorted_capacity[$i];
-		$sortedProduction->capacity_per_piece = $sorted_capacity_piece[$i];
-		$sortedProduction->sorting_id = $sortingProduction->id;
-		$sortedProduction->Save();
-
-
-		//Saves data to tables: employees_sorting_productions, working_times, times 
-		$employees_sorted_procutions = new EmployeeSortedProductions();
-		$working_times = new WorkingTimes();
-		$times = new Times();
-		for($j = $i*$employees_count; $j < $employees_occasion; $j++)
-		{
-			if($working_hours[$j] != '' && $working_hours > 0)
+			if($types[$i] == "1")
 			{
-				$employees_sorted_procutions->employee_id = $ids[$j];
-				$employees_sorted_procutions->sorted_id = $sortedProduction->id;
-				$employees_sorted_procutions->Save();
-
-				$working_times->date = $date;
-				$working_times->invoice = $sortedProduction->id;
-				$working_times->working_hours = $working_hours[$j];
-				$working_times->employee_id = $ids[$j];
-				$working_times->Save();
+				$sortedProduction->type = "S";
 			}
-			else if($working_hours[$j] == '' && !empty($nonworking[$j]))
-			{	
-				$employees_sorted_procutions->employee_id = $ids[$j];
-				$employees_sorted_procutions->sorted_id = $sortedProduction->id;
-				$employees_sorted_procutions->Save();
+			elseif($types[$i] == "2")
+			{
+				$sortedProduction->type = "G";
+			}
 
-				if($nonworking[$j] == "1")
-				{
-					$times->vacation = "A";
-					$times->sick_leave = NULL;
-					$times->nonattendance = NULL;
-				}
-				else if($nonworking[$j] == "2")
-				{
-					$times->vacation = NULL;
-					$times->sick_leave = "S";
-					$times->nonattendance = NULL;
-				}
-				else if($nonworking[$j] == "3")
-				{
-					$times->vacation = NULL;
-					$times->sick_leave = NULL;
-					$times->nonattendance = "N";
-				}
+			$sortedProduction->count = $sorted_counts[$i];
+			$sortedProduction->thickness = $sorted_thicknesses[$i];
+			$sortedProduction->width = $sorted_widths[$i];
+			$sortedProduction->length = $sorted_lengths[$i];
+			$sortedProduction->capacity = $sorted_capacity[$i];
+			$sortedProduction->capacity_per_piece = $sorted_capacity_piece[$i];
+			$sortedProduction->sorting_id = $sortingProduction->id;
+			$sortedProduction->Save();
 
-				$times->date = $date;
-				$times->invoice = $sortedProduction->id;
-				$times->pregnancy = NULL;
-				$times->employee_id = $ids[$j];
-				$times->Save();
+
+			//Saves data to tables: employees_sorting_productions, working_times, times 
+			$employees_sorted_procutions = new EmployeeSortedProductions();
+			$working_times = new WorkingTimes();
+			$times = new Times();
+			for($j = $i*$employees_count; $j < $employees_occasion; $j++)
+			{
+				if($working_hours[$j] != '' && $working_hours > 0)
+				{
+					$employees_sorted_procutions->employee_id = $ids[$j];
+					$employees_sorted_procutions->sorted_id = $sortedProduction->id;
+					$employees_sorted_procutions->Save();
+
+					$working_times->date = $date;
+					$working_times->invoice = $sortedProduction->id;
+					$working_times->working_hours = $working_hours[$j];
+					$working_times->employee_id = $ids[$j];
+					$working_times->Save();
+				}
+				else if($working_hours[$j] == '' && !empty($nonworking[$j]))
+				{	
+					$employees_sorted_procutions->employee_id = $ids[$j];
+					$employees_sorted_procutions->sorted_id = $sortedProduction->id;
+					$employees_sorted_procutions->Save();
+
+					if($nonworking[$j] == "1")
+					{
+						$times->vacation = "A";
+						$times->sick_leave = NULL;
+						$times->nonattendance = NULL;
+					}
+					else if($nonworking[$j] == "2")
+					{
+						$times->vacation = NULL;
+						$times->sick_leave = "S";
+						$times->nonattendance = NULL;
+					}
+					else if($nonworking[$j] == "3")
+					{
+						$times->vacation = NULL;
+						$times->sick_leave = NULL;
+						$times->nonattendance = "N";
+					}
+
+					$times->date = $date;
+					$times->invoice = $sortedProduction->id;
+					$times->pregnancy = NULL;
+					$times->employee_id = $ids[$j];
+					$times->Save();
+				}
 			}
 		}
+		else if($types[$i] == "3")
+		{
+			if($types[$i] == "3")
+			{
+				$sortedProduction->type = "W";
+			}
+
+			$sortedProduction->count = $sorted_counts[$i];
+			$sortedProduction->thickness = $sorted_thicknesses[$i];
+			$sortedProduction->width = $sorted_widths[$i];
+			$sortedProduction->length = $sorted_lengths[$i];
+			$sortedProduction->capacity = $sorted_capacity[$i];
+			$sortedProduction->capacity_per_piece = $sorted_capacity_piece[$i];
+			$sortedProduction->sorting_id = $sortingProduction->id;
+			$sortedProduction->Save();
+		}
+
 
 		$employees_occasion = $employees_count + $employees_occasion;
 	}

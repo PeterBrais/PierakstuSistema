@@ -85,13 +85,6 @@ $(function(){
 					date: true,
 					IsValidDate: true,
 				},
-				act_no: {
-					required: true,
-					number: true,
-					min: 0,
-					max: 1000,
-					IsValidActNo: true,
-				},
 			},
 			messages: {
 				name: {
@@ -147,13 +140,6 @@ $(function(){
 					date: "Lūdzu ievadiet korektu datumu (GGGG-MM-DD vai GGGG-MM-DD)!",
 					IsValidDate: "Lūdzu ievadiet korektu datumu (GGGG-MM-DD vai GGGG-MM-DD)!",
 				},
-				act_no: {
-					required: "Lūdzu aizpildiet 'Darbu nodošanas - Pieņemšanas akta Nr.' lauku!",
-					number: "Nr. drīkst saturēt tikai ciparus!",
-					min: "Nr. jābūt lielākam par nulli!",
-					max: "Nr. jābūt ne vairāk kā 4 ciparus garam!",
-					IsValidActNo: "Nr. drīkst saturēt tikai ciparus!",
-				}
 			}
 		});
 	});

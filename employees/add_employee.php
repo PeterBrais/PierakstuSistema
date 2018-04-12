@@ -165,30 +165,6 @@
 								</div>	
 							</div>
 							<div class="form-group row">
-								<label class="col-md-2 offset-md-1 col-form-label">
-									Darbu nodošanas - Pieņemšanas akta Nr.
-								</label>
-								<div class="col-md-5">
-									<input class="form-control" type="text" name="act_no" aria-describedby="actNoArea" value="<?php echo isset($_SESSION['employee']) ? $act_no : ''; ?>">
-									<small id="actNoArea" class="form-text text-muted">
-										* Aktuāls tikai zāģētavas un šķirotavas darbiniekiem *
-									</small>
-								</div>
-								<div class="col-md-4">
-									<?php
-										if(isset($_SESSION['act_no']))
-										{
-									?>
-										<div class="alert alert-danger alert-size" role="alert">
-											<?=$_SESSION['act_no']?>
-										</div>
-									<?php
-											unset($_SESSION['act_no']);
-										}
-									?>
-								</div>
-							</div>
-							<div class="form-group row">
 								<div class="col-md-3 offset-md-3">
 									<button class="btn btn-info" type="submit" name="submit">Pievienot</button>
 								</div>

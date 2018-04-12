@@ -139,6 +139,15 @@ $(document).ready(function(){
 
 	//Show sawn production capacity
 	var measure_unit = ' m<sup>3</sup>';
+
+	var count = $('#sawn_count').val();
+	var thickeness = $("#thickeness").val();
+	var width = $("#width").val();
+	var length = $("#length").val();
+	var capacity = ((thickeness * width * length)/1000000000)*count;
+	capacity = capacity.toFixed(3);
+	$('#sawn_capacity').html(capacity+measure_unit);
+
 	$('#sawn_count, #thickeness, #width, #length').change(function(){
 		var count = $('#sawn_count').val();
     	var thickeness = $("#thickeness").val();
@@ -160,13 +169,28 @@ $(document).ready(function(){
 
 	//Show sorted production capacities and capacities per piece
 	var measure_piece = ' m<sup>3</sup> / gab';
+
+	$(".sorted_counts").each(function() {
+		var sorted_count = $(this).val();
+		var sorted_thickness = $(this).parent().parent().next().children().find('.sorted_thicknesses').val();
+		var sorted_width = $(this).parent().parent().next().children().find('.sorted_widths').val();
+		var sorted_length = $(this).parent().parent().next().children().find('.sorted_lengths').val();
+		var total_cap = ((sorted_thickness*sorted_width*sorted_length)/1000000000)*sorted_count;
+		var total_cap_piece = (sorted_thickness*sorted_width*sorted_length)/1000000000;
+		total_cap = total_cap.toFixed(3);
+		$(this).parent().parent().next().next().children().find('.sorted_capacities').html(total_cap+measure_unit);
+		total_cap_piece = total_cap_piece.toFixed(5);
+		$(this).parent().parent().next().next().next().children().find('.sorted_capacities_pieces').html(total_cap_piece+measure_piece);
+	});
+
+
 	$(document).on('input', '.sorted_counts', function(){
-	    var sorted_count = $(this).val();
-	    var sorted_thickness = $(this).parent().parent().next().children().find('.sorted_thicknesses').val();
-	    var sorted_width = $(this).parent().parent().next().children().find('.sorted_widths').val();
-	    var sorted_length = $(this).parent().parent().next().children().find('.sorted_lengths').val();
-	    var total_cap = ((sorted_thickness*sorted_width*sorted_length)/1000000000)*sorted_count;
-	    var total_cap_piece = (sorted_thickness*sorted_width*sorted_length)/1000000000;
+		var sorted_count = $(this).val();
+		var sorted_thickness = $(this).parent().parent().next().children().find('.sorted_thicknesses').val();
+		var sorted_width = $(this).parent().parent().next().children().find('.sorted_widths').val();
+		var sorted_length = $(this).parent().parent().next().children().find('.sorted_lengths').val();
+		var total_cap = ((sorted_thickness*sorted_width*sorted_length)/1000000000)*sorted_count;
+		var total_cap_piece = (sorted_thickness*sorted_width*sorted_length)/1000000000;
 
 	    if(isNaN(total_cap))
 		{

@@ -9,7 +9,6 @@
 		public $name;
 		public $last_name;
 		public $person_id;
-		public $act_number;
 		public $place;
 		public $shift;
 		public $capacity_rate;
@@ -29,8 +28,8 @@
 		{
 			try
 			{
-				$sql = $this->conn->prepare("INSERT INTO employees VALUES (DEFAULT, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-				$sql->bind_param('ssssssddss', $this->name, $this->last_name, $this->person_id, $this->place, $this->act_number, $this->shift, $this->capacity_rate, $this->hour_rate, $this->working_from, $this->working_to);
+				$sql = $this->conn->prepare("INSERT INTO employees VALUES (DEFAULT, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+				$sql->bind_param('sssssddss', $this->name, $this->last_name, $this->person_id, $this->place, $this->shift, $this->capacity_rate, $this->hour_rate, $this->working_from, $this->working_to);
 				$sql->execute();
 
 				$this->id = $this->conn->insert_id;
@@ -47,8 +46,8 @@
 		{
 			try
 			{
-				$sql = $this->conn->prepare("UPDATE employees SET name = ?, last_name = ?, person_id = ?, act_number = ?, shift = ?, capacity_rate = ?, hour_rate = ?, working_from = ?, working_to = ? WHERE employees.id = ?");
-				$sql->bind_param('sssssddsss', $this->name, $this->last_name, $this->person_id, $this->act_number, $this->shift, $this->capacity_rate, $this->hour_rate, $this->working_from, $this->working_to, $this->id);
+				$sql = $this->conn->prepare("UPDATE employees SET name = ?, last_name = ?, person_id = ?, shift = ?, capacity_rate = ?, hour_rate = ?, working_from = ?, working_to = ? WHERE employees.id = ?");
+				$sql->bind_param('ssssddsss', $this->name, $this->last_name, $this->person_id, $this->shift, $this->capacity_rate, $this->hour_rate, $this->working_from, $this->working_to, $this->id);
 				$sql->execute();
 				$sql->close();
 			}

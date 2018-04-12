@@ -524,7 +524,7 @@
 	</div>
 
 <script src="../public/js/edit_sawmill_production.js"></script>
-<!-- <script src="../public/js/edit_sawmill_production_form.js"></script> -->
+<script src="../public/js/edit_sawmill_production_form.js"></script>
 
 <?php
 	unset($_SESSION['edit_sawmill_prod']);

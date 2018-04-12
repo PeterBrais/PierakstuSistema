@@ -22,11 +22,13 @@ $(document).ready(function(){
 	//Input border style change
 	$('#order_input').blur(function(){
 		if ($(this).val()) {
+			$(this).css("border","0");
 			$(this).addClass('bordered');   
 		}
 	});
 	$('#order_input').focus(function(){
-		$(this).removeClass('bordered');  
+		$(this).removeClass('bordered');
+		$(this).css("border","1px solid #ff0000");
 	});
 	
 });

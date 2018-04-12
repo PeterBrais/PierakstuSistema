@@ -16,6 +16,7 @@
 		public $count;
 		public $capacity;
 		public $defect_count;
+		public $reserved;
 
 		function __construct()
 		{
@@ -27,8 +28,8 @@
 		{
 			try
 			{
-				$sql = $this->conn->prepare("INSERT INTO sorting_productions VALUES (DEFAULT, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-				$sql->bind_param('sssiiiiidi', $this->date, $this->time_from, $this->time_to, $this->invoice, $this->thickness, $this->width, $this->length, $this->count, $this->capacity, $this->defect_count);
+				$sql = $this->conn->prepare("INSERT INTO sorting_productions VALUES (DEFAULT, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+				$sql->bind_param('sssiiiiidii', $this->date, $this->time_from, $this->time_to, $this->invoice, $this->thickness, $this->width, $this->length, $this->count, $this->capacity, $this->defect_count, $this->reserved);
 				$sql->execute();
 
 				$this->id = $this->conn->insert_id; //Sets object id
@@ -39,6 +40,48 @@
 				header("Location: /");
 				exit();
 			}
+		}
+
+		public static function ExistsNonReservedProductionWithID($id) //Checks if not reserved sorting production with such ID exists
+		{
+			global $conn;
+
+			$sql = $conn->prepare("SELECT id FROM sorting_productions WHERE id = ? AND reserved = 0");
+			$sql->bind_param('s', $id);
+			$sql->execute();
+			$result = $sql->get_result();
+
+			$resultCheck = mysqli_num_rows($result);
+
+			return $resultCheck >= 1;
+		}
+
+		public static function GetSortingProductionData($id)	//Returns all productions data with ID
+		{
+			global $conn;
+
+			$sql = $conn->prepare("SELECT sorting_productions.*
+								FROM sorting_productions
+								WHERE sorting_productions.id = ?");
+			$sql->bind_param('s', $id);
+			$sql->execute();
+			$result = $sql->get_result();
+
+			return mysqli_fetch_assoc($result);
+		}
+
+		public static function GetAllSortedProductionData($id)	//Returns all sorting productions sorted production data
+		{
+			global $conn;
+
+			$sql = $conn->prepare("SELECT sorted_productions.*
+								FROM sorted_productions
+								WHERE sorted_productions.sorting_id = ?");
+			$sql->bind_param('s', $id);
+			$sql->execute();
+			$result = $sql->get_result();
+
+			return mysqli_fetch_all($result, MYSQLI_ASSOC);
 		}
 	}
 

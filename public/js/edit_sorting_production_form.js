@@ -31,8 +31,8 @@ $(function(){
 	});
 
 	$().ready(function(){
-		//Validate new sorting production input form
-		$('#sorting_form').validate({		
+		//Validate update sorting production input form
+		$('#edit_sorting_production_form').validate({		
 			rules: {
 				date: {
 					required: true,

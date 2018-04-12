@@ -66,3 +66,6 @@ jQuery.validator.addMethod("IsValidActNo", function(value, element) {
 	return this.optional(element) || /^([0-9][0-9]{0,2}|1000)$/.test(value);
 }, "Enter valid hours");
 
+jQuery.validator.addMethod("ChosenNonWorkingDropdown", function(value, element) {
+	return (value == "1" || value == "2" || value == "3" || value == "0" || value == "");
+}, "Please choose value");

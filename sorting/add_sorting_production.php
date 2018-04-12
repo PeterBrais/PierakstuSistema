@@ -155,7 +155,7 @@
 										}
 									?>
 								</div>
-							</div>	
+							</div>
 							<div class="form-group row">
 								<label class="col-md-2 offset-md-1 col-form-label">
 									Skaits
@@ -193,10 +193,10 @@
 							</div>
 							<div class="form-group row">
 								<label class="col-md-2 offset-md-1 control-label">
-									Defektu skaits
+									Brāķu skaits
 								</label>
 								<div class="col-md-5">
-									<input class="form-control" type="number" min="0" name="defect_count" aria-describedby="sawnCountArea" id="defect_count" placeholder="Defektu skaits" value="<?php echo isset($_SESSION['sorting_prod']) ? $defect_count : ''; ?>">
+									<input class="form-control" type="number" min="0" name="defect_count" aria-describedby="sawnCountArea" id="defect_count" placeholder="Brāķu skaits" value="<?php echo isset($_SESSION['sorting_prod']) ? $defect_count : ''; ?>">
 								</div>
 								<div class="col-md-4">
 									<?php
@@ -219,19 +219,15 @@
 								<?php include_once "sorted_production_inputs.php"; ?>
 							</div>
 
-							<!-- <h5 class="text-center">Šķirotavas darbinieki</h5>
-							<?php include_once "sorting_employees_table.php"; ?> -->
-
 							<div class="form-group row">
 								<div class="offset-md-3 col-md-4">
-									<button type="button" name="add" id="add" class="btn btn-success">Pievienot vēl sašķiroto produkciju</button>
+									<button type="button" name="add" id="add" class="btn btn-success">
+										Pievienot vēl sašķiroto produkciju
+									</button>
 								</div>
 							</div>
 							<hr>
 
-							<!-- <h5 class="text-center">Šķirotavas darbinieki</h5>
-							<?php include_once "sorting_employees_table.php"; ?> -->
-							
 							<div class="form-group row">
 								<div class="col-md-3 offset-md-3">
 									<button class="btn btn-info" type="submit" name="submit">Pievienot</button>

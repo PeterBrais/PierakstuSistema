@@ -68,53 +68,6 @@ $(function(){
 					IsValidFloatNumberWithTwoDigitsAfterDot: "Stundas likme drīkst saturēt tikai ciparus ar komatu!"
 				}
 			});
-			$('input[name="act_no"]').rules('add', {
-				required: true,
-				number: true,
-				min: 0,
-				max: 1000,
-				IsValidActNo: true,
-				messages: {
-					required: "Lūdzu aizpildiet 'Darbu nodošanas - Pieņemšanas akta Nr.' lauku!",
-					number: "Nr. drīkst saturēt tikai ciparus!",
-					min: "Nr. jābūt lielākam par nulli!",
-					max: "Nr. jābūt ne vairāk kā 4 ciparus garam!",
-					IsValidActNo: "Nr. drīkst saturēt tikai ciparus!",
-				}
-			});
-		}
-		else if(place_value == "3")
-		{
-			$('input[name="act_no"]').rules('add', {
-				required: true,
-				number: true,
-				min: 0,
-				max: 1000,
-				IsValidActNo: true,
-				messages: {
-					required: "Lūdzu aizpildiet 'Darbu nodošanas - Pieņemšanas akta Nr.' lauku!",
-					number: "Nr. drīkst saturēt tikai ciparus!",
-					min: "Nr. jābūt lielākam par nulli!",
-					max: "Nr. jābūt ne vairāk kā 4 ciparus garam!",
-					IsValidActNo: "Nr. drīkst saturēt tikai ciparus!",
-				}
-			});
-		}
-		else if(place_value == "1")
-		{
-			$('input[name="act_no"]').rules('add', {
-				required: false,
-				number: true,
-				min: 0,
-				max: 1000,
-				IsValidActNo: true,
-				messages: {
-					number: "Nr. drīkst saturēt tikai ciparus!",
-					min: "Nr. jābūt lielākam par nulli!",
-					max: "Nr. jābūt ne vairāk kā 4 ciparus garam!",
-					IsValidActNo: "Nr. drīkst saturēt tikai ciparus!",
-				}
-			});
 		}
 	});
 

@@ -71,7 +71,7 @@
 								DARBU NODOŠANAS - PIEŅEMŠANAS AKTS Nr. DAL
 								<?=$serial_number?> /420-<?=$period_year_number?>
 								<span class="font-weight-normal ml-2">
-									<input type="text" id="order_input" style="width:350px;" placeholder="Rīkojuma Nr.">
+									<input type="text" id="order_input" style="width:350px; border:1px solid #ff0000;" placeholder="Rīkojuma Nr.">
 								</span>
 							</p>
 							<p class="font-weight-bold">
@@ -238,12 +238,12 @@
 													$capacity_per_production = round((($capacity['lumber_capacity']/8)*$capacity['working_hours']), 3);
 
 													//Get COUNT of all attended employees and SUM of nonattended employees rate
-													$employee_count = Manager::GetOperatorsAndAssistantsFromProduction($capacity['id'], $employee['id']);
-													$employee_rates = Manager::GetNonAttendedEmployeeCapacityRatesFromProduction($capacity['id'], $employee['id']);
+													$employee_count = Manager::GetOperatorsAndAssistantsFromProduction($capacity['id'], $employee['shift']);
+													$employee_rates = Manager::GetNonAttendedEmployeeCapacityRatesFromProduction($capacity['id'], $employee['shift']);
 
 													if($employee_rates['rates'] != NULL)
 													{
-														$rate_per_emp = $employee_count['emp_count'] / $employee_rates['rates'];
+														$rate_per_emp = $employee_rates['rates'] / $employee_count['emp_count'];
 													}
 													else
 													{
@@ -307,7 +307,6 @@
 											Ražošanas efektivitātes likme:
 										</td>
 										<td>
-											<!-- <input type="number" min="0" step="1" name="efficiency_rate"> % -->
 											<div class="input-group">
 												<input type="number" min="0" step="1" name="efficiency_rate" class="form-control" id="efficiency_rate">
 												<div class="input-group-append">

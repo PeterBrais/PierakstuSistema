@@ -6,10 +6,11 @@
 		</span>
 	</label>
 	<div class="col-md-5">
-		<select class="custom-select" name="sorted_types[]">
+		<select class="custom-select sorting_prod_type" name="sorted_types[]">
 			<option value="0" <?php echo (isset($_SESSION['sorting_prod']) && $sorted_types[0] == "0") ? 'selected' : ''; ?> >Izvēlieties šķirošanas veidu</option>
 			<option value="1" <?php echo (isset($_SESSION['sorting_prod']) && $sorted_types[0] == "1") ? 'selected' : ''; ?> >Šķirots</option>
 			<option value="2" <?php echo (isset($_SESSION['sorting_prod']) && $sorted_types[0] == "2") ? 'selected' : ''; ?> >Garināts</option>
+			<option value="3" <?php echo (isset($_SESSION['sorting_prod']) && $sorted_types[0] == "3") ? 'selected' : ''; ?> >Mērcēts</option>
 		</select>
 	</div>
 	<div class="col-md-4">

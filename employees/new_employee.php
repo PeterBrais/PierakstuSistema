@@ -9,7 +9,7 @@
 	include_once "../includes/employee_position.class.php";
 /****************** Includes ******************/
 
-	$inputs = ['name', 'last_name', 'place', 'positions', 'person_no', 'act_no'];
+	$inputs = ['name', 'last_name', 'place', 'positions', 'person_no'];
 
 	foreach($inputs as $input)
 	{
@@ -44,7 +44,6 @@
 		$shift = NULL;
 		$capacity_rate = NULL;
 		$hour_rate = NULL;
-		$act_no = NULL;
 	}
 	elseif($place == "2")
 	{
@@ -63,9 +62,8 @@
 		$shift = htmlspecialchars($_POST['shift']);
 		$capacity_rate = htmlspecialchars($_POST['capacity_rate']);
 		$hour_rate = htmlspecialchars($_POST['hour_rate']);
-		$act_no = htmlspecialchars($_POST['act_no']);
 
-		if(empty($shift) || empty($capacity_rate) || empty($hour_rate) || empty($act_no))
+		if(empty($shift) || empty($capacity_rate) || empty($hour_rate))
 		{
 			$_SESSION['error'] = "Lūdzu aizpildiet visus obligātos laukus!";
 			$_SESSION['employee'] = $_POST;
@@ -114,15 +112,6 @@
 			exit();
 		}
 
-		//Check if act of transfer and adoption of works is valid
-		if(!Validate::IsValidActNumber($act_no))
-		{
-			$_SESSION['act_no'] = "Nr. drīkst saturēt tikai ciparus!";
-			$_SESSION['employee'] = $_POST;
-			header("Location: add_employee");
-			exit();
-		}
-
 		$place = "Zagetava";
 	}
 	elseif($place == "3")
@@ -131,25 +120,6 @@
 		$shift = NULL;
 		$capacity_rate = NULL;
 		$hour_rate = NULL;
-		$act_no = htmlspecialchars($_POST['act_no']);
-
-
-		if(empty($act_no))
-		{
-			$_SESSION['error'] = "Lūdzu aizpildiet visus obligātos laukus!";
-			$_SESSION['employee'] = $_POST;
-			header("Location: add_employee");
-			exit();
-		}
-
-		//Check if act of transfer and adoption of works is valid
-		if(!Validate::IsValidActNumber($act_no))
-		{
-			$_SESSION['act_no'] = "Nr. drīkst saturēt tikai ciparus!";
-			$_SESSION['employee'] = $_POST;
-			header("Location: add_employee");
-			exit();
-		}
 	}
 	else
 	{
@@ -238,7 +208,6 @@
 	$employee->last_name = $last_name;
 	$employee->place = $place;
 	$employee->person_id = $person_no;
-	$employee->act_number = $act_no;
 	$employee->shift = $shift;
 	$employee->capacity_rate = $capacity_rate;
 	$employee->hour_rate = $hour_rate;

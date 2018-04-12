@@ -252,7 +252,7 @@
 		{
 			global $conn;
 
-			$sql = $conn->prepare("SELECT COUNT(employees.id) as emp_count FROM employees
+			$sql = $conn->prepare("SELECT COUNT(DISTINCT employees.id) as emp_count FROM employees
 									JOIN employees_positions
 									ON employees.id = employees_positions.employee_id
 									JOIN positions

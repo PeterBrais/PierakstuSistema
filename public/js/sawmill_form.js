@@ -113,7 +113,7 @@ $(function(){
 					IsValidHours: true,
 				},
 				"nonworking[]": {
-					// ChosenWorkplaceDropdown: true,
+					ChosenNonWorkingDropdown: true,
 				},
 			},
 			messages: {
@@ -192,7 +192,7 @@ $(function(){
 					IsValidHours: "Nostrādātās stundas drīkst sastāvēt tikai no cipariem!",
 				},
 				"nonworking[]": {
-					// ChosenWorkplaceDropdown: "Lūdzu aizpildiet tikai vienu ievadlauku katram darbiniekam!",
+					ChosenNonWorkingDropdown: "Lūdzu izvēlieties 'Cits iemesls' veidu!",
 				},
 			}
 		});
