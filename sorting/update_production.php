@@ -13,9 +13,12 @@
 	include_once "../includes/manager.class.php";
 /****************** Includes ******************/
 
-	$this_date = date('Y-m'); //This year and month
-	$employees_count = Manager::GetSortingEmployees($this_date);
-	$employees_occasion = $employees_count = count($employees_count); //Gets count of sorting employees
+	//Check if sorting production in database exists
+	if(!SortingProduction::ExistsNonReservedProductionWithID($_POST['sorting_production_id']))
+	{
+		header("Location: 404");
+		exit();
+	}
 
 	$inputs = ['date', 'time_from', 'time_to', 'invoice', 'thick', 'width', 'length', 'sawn_count', 'defect_count', 'sorted_types', 'sorted_count', 'sorted_thick', 'sorted_width', 'sorted_length', 'id', 'working_hours', 'nonworking'];
 
@@ -28,7 +31,13 @@
 		}
 	}
 
+	$this_date = date('Y-m'); //This year and month
+	$employees_count = Manager::GetSortingEmployees($this_date);
+	$employees_occasion = $employees_count = count($employees_count); //Gets count of sorting employees
+
+
 	//Sets variables
+	$sorting_production_id = htmlspecialchars($_POST['sorting_production_id']);
 	$date = htmlspecialchars($_POST['date']);
 	$time_from = htmlspecialchars($_POST['time_from']);
 	$time_to = htmlspecialchars($_POST['time_to']);
@@ -49,22 +58,22 @@
 	$working_hours = $_POST['working_hours'];
 	$nonworking = $_POST['nonworking'];
 
+
 	//Error handlers
 	//Check if fields are empty
-	if(empty($date) || empty($time_from) || empty($time_to) || empty($invoice) || empty($thickness) || empty($width) || empty($length) || empty($sawn_count))
+	if(empty($sorting_production_id) || empty($date) || empty($time_from) || empty($time_to) || empty($invoice) || empty($thickness) || empty($width) || empty($length) || empty($sawn_count))
 	{
 		$_SESSION['error'] = "Lūdzu aizpildiet visus obligātos laukus!";
-		$_SESSION['sorting_prod'] = $_POST;
-		header("Location: add_sorting_production");
+		$_SESSION['edit_sorting_prod'] = $_POST;
+		header("Location: edit_production?id=$sorting_production_id");
 		exit();
 	}
-
 	//Checks if date is correct, like yyyy/mm/dd or yyyy-mm-dd
 	if(!Validate::IsValidDate($date))
 	{
 		$_SESSION['date'] = "Lūdzu ievadiet korektu datumu, formā: gggg-mm-dd vai gggg/mm/dd!";
-		$_SESSION['sorting_prod'] = $_POST;
-		header("Location: add_sorting_production");
+		$_SESSION['edit_sorting_prod'] = $_POST;
+		header("Location: edit_production?id=$sorting_production_id");
 		exit();
 	}
 
@@ -72,15 +81,15 @@
 	if(!Validate::IsValidTime($time_from))
 	{
 		$_SESSION['time'] = "Lūdzu ievadiet korektu laiku, formā: hh:mm!";
-		$_SESSION['sorting_prod'] = $_POST;
-		header("Location: add_sorting_production");
+		$_SESSION['edit_sorting_prod'] = $_POST;
+		header("Location: edit_production?id=$sorting_production_id");
 		exit();
 	}
 	if(!Validate::IsValidTime($time_to))
 	{
 		$_SESSION['time'] = "Lūdzu ievadiet korektu laiku, formā: hh:mm!";
-		$_SESSION['sorting_prod'] = $_POST;
-		header("Location: add_sorting_production");
+		$_SESSION['edit_sorting_prod'] = $_POST;
+		header("Location: edit_production?id=$sorting_production_id");
 		exit();
 	}
 
@@ -88,8 +97,8 @@
 	if(!Validate::IsValidIntegerNumber($invoice))
 	{
 		$_SESSION['invoice'] = "Ievadītais pavadzīmes numurs ir neatbilstošs! Tas var sastāvēt tikai no cipariem!";
-		$_SESSION['sorting_prod'] = $_POST;
-		header("Location: add_sorting_production");
+		$_SESSION['edit_sorting_prod'] = $_POST;
+		header("Location: edit_production?id=$sorting_production_id");
 		exit();
 	}
 
@@ -97,43 +106,43 @@
 	if(!Validate::IsValidIntegerNumber($thickness))
 	{
 		$_SESSION['sizes'] = "Biezums skaits drīkst sastāvēt tikai no cipariem!";
-		$_SESSION['sorting_prod'] = $_POST;
-		header("Location: add_sorting_production");
+		$_SESSION['edit_sorting_prod'] = $_POST;
+		header("Location: edit_production?id=$sorting_production_id");
 		exit();
 	}
 	if($thickness <= 0)
 	{
 		$_SESSION['sizes'] = "Biezums skaits drīkst sastāvēt tikai no cipariem!";
-		$_SESSION['sorting_prod'] = $_POST;
-		header("Location: add_sorting_production");
+		$_SESSION['edit_sorting_prod'] = $_POST;
+		header("Location: edit_production?id=$sorting_production_id");
 		exit();
 	}
 	if(!Validate::IsValidIntegerNumber($width))
 	{
 		$_SESSION['sizes'] = "Platums skaits drīkst sastāvēt tikai no cipariem!";
-		$_SESSION['sorting_prod'] = $_POST;
-		header("Location: add_sorting_production");
+		$_SESSION['edit_sorting_prod'] = $_POST;
+		header("Location: edit_production?id=$sorting_production_id");
 		exit();
 	}
 	if($width <= 0)
 	{
 		$_SESSION['sizes'] = "Platums skaits drīkst sastāvēt tikai no cipariem!";
-		$_SESSION['sorting_prod'] = $_POST;
-		header("Location: add_sorting_production");
+		$_SESSION['edit_sorting_prod'] = $_POST;
+		header("Location: edit_production?id=$sorting_production_id");
 		exit();
 	}
 	if(!Validate::IsValidIntegerNumber($length))
 	{
 		$_SESSION['sizes'] = "Garums skaits drīkst sastāvēt tikai no cipariem!";
-		$_SESSION['sorting_prod'] = $_POST;
-		header("Location: add_sorting_production");
+		$_SESSION['edit_sorting_prod'] = $_POST;
+		header("Location: edit_production?id=$sorting_production_id");
 		exit();
 	}
 	if($length <= 0)
 	{
 		$_SESSION['sizes'] = "Garums skaits drīkst sastāvēt tikai no cipariem!";
-		$_SESSION['sorting_prod'] = $_POST;
-		header("Location: add_sorting_production");
+		$_SESSION['edit_sorting_prod'] = $_POST;
+		header("Location: edit_production?id=$sorting_production_id");
 		exit();
 	}
 
@@ -141,15 +150,15 @@
 	if(!Validate::IsValidIntegerNumber($sawn_count))
 	{
 		$_SESSION['sawn_count'] = "Skaits drīkst sastāvēt tikai no cipariem!";
-		$_SESSION['sorting_prod'] = $_POST;
-		header("Location: add_sorting_production");
+		$_SESSION['edit_sorting_prod'] = $_POST;
+		header("Location: edit_production?id=$sorting_production_id");
 		exit();
 	}
 	if($sawn_count <= 0)
 	{
 		$_SESSION['sawn_count'] = "Skaits drīkst sastāvēt tikai no cipariem!";
-		$_SESSION['sorting_prod'] = $_POST;
-		header("Location: add_sorting_production");
+		$_SESSION['edit_sorting_prod'] = $_POST;
+		header("Location: edit_production?id=$sorting_production_id");
 		exit();
 	}
 
@@ -159,9 +168,9 @@
 		if(!Validate::IsValidIntegerNumber($defect_count))
 		{
 			$_SESSION['defect_count'] = "Defektu skaits drīkst sastāvēt tikai no cipariem!";
-			$_SESSION['sorting_prod'] = $_POST;
-			header("Location: add_sorting_production");
-			exit();
+			$_SESSION['edit_sorting_prod'] = $_POST;
+		header("Location: edit_production?id=$sorting_production_id");
+		exit();
 		}
 	}
 	else
@@ -169,31 +178,32 @@
 		$defect_count = NULL;
 	}
 
+
 	//Check sorted productions inputs
 	for($i = 0; $i < count($sorted_counts); $i++)
 	{
 		if(empty($types[$i]) || empty($sorted_counts[$i]) || empty($sorted_thicknesses[$i]) || empty($sorted_widths[$i]) || empty($sorted_lengths[$i]))
 		{
 			$_SESSION['error'] = "Lūdzu aizpildiet visus obligātos laukus!";
-			$_SESSION['sorting_prod'] = $_POST;
-			header("Location: add_sorting_production");
-			exit();
+			$_SESSION['edit_sorting_prod'] = $_POST;
+		header("Location: edit_production?id=$sorting_production_id");
+		exit();
 		}
 
 		//Check if sorted production type is choosen
 		if($types[$i] == "0")
 		{
 			$_SESSION['sorted_types'] = "Lūdzu izvēlieties Šķirošanas veidu!";
-			$_SESSION['sorting_prod'] = $_POST;
-			header("Location: add_sorting_production");
-			exit();
+			$_SESSION['edit_sorting_prod'] = $_POST;
+		header("Location: edit_production?id=$sorting_production_id");
+		exit();
 		}
 
 		if($types[$i] != "1" && $types[$i] != "2" && $types[$i] != "3")
 		{
 			$_SESSION['error'] = "Lūdzu mēģiniet vēlreiz!";
-			$_SESSION['sorting_prod'] = $_POST;
-			header("Location: add_sorting_production");
+			$_SESSION['edit_sorting_prod'] = $_POST;
+			header("Location: edit_production?id=$sorting_production_id");
 			exit();
 		}
 
@@ -201,15 +211,15 @@
 		if(!Validate::IsValidIntegerNumber($sorted_counts[$i]))
 		{
 			$_SESSION['sorted_count'] = "Skaits drīkst sastāvēt tikai no cipariem!";
-			$_SESSION['sorting_prod'] = $_POST;
-			header("Location: add_sorting_production");
+			$_SESSION['edit_sorting_prod'] = $_POST;
+			header("Location: edit_production?id=$sorting_production_id");
 			exit();
 		}
 		if($sorted_counts[$i] <= 0)
 		{
 			$_SESSION['sorted_count'] = "Skaits drīkst sastāvēt tikai no cipariem!";
-			$_SESSION['sorting_prod'] = $_POST;
-			header("Location: add_sorting_production");
+			$_SESSION['edit_sorting_prod'] = $_POST;
+			header("Location: edit_production?id=$sorting_production_id");
 			exit();
 		}
 
@@ -217,43 +227,43 @@
 		if(!Validate::IsValidIntegerNumber($sorted_thicknesses[$i]))
 		{
 			$_SESSION['sorted_sizes'] = "Biezums skaits drīkst sastāvēt tikai no cipariem!";
-			$_SESSION['sorting_prod'] = $_POST;
-			header("Location: add_sorting_production");
+			$_SESSION['edit_sorting_prod'] = $_POST;
+			header("Location: edit_production?id=$sorting_production_id");
 			exit();
 		}
 		if($sorted_thicknesses[$i] <= 0)
 		{
 			$_SESSION['sorted_sizes'] = "Biezums skaits drīkst sastāvēt tikai no cipariem!";
-			$_SESSION['sorting_prod'] = $_POST;
-			header("Location: add_sorting_production");
+			$_SESSION['edit_sorting_prod'] = $_POST;
+			header("Location: edit_production?id=$sorting_production_id");
 			exit();
 		}
 		if(!Validate::IsValidIntegerNumber($sorted_widths[$i]))
 		{
 			$_SESSION['sorted_sizes'] = "Platums skaits drīkst sastāvēt tikai no cipariem!";
-			$_SESSION['sorting_prod'] = $_POST;
-			header("Location: add_sorting_production");
+			$_SESSION['edit_sorting_prod'] = $_POST;
+			header("Location: edit_production?id=$sorting_production_id");
 			exit();
 		}
 		if($sorted_widths[$i] <= 0)
 		{
 			$_SESSION['sorted_sizes'] = "Platums skaits drīkst sastāvēt tikai no cipariem!";
-			$_SESSION['sorting_prod'] = $_POST;
-			header("Location: add_sorting_production");
+			$_SESSION['edit_sorting_prod'] = $_POST;
+			header("Location: edit_production?id=$sorting_production_id");
 			exit();
 		}
 		if(!Validate::IsValidIntegerNumber($sorted_lengths[$i]))
 		{
 			$_SESSION['sorted_sizes'] = "Garums skaits drīkst sastāvēt tikai no cipariem!";
-			$_SESSION['sorting_prod'] = $_POST;
-			header("Location: add_sorting_production");
+			$_SESSION['edit_sorting_prod'] = $_POST;
+			header("Location: edit_production?id=$sorting_production_id");
 			exit();
 		}
 		if($sorted_lengths[$i] <= 0)
 		{
 			$_SESSION['sorted_sizes'] = "Garums skaits drīkst sastāvēt tikai no cipariem!";
-			$_SESSION['sorting_prod'] = $_POST;
-			header("Location: add_sorting_production");
+			$_SESSION['edit_sorting_prod'] = $_POST;
+			header("Location: edit_production?id=$sorting_production_id");
 			exit();
 		}
 	}
@@ -268,8 +278,8 @@
 			if(Validate::IsArrayEmptyFromTo($working_hours, $j, $employees_occasion) && Validate::IsArrayEmptyFromTo($nonworking, $j, $employees_occasion))
 			{
 				$_SESSION['error'] = "Lūdzu aizpildiet darbinieku tabulu!";
-				$_SESSION['sorting_prod'] = $_POST;
-				header("Location: add_sorting_production");
+				$_SESSION['edit_sorting_prod'] = $_POST;
+				header("Location: edit_production?id=$sorting_production_id");
 				exit();
 			}
 
@@ -278,16 +288,16 @@
 				if(!Employee::ExistsSortingEmployee($ids[$k])) //Checks if employee with this id exists
 				{
 					$_SESSION['error'] = "Radās kļūda, lūdzu mēģiniet vēlreiz!";
-					$_SESSION['sorting_prod'] = $_POST;
-					header("Location: add_sorting_production");
+					$_SESSION['edit_sorting_prod'] = $_POST;
+					header("Location: edit_production?id=$sorting_production_id");
 					exit();
 				}
 
 				if(!empty($working_hours[$k]) && !empty($nonworking[$k]))
 				{
 					$_SESSION['error'] = "Lūdzu aizpildiet tikai vienu darbinieka ievadlauku!";
-					$_SESSION['sorting_prod'] = $_POST;
-					header("Location: add_sorting_production");
+					$_SESSION['edit_sorting_prod'] = $_POST;
+					header("Location: edit_production?id=$sorting_production_id");
 					exit();
 				}
 
@@ -297,8 +307,8 @@
 					if(!Validate::IsValidHours($working_hours[$k]))
 					{
 						$_SESSION['error'] = "Darbinieka nostrādātās darba stundas drīkst sastāvēt tikai no cipariem!";
-						$_SESSION['sorting_prod'] = $_POST;
-						header("Location: add_sorting_production");
+						$_SESSION['edit_sorting_prod'] = $_POST;
+						header("Location: edit_production?id=$sorting_production_id");
 						exit();
 					}
 				}
@@ -309,8 +319,8 @@
 					if($nonworking[$k] != "1" && $nonworking[$k] != "2" && $nonworking[$k] != "3")
 					{
 						$_SESSION['error'] = "Radās kļūda, lūdzu mēģiniet vēlreiz!";
-						$_SESSION['sorting_prod'] = $_POST;
-						header("Location: add_sorting_production");
+						$_SESSION['edit_sorting_prod'] = $_POST;
+						header("Location: edit_production?id=$sorting_production_id");
 						exit();
 					}
 				}
@@ -327,8 +337,8 @@
 		else
 		{
 			$_SESSION['error'] = "Radās kļūda, lūdzu mēģiniet vēlreiz!";
-			$_SESSION['sorting_prod'] = $_POST;
-			header("Location: add_sorting_production");
+			$_SESSION['edit_sorting_prod'] = $_POST;
+			header("Location: edit_production?id=$sorting_production_id");
 			exit();
 		}
 
@@ -340,8 +350,14 @@
 
 	$sawn_capacity = round((($thickness * $width * $length)/1000000000)*$sawn_count, 3);
 
-	//Saves sorting production
+	//Objects
 	$sortingProduction = new SortingProduction();
+	$sortedProduction = new SortedProduction();
+	$employees_sorted_procutions = new EmployeeSortedProductions();
+	$working_times = new WorkingTimes();
+	$times = new Times();
+	
+	//Saves updated sorting production data
 	$sortingProduction->date = $date;
 	$sortingProduction->time_from = $time_from;
 	$sortingProduction->time_to = $time_to;
@@ -353,10 +369,21 @@
 	$sortingProduction->capacity = $sawn_capacity;
 	$sortingProduction->defect_count = $defect_count;
 	$sortingProduction->reserved = 0;
-	$sortingProduction->Save();
+	$sortingProduction->id = $sorting_production_id;
+	$sortingProduction->Update();
+
+	$all_sorted_productions = Manager::GetSortedProductionsByID($sorting_production_id);
+	foreach($all_sorted_productions as $all_sorted_production)
+	{
+		$employees_sorted_procutions->DeleteAllSortedProductionEmployees($all_sorted_production['id']);
+
+		$working_times->DeleteAllWorkingEmployees($all_sorted_production['id']);
+
+		$times->DeleteAllNonWorkingEmployees($all_sorted_production['id']);
+	}
+	$sortedProduction->DeleteAllSortingProductionSortedProductions($sorting_production_id);
 
 	//Saves sorted productions
-	$sortedProduction = new SortedProduction();
 	for($i = 0; $i < count($sorted_counts); $i++)
 	{
 		$sorted_capacity[$i] = round((($sorted_thicknesses[$i]*$sorted_widths[$i]*$sorted_lengths[$i])/1000000000)*$sorted_counts[$i], 3);
@@ -379,14 +406,11 @@
 			$sortedProduction->length = $sorted_lengths[$i];
 			$sortedProduction->capacity = $sorted_capacity[$i];
 			$sortedProduction->capacity_per_piece = $sorted_capacity_piece[$i];
-			$sortedProduction->sorting_id = $sortingProduction->id;
+			$sortedProduction->sorting_id = $sorting_production_id;
 			$sortedProduction->Save();
 
 
 			//Saves data to tables: employees_sorting_productions, working_times, times 
-			$employees_sorted_procutions = new EmployeeSortedProductions();
-			$working_times = new WorkingTimes();
-			$times = new Times();
 			for($j = $i*$employees_count; $j < $employees_occasion; $j++)
 			{
 				if($working_hours[$j] != '' && $working_hours > 0)
@@ -447,17 +471,17 @@
 			$sortedProduction->length = $sorted_lengths[$i];
 			$sortedProduction->capacity = $sorted_capacity[$i];
 			$sortedProduction->capacity_per_piece = $sorted_capacity_piece[$i];
-			$sortedProduction->sorting_id = $sortingProduction->id;
+			$sortedProduction->sorting_id = $sorting_production_id;
 			$sortedProduction->Save();
 		}
 
 
 		$employees_occasion = $employees_count + $employees_occasion;
 	}
-	
 
-	$_SESSION['success'] = "Šķirotavas produkcija pievienota veiksmīgi!";
-	header("Location: add_sorting_production");
+
+	$_SESSION['success'] = "Zāģētavas produkcija pievienota veiksmīgi!";
+	header("Location: show_sorting_production");
 	exit();
 
 ?>

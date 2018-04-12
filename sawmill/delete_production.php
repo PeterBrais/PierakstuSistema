@@ -12,19 +12,19 @@
 
 	if(!isset($_SESSION['id']) && !isset($_SESSION['role']))	//Check if user is logged in
 	{
-		header("Location: /");
+		header("Location: 404");
 		exit();
 	}
 	if(($_SESSION['role'] != "p") && ($_SESSION['role'] != "a") && ($_SESSION['active'] != 1))	//Check if user have permission to delete data
 	{
-		header("Location: /");
+		header("Location: 404");
 		exit();
 	}
 
 	//Check if ID and invoice is set
 	if(!isset($_GET['id']) || !isset($_GET['invoice']))
 	{
-		header("Location: show_sawmill_production");
+		header("Location: 404");
 		exit();
 	}
 
@@ -33,7 +33,7 @@
 	$production_invoice = $_GET['invoice'];
 	if(!SawmillProduction::ExistsProductionWithInvoiceAndID($production_id, $production_invoice))
 	{
-		header("Location: show_sawmill_production");
+		header("Location: 404");
 		exit();
 	}
 

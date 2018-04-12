@@ -38,6 +38,21 @@
 				exit();
 			}
 		}
+
+		function DeleteAllSortingProductionSortedProductions($id){	//Deletes 1:M relations table data
+			try
+			{
+				$sql = $this->conn->prepare("DELETE FROM sorted_productions WHERE sorting_id = ?");
+				$sql->bind_param('s', $id);
+				$sql->execute();
+			}
+			catch(mysqli_sql_exception $e)
+			{
+				$_SESSION['error'] = "Radās kļūda ierakstot datus!";
+				header("Location: /");
+				exit();
+			}
+		}
 	}
 
 ?>

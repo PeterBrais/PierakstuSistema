@@ -16,7 +16,7 @@
 	//Check if sawmill production in database exists
 	if(!SawmillProduction::ExistsProductionWithInvoiceAndID($_POST['sawmill_production_id'], $_POST['sawmill_production_invoice']))
 	{
-		header("Location: show_sawmill_production");
+		header("Location: 404");
 		exit();
 	}
 

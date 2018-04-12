@@ -14,7 +14,7 @@
 	}
 	if(($_SESSION['role'] != "p") && ($_SESSION['role'] != "a") && ($_SESSION['active'] != 1))	//Check if user have permission to delete data
 	{
-		header("Location: /");
+		header("Location: 404");
 		exit();
 	}
 
@@ -56,9 +56,9 @@
 					<div class="card-body">
 						<h4 class="card-title text-center">
 							Labot produckiju ar Pavadzīmes Nr: <u>'<?=$production['invoice']?>'</u>. Datums: <?=$production['date']?>
-<!-- 							<a href="delete_production?id=<?=$production['id']?>&invoice=<?=$production['invoice']?>" class="btn btn-danger float-right">
+							<a href="delete_production?id=<?=$production['id']?>" class="btn btn-danger float-right">
 								Dzēst produkciju!
-							</a> -->
+							</a>
 						</h4>
 
 						<form id="edit_sorting_production_form" action="update_production" method="POST">

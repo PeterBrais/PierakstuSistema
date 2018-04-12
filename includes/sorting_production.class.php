@@ -33,9 +33,44 @@
 				$sql->execute();
 
 				$this->id = $this->conn->insert_id; //Sets object id
+				$sql->close();
 			}
 			catch(mysqli_sql_exception $e)
 			{	
+				$_SESSION['error'] = "Radās kļūda ierakstot datus!";
+				header("Location: /");
+				exit();
+			}
+		}
+
+		function Update()	//Updates existing sorting production data
+		{
+			try
+			{
+				$sql = $this->conn->prepare("UPDATE sorting_productions SET date = ?, time_from = ?, time_to = ?, invoice = ?, thickness = ?, width = ?, length = ?, count = ?, capacity = ?, defect_count = ?, reserved = ? WHERE sorting_productions.id = ?");
+				$sql->bind_param('sssiiiiidiis', $this->date, $this->time_from, $this->time_to, $this->invoice, $this->thickness, $this->width, $this->length, $this->count, $this->capacity, $this->defect_count, $this->reserved, $this->id);
+				$sql->execute();
+				$sql->close();
+			}
+			catch(mysqli_sql_exception $e)
+			{	
+				$_SESSION['error'] = "Radās kļūda ierakstot datus!";
+				header("Location: /");
+				exit();
+			}
+		}
+
+		function Delete()	//Deletes sorting production from database
+		{
+			try
+			{
+				$sql = $this->conn->prepare("DELETE FROM sorting_productions WHERE sorting_productions.id = ?");
+				$sql->bind_param('s', $this->id);
+				$sql->execute();
+				$sql->close();
+			}
+			catch(mysqli_sql_exception $e)
+			{
 				$_SESSION['error'] = "Radās kļūda ierakstot datus!";
 				header("Location: /");
 				exit();
