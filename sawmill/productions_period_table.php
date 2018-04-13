@@ -1,7 +1,16 @@
 <?php
 	include_once "../includes/manager.class.php";
+	include_once "../includes/validate.class.php";
 
-	$date_string = isset($_POST['date_string']) ? $_POST['date_string'] : date('Y-m');
+	$date_string = isset($_GET['p']) ? $_GET['p'] : date('Y-m');
+
+	//Checks if year and month is correct
+	if(!Validate::IsValidPeriod($date_string))
+	{
+		header("Location: 404");
+		exit();
+	}
+	
 	$productions = Manager::GetSawmillProductionsByDate($date_string);
 	$employees = Manager::GetSawmillEmployeesByDate($date_string);
 	$total = Manager::GetAllSawmillProductionSummByDate($date_string);

@@ -4,12 +4,26 @@
 	$periods = Manager::AllSawmillPeriods();
 ?>
 
-	<select class="custom-select" id="period_select">
+	<select class="custom-select" id="period_select" onchange="location = this.value;">
 
 <?php
 	foreach($periods as $period)
 	{
-		echo '<option value="'.$period['date'].'">'.$period['month_year'].'</option>';
+		if(isset($_GET['p']))
+		{	
+			if($_GET['p'] == $period['date'])
+			{
+				echo '<option value="show_sawmill_production?p='.$period['date'].'" selected>'.$period['month_year'].'</option>';
+			}
+			else
+			{
+				echo '<option value="show_sawmill_production?p='.$period['date'].'">'.$period['month_year'].'</option>';
+			}
+		}
+		else
+		{
+			echo '<option value="show_sawmill_production?p='.$period['date'].'">'.$period['month_year'].'</option>';
+		}
 	}
 ?>
 	</select>

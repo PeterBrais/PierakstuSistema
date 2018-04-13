@@ -1,7 +1,16 @@
 <?php
 	include_once "../includes/manager.class.php";
+	include_once "../includes/validate.class.php";
 
-	$date_string = isset($_POST['date_string']) ? $_POST['date_string'] : date('Y-m');
+	$date_string = isset($_GET['p']) ? $_GET['p'] : date('Y-m');
+
+	//Checks if year and month is correct
+	if(!Validate::IsValidPeriod($date_string))
+	{
+		header("Location: 404");
+		exit();
+	}
+
 	$invoices = Manager::GetSortingProductionsByInvoice($date_string);
 	$employees = Manager::GetSortingEmployeesByDate($date_string);
 	$total = Manager::GetAllSortingProductionSummByDate($date_string);
