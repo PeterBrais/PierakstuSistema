@@ -287,9 +287,14 @@
 
 	$percentage = round($percentage, 2);
 
+	//Get timestamp
+	$timestamp = new DateTime('now', new DateTimezone('Europe/Riga'));
+	$timestamp = $timestamp->format('Y-m-d H:i:s');
+
 	//Saves sawmill production
 	$sawmillProduction = new SawmillProduction();
 	$sawmillProduction->date = $date;
+	$sawmillProduction->datetime = $timestamp;
 	$sawmillProduction->time_from = $time_from;
 	$sawmillProduction->time_to = $time_to;
 	$sawmillProduction->invoice = $invoice;
@@ -329,6 +334,7 @@
 		if($working_hours[$i] != '' && $working_hours > 0)
 		{
 			$working_times->date = $date;
+			$working_times->datetime = $timestamp;
 			$working_times->invoice = $invoice;
 			$working_times->working_hours = $working_hours[$i];
 			$working_times->employee_id = $ids[$i];
@@ -356,6 +362,7 @@
 			}
 
 			$times->date = $date;
+			$times->datetime = $timestamp;
 			$times->invoice = $invoice;
 			$times->pregnancy = NULL;
 			$times->employee_id = $ids[$i];

@@ -9,7 +9,7 @@
 
 	if(!isset($_SESSION['id']) && !isset($_SESSION['role']))	//Check if user is logged in
 	{
-		header("Location: /");
+		header("Location: 404");
 		exit();
 	}
 	if(($_SESSION['role'] != "p") && ($_SESSION['role'] != "a") && ($_SESSION['active'] != 1))	//Check if user have permission to delete data
@@ -20,7 +20,7 @@
 
 	if(!isset($_GET['id']))		//Check if ID is set
 	{
-		header("Location: show_sorting_production");
+		header("Location: 404");
 		exit();
 	}
 
@@ -28,7 +28,7 @@
 	$sorting_production_id = $_GET['id'];
 	if(!SortingProduction::ExistsNonReservedProductionWithID($sorting_production_id))
 	{
-		header("Location: show_sorting_production");
+		header("Location: 404");
 		exit();
 	}
 
@@ -388,8 +388,8 @@
 												$k = 1;
 												foreach($employees as $employee)
 												{
-													$worked_hours = WorkingTimes::GetWorkersWorkingTime($employee['id'], $production['date'], $all_sorted_production['id']);
-													$nonworked = Times::GetWorkersNonWorkingTime($employee['id'], $production['date'], $all_sorted_production['id']);
+													$worked_hours = WorkingTimes::GetWorkersWorkingTime($employee['id'], $production['date'], $all_sorted_production['id'], $production['datetime']);
+													$nonworked = Times::GetWorkersNonWorkingTime($employee['id'], $production['date'], $all_sorted_production['id'], $production['datetime']);
 										?>
 													<tr>
 														<input type="hidden" name="id[]" value="<?=$employee['id']?>">
@@ -578,8 +578,8 @@
 												$k = 1;
 												foreach($employees as $employee)
 												{
-													$worked_hours = WorkingTimes::GetWorkersWorkingTime($employee['id'], $production['date'], $all_sorted_production['id']);
-													$nonworked = Times::GetWorkersNonWorkingTime($employee['id'], $production['date'], $all_sorted_production['id']);
+													$worked_hours = WorkingTimes::GetWorkersWorkingTime($employee['id'], $production['date'], $all_sorted_production['id'], $production['datetime']);
+													$nonworked = Times::GetWorkersNonWorkingTime($employee['id'], $production['date'], $all_sorted_production['id'], $production['datetime']);
 										?>
 													<tr>
 														<input type="hidden" name="id[]" value="<?=$employee['id']?>">
@@ -626,14 +626,12 @@
 													</tr>
 										<?php
 												}
-
 										?>
 												</tbody>
 											</table>
 							<?php
 									}
 								}
-
 							?>
 
 							</div>

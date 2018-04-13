@@ -105,7 +105,7 @@
 		{
 			global $conn;
 
-			$sql = $conn->prepare("SELECT DISTINCT shift FROM employees WHERE shift=?");
+			$sql = $conn->prepare("SELECT DISTINCT shift FROM employees WHERE shift = ?");
 			$sql->bind_param('s', $shift);
 			$sql->execute();
 			$result = $sql->get_result();
@@ -215,7 +215,8 @@
 									DATE_FORMAT(sawmill_productions.date, '%Y-%m') = ? AND 
 									EXISTS (SELECT * FROM working_times WHERE employees.id = working_times.employee_id
 									AND sawmill_productions.date = working_times.date 
-									AND sawmill_productions.invoice = working_times.invoice)");
+									AND sawmill_productions.invoice = working_times.invoice
+									AND sawmill_productions.datetime = working_times.datetime)");
 			$sql->bind_param('ss', $id, $date_string);
 			$sql->execute();
 			$result = $sql->get_result();
@@ -240,7 +241,8 @@
 									DATE_FORMAT(sawmill_productions.date, '%Y-%m') = ? AND
 									employees.id = working_times.employee_id
 									AND sawmill_productions.date = working_times.date 
-									AND sawmill_productions.invoice = working_times.invoice");
+									AND sawmill_productions.invoice = working_times.invoice
+									AND sawmill_productions.datetime = working_times.datetime");
 			$sql->bind_param('ss', $id, $date_string);
 			$sql->execute();
 			$result = $sql->get_result();
@@ -268,7 +270,8 @@
 									AND employees.place = 'Zagetava' AND employees.shift = ?
 									AND employees.id = working_times.employee_id
 									AND sawmill_productions.date = working_times.date 
-									AND sawmill_productions.invoice = working_times.invoice");
+									AND sawmill_productions.invoice = working_times.invoice
+									AND sawmill_productions.datetime = working_times.datetime");
 			$sql->bind_param('ss', $production_id, $shift);
 			$sql->execute();
 			$result = $sql->get_result();
@@ -291,7 +294,8 @@
 									AND employees.place = 'Zagetava' AND employees.shift = ?
 									AND employees.id = times.employee_id
 									AND sawmill_productions.date = times.date 
-									AND sawmill_productions.invoice = times.invoice");
+									AND sawmill_productions.invoice = times.invoice
+									AND sawmill_productions.datetime = times.datetime");
 			$sql->bind_param('ss', $production_id, $shift);
 			$sql->execute();
 			$result = $sql->get_result();
@@ -324,7 +328,8 @@
 									DATE_FORMAT(sawmill_productions.date, '%Y-%m') = ? 
 									AND employees.id = working_times.employee_id 
 									AND sawmill_productions.date = working_times.date 
-									AND sawmill_productions.invoice = working_times.invoice");
+									AND sawmill_productions.invoice = working_times.invoice
+									AND sawmill_productions.datetime = working_times.datetime");
 			$sql->bind_param('ssss', $id, $date_string, $id, $date_string);
 			$sql->execute();
 			$result = $sql->get_result();
@@ -347,7 +352,8 @@
 									DATE_FORMAT(sawmill_productions.date, '%Y-%m') = ? 
 									AND employees.id = times.employee_id 
 									AND sawmill_productions.date = times.date 
-									AND sawmill_productions.invoice = times.invoice");
+									AND sawmill_productions.invoice = times.invoice
+									AND sawmill_productions.datetime = times.datetime");
 			$sql->bind_param('ss', $id, $date_string);
 			$sql->execute();
 			$result = $sql->get_result();
@@ -436,21 +442,21 @@
 			global $conn;
 
 			$sql = $conn->prepare("SELECT DISTINCT 
-				(SELECT SUM(sorting_productions.count) FROM sorting_productions
-				WHERE DATE_FORMAT(sorting_productions.date, '%Y-%m') = ?) AS count,
-				(SELECT SUM(sorting_productions.capacity) FROM sorting_productions 
-				WHERE DATE_FORMAT(sorting_productions.date, '%Y-%m') = ?) AS capacity,
-				(SELECT SUM(sorting_productions.defect_count) FROM sorting_productions
-				WHERE DATE_FORMAT(sorting_productions.date, '%Y-%m') = ?) AS defect_count,
-				(SELECT SUM(sorted_productions.count) FROM sorted_productions
-				JOIN sorting_productions
-				ON sorting_productions.id = sorted_productions.sorting_id
-				WHERE DATE_FORMAT(sorting_productions.date, '%Y-%m') = ?) AS sorted_count,
-				(SELECT SUM(sorted_productions.capacity) FROM sorted_productions
-				JOIN sorting_productions
-				ON sorting_productions.id = sorted_productions.sorting_id
-				WHERE DATE_FORMAT(sorting_productions.date, '%Y-%m') = ?) AS sorted_capacity
-				FROM sorting_productions");
+									(SELECT SUM(sorting_productions.count) FROM sorting_productions
+									WHERE DATE_FORMAT(sorting_productions.date, '%Y-%m') = ?) AS count,
+									(SELECT SUM(sorting_productions.capacity) FROM sorting_productions 
+									WHERE DATE_FORMAT(sorting_productions.date, '%Y-%m') = ?) AS capacity,
+									(SELECT SUM(sorting_productions.defect_count) FROM sorting_productions
+									WHERE DATE_FORMAT(sorting_productions.date, '%Y-%m') = ?) AS defect_count,
+									(SELECT SUM(sorted_productions.count) FROM sorted_productions
+									JOIN sorting_productions
+									ON sorting_productions.id = sorted_productions.sorting_id
+									WHERE DATE_FORMAT(sorting_productions.date, '%Y-%m') = ?) AS sorted_count,
+									(SELECT SUM(sorted_productions.capacity) FROM sorted_productions
+									JOIN sorting_productions
+									ON sorting_productions.id = sorted_productions.sorting_id
+									WHERE DATE_FORMAT(sorting_productions.date, '%Y-%m') = ?) AS sorted_capacity
+									FROM sorting_productions");
 			$sql->bind_param('sssss', $date_string, $date_string, $date_string, $date_string, $date_string);
 			$sql->execute();
 			$result = $sql->get_result();
@@ -458,6 +464,34 @@
 			return mysqli_fetch_assoc($result);
 		}
 
+		public static function GetAllUselessSortingProductionSummByDate($date_string) //Returns all summ of monthly production
+		{
+			global $conn;
+
+			$sql = $conn->prepare("SELECT DISTINCT 
+									(SELECT SUM(sorting_productions.count) FROM sorting_productions
+									WHERE DATE_FORMAT(sorting_productions.date, '%Y-%m') = ?
+									AND sorting_productions.reserved = 1) AS reserved_count,          
+									(SELECT SUM(sorting_productions.capacity) FROM sorting_productions
+									WHERE DATE_FORMAT(sorting_productions.date, '%Y-%m') = ?
+									AND sorting_productions.reserved = 1) AS reserved_capacity,
+									(SELECT SUM(sorted_productions.count) FROM sorted_productions
+									JOIN sorting_productions
+									ON sorting_productions.id = sorted_productions.sorting_id
+									WHERE DATE_FORMAT(sorting_productions.date, '%Y-%m') = ?
+									AND sorted_productions.type = 'W') AS soaked_count,
+									(SELECT SUM(sorted_productions.capacity) FROM sorted_productions
+									JOIN sorting_productions
+									ON sorting_productions.id = sorted_productions.sorting_id
+									WHERE DATE_FORMAT(sorting_productions.date, '%Y-%m') = ?
+									AND sorted_productions.type = 'W') AS soaked_capacity            
+									FROM sorting_productions");
+			$sql->bind_param('ssss', $date_string, $date_string, $date_string, $date_string);
+			$sql->execute();
+			$result = $sql->get_result();
+
+			return mysqli_fetch_assoc($result);
+		}
 
 		public static function GetSortedProductionsByID($production_id) //Returns all sorted productions
 		{

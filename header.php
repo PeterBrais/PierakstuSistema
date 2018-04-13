@@ -24,12 +24,6 @@ ob_start(); //Output buffering
 			<a class="navbar-brand" href="http://www.rigasmezi.lv/">
 				<img src="/public/images/Rigas-mezi.png" height="60" alt="Rīgas Meži">
 			</a>
-
-					<!--
-					<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
-	    				<span class="navbar-toggler-icon"></span>
-	  				</button>
-					-->
 					
 			<div class="navbar-collapse" id="navbarText">
 				<ul class="navbar-nav mr-auto">
@@ -89,6 +83,9 @@ ob_start(); //Output buffering
 									</a>
 									<a class="dropdown-item" href="/sorting/add_sorting_production">
 										Jauna produkcija
+									</a>
+									<a class="dropdown-item" href="/sorting/add_reserved_sorting_production">
+										Jauna rezervētā produkcija
 									</a>
 								</div>
 							</div>

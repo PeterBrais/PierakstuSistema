@@ -1,25 +1,46 @@
 <?php
+
 	include_once "../header.php";
+	include_once "../includes/sorting_production.class.php";
+
 
 	if(!isset($_SESSION['id']) && !isset($_SESSION['role']))	//Check if user is logged in
 	{
 		header("Location: 404");
 		exit();
 	}
-
-	if(($_SESSION['role'] != "p") && ($_SESSION['role'] != "a") && ($_SESSION['active'] != 1))	//Check if user have permission add new sorting production
+	if(($_SESSION['role'] != "p") && ($_SESSION['role'] != "a") && ($_SESSION['active'] != 1))	//Check if user have permission to delete data
 	{
 		header("Location: 404");
 		exit();
 	}
 
-	if(isset($_SESSION['sorting_prod']))
+	if(!isset($_GET['id']))		//Check if ID is set
 	{
-		extract($_SESSION['sorting_prod']);
+		header("Location: 404");
+		exit();
 	}
+
+	//Check if production with ID exists in database
+	$sorting_production_id = $_GET['id'];
+	if(!SortingProduction::ExistsReservedProductionWithID($sorting_production_id))
+	{
+		header("Location: 404");
+		exit();
+	}
+
+	//Extract Session data
+	if(isset($_SESSION['edit_sorting_prod']))
+	{
+		extract($_SESSION['edit_sorting_prod']);
+	}
+
+	//Returns all sorting_productions data
+	$production = SortingProduction::GetSortingProductionData($sorting_production_id);
+
 ?>
 
-	<!-- Add sorting production -->
+	<!-- Update Reserved Sorting Production data -->
 	<div class="container">
 		<div class="row cont-space">
 			<div class="col-md-12">
@@ -28,9 +49,17 @@
 				</div>
 				<div class="card">
 					<div class="card-body">
-						<h4 class="card-title text-center">Pievienot jaunu šķirošanas produkciju</h4>
+						<h4 class="card-title text-center">
+							Labot rezervēto produckiju ar Pavadzīmes Nr: <u>'<?=$production['invoice']?>'</u>. Datums: <?=$production['date']?>
+							<a href="delete_reserved_production?id=<?=$production['id']?>" class="btn btn-danger float-right">
+								Dzēst produkciju!
+							</a>
+						</h4>
 
-						<form id="sorting_form" action="new_sorting_production" method="POST">
+						<form id="edit_reserved_sorting_production_form" action="update_reserved_production" method="POST">
+
+							<input type="hidden" name="sorting_production_id" value="<?=$production['id']?>">
+
 							<div class="form-group row">
 								<label class="col-md-2 offset-md-1 col-form-label">
 									Datums
@@ -39,7 +68,7 @@
 									</span>
 								</label>
 								<div class="col-md-5">
-									<input class="form-control" type="text" name="date" aria-describedby="dateArea" placeholder="2000/01/01" value="<?php echo isset($_SESSION['sorting_prod']) ? $date : ''; ?>">
+									<input class="form-control" type="text" name="date" aria-describedby="dateArea" placeholder="2000/01/01" value="<?php echo isset($_SESSION['edit_sorting_prod']) ? $date : $production['date']; ?>">
 									<small id="dateArea" class="form-text text-muted">
 										* Satur tikai datumu, piemēram, formātā: GGGG-MM-DD *
 									</small>
@@ -68,10 +97,10 @@
 								<div class="col-md-5">
 									<div class="row">
 										<div class="col-md-6">
-											<input class="form-control" type="time" name="time_from" aria-describedby="timeFromArea" value="<?php echo isset($_SESSION['sorting_prod']) ? $time_from : ''; ?>">
+											<input class="form-control" type="time" name="time_from" aria-describedby="timeFromArea" value="<?php echo isset($_SESSION['edit_sorting_prod']) ? $time_from : $production['time_from']; ?>">
 										</div>
 										<div class="col-md-6">
-											<input class="form-control" type="time" name="time_to" aria-describedby="timeFromArea" value="<?php echo isset($_SESSION['sorting_prod']) ? $time_to : ''; ?>">
+											<input class="form-control" type="time" name="time_to" aria-describedby="timeFromArea" value="<?php echo isset($_SESSION['edit_sorting_prod']) ? $time_to : $production['time_to']; ?>">
 										</div>
 									</div>
 									<small id="timeFromArea" class="form-text text-muted">
@@ -100,7 +129,7 @@
 									</span>
 								</label>
 								<div class="col-md-5">
-									<input class="form-control" type="text" name="invoice" aria-describedby="invoiceArea" value="<?php echo isset($_SESSION['sorting_prod']) ? $invoice : ''; ?>">
+									<input class="form-control" type="text" name="invoice" aria-describedby="invoiceArea" value="<?php echo isset($_SESSION['edit_sorting_prod']) ? $invoice : $production['invoice']; ?>">
 									<small id="invoiceArea" class="form-text text-muted">
 										* Satur tikai ciparus *
 									</small>
@@ -129,13 +158,13 @@
 								<div class="col-md-5">
 									<div class="row">
 										<div class="col-md-4">
-											<input class="form-control" type="number" min="0" name="thick" aria-describedby="timeFromArea" placeholder="Biezums" id="thickeness" value="<?php echo isset($_SESSION['sorting_prod']) ? $thick : ''; ?>">
+											<input class="form-control" type="number" min="0" name="thick" aria-describedby="timeFromArea" placeholder="Biezums" id="thickeness" value="<?php echo isset($_SESSION['edit_sorting_prod']) ? $thick : $production['thickness']; ?>">
 										</div>
 										<div class="col-md-4">
-											<input class="form-control" type="number" min="0" name="width" aria-describedby="timeFromArea" placeholder="Platums" id="width" value="<?php echo isset($_SESSION['sorting_prod']) ? $width : ''; ?>">
+											<input class="form-control" type="number" min="0" name="width" aria-describedby="timeFromArea" placeholder="Platums" id="width" value="<?php echo isset($_SESSION['edit_sorting_prod']) ? $width : $production['width']; ?>">
 										</div>
 										<div class="col-md-4">
-											<input class="form-control" type="number" min="0" name="length" aria-describedby="timeFromArea" placeholder="Garums" id="length" value="<?php echo isset($_SESSION['sorting_prod']) ? $length : ''; ?>">
+											<input class="form-control" type="number" min="0" name="length" aria-describedby="timeFromArea" placeholder="Garums" id="length" value="<?php echo isset($_SESSION['edit_sorting_prod']) ? $length : $production['length']; ?>">
 										</div>
 									</div>
 									<small id="timeFromArea" class="form-text text-muted">
@@ -164,7 +193,7 @@
 									</span>
 								</label>
 								<div class="col-md-5">
-									<input class="form-control" type="number" min="0" name="sawn_count" aria-describedby="sawnCountArea" id="sawn_count" placeholder="Kopējais skaits" value="<?php echo isset($_SESSION['sorting_prod']) ? $sawn_count : ''; ?>">
+									<input class="form-control" type="number" min="0" name="sawn_count" aria-describedby="sawnCountArea" id="sawn_count" placeholder="Kopējais skaits" value="<?php echo isset($_SESSION['edit_sorting_prod']) ? $sawn_count : $production['count']; ?>">
 									<small id="sawnCountArea" class="form-text text-muted">
 										* Satur tikai ciparus, kopējo (gab) skaitu *
 									</small>
@@ -192,45 +221,8 @@
 								</div>
 							</div>
 							<div class="form-group row">
-								<label class="col-md-2 offset-md-1 control-label">
-									Brāķu skaits
-								</label>
-								<div class="col-md-5">
-									<input class="form-control" type="number" min="0" name="defect_count" aria-describedby="sawnCountArea" id="defect_count" placeholder="Brāķu skaits" value="<?php echo isset($_SESSION['sorting_prod']) ? $defect_count : ''; ?>">
-								</div>
-								<div class="col-md-4">
-									<?php
-										if(isset($_SESSION['defect_count']))
-										{
-									?>
-										<div class="alert alert-danger alert-size" role="alert">
-											<?=$_SESSION['defect_count']?>
-										</div>
-									<?php
-											unset($_SESSION['defect_count']);
-										}
-									?>
-								</div>
-							</div>
-							<hr>
-
-							<h5 class="text-center">Sašķirotā produkcija</h5>
-							<div id="sorted_select">
-								<?php include_once "sorted_production_inputs.php"; ?>
-							</div>
-
-							<div class="form-group row">
-								<div class="offset-md-3 col-md-4">
-									<button type="button" name="add" id="add" class="btn btn-success">
-										Pievienot vēl sašķiroto produkciju
-									</button>
-								</div>
-							</div>
-							<hr>
-
-							<div class="form-group row">
 								<div class="col-md-3 offset-md-3">
-									<button class="btn btn-info" type="submit" name="submit">Pievienot</button>
+									<button class="btn btn-info" type="submit" name="submit">Labot</button>
 								</div>
 							</div>
 						</form>
@@ -240,10 +232,10 @@
 		</div>
 	</div>
 
-<script src="../public/js/add_sorting_production.js"></script>
-<script src="../public/js/sorting_form.js"></script>
+<script src="../public/js/edit_reserved_sorting_production.js"></script>
+<script src="../public/js/edit_reserved_sorting_production_form.js"></script>
 
 <?php
-	unset($_SESSION['sorting_prod']);
+	unset($_SESSION['edit_sorting_prod']);
 	include_once "../footer.php";
 ?>

@@ -6,6 +6,7 @@
 	{
 		private $conn;
 		public $id;
+		public $datetime;
 		public $date;
 		public $invoice;
 		public $vacation;
@@ -20,14 +21,14 @@
 			$this->conn = $conn;
 		}
 
-		public static function GetWorkersNonWorkingTime($id, $date, $invoice) //Gets all employees nonworked hours
+		public static function GetWorkersNonWorkingTime($id, $date, $invoice, $timestamp) //Gets all employees nonworked hours
 		{
 			global $conn;
 
-			$sql = $conn->prepare("SELECT times.*FROM employees
+			$sql = $conn->prepare("SELECT times.* FROM employees
 									JOIN times ON times.employee_id = employees.id
-									WHERE times.date = ? AND employees.id = ? AND times.invoice = ?");
-			$sql->bind_param('sss', $date, $id, $invoice);
+									WHERE times.date = ? AND employees.id = ? AND times.invoice = ? AND times.datetime = ?");
+			$sql->bind_param('ssss', $date, $id, $invoice, $timestamp);
 			$sql->execute();
 			$result = $sql->get_result();
 
@@ -38,8 +39,8 @@
 		{
 			try
 			{
-				$sql = $this->conn->prepare("INSERT INTO times VALUES (DEFAULT, ?, ?, ?, ?, ?, ?, ?)");
-				$sql->bind_param('sissssi', $this->date, $this->invoice, $this->vacation, $this->sick_leave, $this->nonattendance, $this->pregnancy, $this->employee_id);
+				$sql = $this->conn->prepare("INSERT INTO times VALUES (DEFAULT, ?, ?, ?, ?, ?, ?, ?, ?)");
+				$sql->bind_param('ssissssi', $this->date, $this->datetime, $this->invoice, $this->vacation, $this->sick_leave, $this->nonattendance, $this->pregnancy, $this->employee_id);
 				$sql->execute();
 
 				$this->id = $this->conn->insert_id;
@@ -52,11 +53,11 @@
 			}
 		}
 
-		function DeleteAllNonWorkingEmployees($invoice){	//Deletes all employee non working times
+		function DeleteAllNonWorkingEmployees($invoice, $date, $timestamp){	//Deletes all employee non working times
 			try
 			{
-				$sql = $this->conn->prepare("DELETE FROM times WHERE invoice = ?");
-				$sql->bind_param('i', $invoice);
+				$sql = $this->conn->prepare("DELETE FROM times WHERE invoice = ? AND date = ? AND datetime = ?");
+				$sql->bind_param('iss', $invoice, $date, $timestamp);
 				$sql->execute();
 				$sql->close();
 			}

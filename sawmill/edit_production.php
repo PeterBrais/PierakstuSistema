@@ -8,18 +8,18 @@
 
 	if(!isset($_SESSION['id']) && !isset($_SESSION['role']))	//Check if user is logged in
 	{
-		header("Location: /");
+		header("Location: 404");
 		exit();
 	}
 	if(($_SESSION['role'] != "p") && ($_SESSION['role'] != "a") && ($_SESSION['active'] != 1))	//Check if user have permission to delete data
 	{
-		header("Location: /");
+		header("Location: 404");
 		exit();
 	}
 
 	if(!isset($_GET['id']))		//Check if ID is set
 	{
-		header("Location: show_sawmill_production");
+		header("Location: 404");
 		exit();
 	}
 
@@ -27,7 +27,7 @@
 	$sawmill_production_id = $_GET['id'];
 	if(!SawmillProduction::ExistsProductionWithID($sawmill_production_id))
 	{
-		header("Location: show_sawmill_production");
+		header("Location: 404");
 		exit();
 	}
 
@@ -457,8 +457,8 @@
 										$i = 1;
 										foreach($employees as $employee)
 										{
-											$worked_hours = WorkingTimes::GetWorkersWorkingTime($employee['id'], $production['date'], $production['invoice']);
-											$nonworked = Times::GetWorkersNonWorkingTime($employee['id'], $production['date'], $production['invoice']);
+											$worked_hours = WorkingTimes::GetWorkersWorkingTime($employee['id'], $production['date'], $production['invoice'], $production['datetime']);
+											$nonworked = Times::GetWorkersNonWorkingTime($employee['id'], $production['date'], $production['invoice'], $production['datetime']);
 								?>
 											<tr>
 												<input type="hidden" name="id[]" value="<?=$employee['id']?>">

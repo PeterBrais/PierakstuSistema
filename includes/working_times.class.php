@@ -7,6 +7,7 @@
 		private $conn;
 		public $id;
 		public $date;
+		public $datetime;
 		public $invoice;
 		public $working_hours;
 		public $overtime_hours;
@@ -19,25 +20,25 @@
 			$this->conn = $conn;
 		}
 
-		public static function GetWorkersWorkingTime($id, $date, $invoice) //Gets all employees worked hours
+		public static function GetWorkersWorkingTime($id, $date, $invoice, $timestamp) //Gets all employees worked hours
 		{
 			global $conn;
 
 			$sql = $conn->prepare("SELECT working_times.* FROM employees
 								JOIN working_times ON working_times.employee_id = employees.id
-								WHERE working_times.date = ? AND employees.id = ? AND working_times.invoice = ?");
-			$sql->bind_param('sss', $date, $id, $invoice);
+								WHERE working_times.date = ? AND employees.id = ? AND working_times.invoice = ? AND working_times.datetime = ?");
+			$sql->bind_param('ssss', $date, $id, $invoice, $timestamp);
 			$sql->execute();
 			$result = $sql->get_result();
 
 			return mysqli_fetch_assoc($result);
 		}
 
-		function DeleteAllWorkingEmployees($invoice){	//Deletes all employee working times
+		function DeleteAllWorkingEmployees($invoice, $date, $timestamp){	//Deletes all employee working times
 			try
 			{
-				$sql = $this->conn->prepare("DELETE FROM working_times WHERE invoice = ?");
-				$sql->bind_param('i', $invoice);
+				$sql = $this->conn->prepare("DELETE FROM working_times WHERE invoice = ? AND date = ? AND datetime = ?");
+				$sql->bind_param('iss', $invoice, $date, $timestamp);
 				$sql->execute();
 				$sql->close();
 			}
@@ -53,8 +54,8 @@
 		{
 			try
 			{
-				$sql = $this->conn->prepare("INSERT INTO working_times VALUES (DEFAULT, ?, ?, ?, ?, ?, ?)");
-				$sql->bind_param('siiiii', $this->date, $this->invoice, $this->working_hours, $this->overtime_hours, $this->holiday_hours, $this->employee_id);
+				$sql = $this->conn->prepare("INSERT INTO working_times VALUES (DEFAULT, ?, ?, ?, ?, ?, ?, ?)");
+				$sql->bind_param('ssiiiii', $this->date, $this->datetime, $this->invoice, $this->working_hours, $this->overtime_hours, $this->holiday_hours, $this->employee_id);
 				$sql->execute();
 
 				$this->id = $this->conn->insert_id;

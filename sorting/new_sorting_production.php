@@ -340,9 +340,14 @@
 
 	$sawn_capacity = round((($thickness * $width * $length)/1000000000)*$sawn_count, 3);
 
+	//Get timestamp
+	$timestamp = new DateTime('now', new DateTimezone('Europe/Riga'));
+	$timestamp = $timestamp->format('Y-m-d H:i:s');
+
 	//Saves sorting production
 	$sortingProduction = new SortingProduction();
 	$sortingProduction->date = $date;
+	$sortingProduction->datetime = $timestamp;
 	$sortingProduction->time_from = $time_from;
 	$sortingProduction->time_to = $time_to;
 	$sortingProduction->invoice = $invoice;
@@ -396,6 +401,7 @@
 					$employees_sorted_procutions->Save();
 
 					$working_times->date = $date;
+					$working_times->datetime = $timestamp;
 					$working_times->invoice = $sortedProduction->id;
 					$working_times->working_hours = $working_hours[$j];
 					$working_times->employee_id = $ids[$j];
@@ -427,6 +433,7 @@
 					}
 
 					$times->date = $date;
+					$times->datetime = $timestamp;
 					$times->invoice = $sortedProduction->id;
 					$times->pregnancy = NULL;
 					$times->employee_id = $ids[$j];
@@ -457,7 +464,7 @@
 	
 
 	$_SESSION['success'] = "Šķirotavas produkcija pievienota veiksmīgi!";
-	header("Location: add_sorting_production");
+	header("Location: show_sorting_production");
 	exit();
 
 ?>

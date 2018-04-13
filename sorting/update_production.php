@@ -169,8 +169,8 @@
 		{
 			$_SESSION['defect_count'] = "Defektu skaits drīkst sastāvēt tikai no cipariem!";
 			$_SESSION['edit_sorting_prod'] = $_POST;
-		header("Location: edit_production?id=$sorting_production_id");
-		exit();
+			header("Location: edit_production?id=$sorting_production_id");
+			exit();
 		}
 	}
 	else
@@ -186,8 +186,8 @@
 		{
 			$_SESSION['error'] = "Lūdzu aizpildiet visus obligātos laukus!";
 			$_SESSION['edit_sorting_prod'] = $_POST;
-		header("Location: edit_production?id=$sorting_production_id");
-		exit();
+			header("Location: edit_production?id=$sorting_production_id");
+			exit();
 		}
 
 		//Check if sorted production type is choosen
@@ -195,8 +195,8 @@
 		{
 			$_SESSION['sorted_types'] = "Lūdzu izvēlieties Šķirošanas veidu!";
 			$_SESSION['edit_sorting_prod'] = $_POST;
-		header("Location: edit_production?id=$sorting_production_id");
-		exit();
+			header("Location: edit_production?id=$sorting_production_id");
+			exit();
 		}
 
 		if($types[$i] != "1" && $types[$i] != "2" && $types[$i] != "3")
@@ -350,6 +350,9 @@
 
 	$sawn_capacity = round((($thickness * $width * $length)/1000000000)*$sawn_count, 3);
 
+	//Returns all sorting_productions data
+	$production = SortingProduction::GetSortingProductionData($sorting_production_id);
+
 	//Objects
 	$sortingProduction = new SortingProduction();
 	$sortedProduction = new SortedProduction();
@@ -368,7 +371,6 @@
 	$sortingProduction->count = $sawn_count;
 	$sortingProduction->capacity = $sawn_capacity;
 	$sortingProduction->defect_count = $defect_count;
-	$sortingProduction->reserved = 0;
 	$sortingProduction->id = $sorting_production_id;
 	$sortingProduction->Update();
 
@@ -377,13 +379,13 @@
 	{
 		$employees_sorted_procutions->DeleteAllSortedProductionEmployees($all_sorted_production['id']);
 
-		$working_times->DeleteAllWorkingEmployees($all_sorted_production['id']);
+		$working_times->DeleteAllWorkingEmployees($all_sorted_production['id'], $production['date'], $production['datetime']);
 
-		$times->DeleteAllNonWorkingEmployees($all_sorted_production['id']);
+		$times->DeleteAllNonWorkingEmployees($all_sorted_production['id'], $production['date'], $production['datetime']);
 	}
 	$sortedProduction->DeleteAllSortingProductionSortedProductions($sorting_production_id);
 
-	//Saves sorted productions
+	//Saves (1:M) sorted productions
 	for($i = 0; $i < count($sorted_counts); $i++)
 	{
 		$sorted_capacity[$i] = round((($sorted_thicknesses[$i]*$sorted_widths[$i]*$sorted_lengths[$i])/1000000000)*$sorted_counts[$i], 3);
@@ -420,6 +422,7 @@
 					$employees_sorted_procutions->Save();
 
 					$working_times->date = $date;
+					$working_times->datetime = $production['datetime'];
 					$working_times->invoice = $sortedProduction->id;
 					$working_times->working_hours = $working_hours[$j];
 					$working_times->employee_id = $ids[$j];
@@ -451,6 +454,7 @@
 					}
 
 					$times->date = $date;
+					$times->datetime = $production['datetime'];
 					$times->invoice = $sortedProduction->id;
 					$times->pregnancy = NULL;
 					$times->employee_id = $ids[$j];

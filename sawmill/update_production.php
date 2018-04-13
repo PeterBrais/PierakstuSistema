@@ -296,6 +296,9 @@
 
 	$percentage = round($percentage, 2);
 
+	//Returns all sawmill_productions data
+	$production = SawmillProduction::GetSawmillProductionData($sawmill_production_id);
+
 	//Saves updated sawmill production data
 	$sawmillProduction = new SawmillProduction();
 	$sawmillProduction->date = $date;
@@ -331,10 +334,10 @@
 	$employees_sawmill_productions->DeleteAllSawmillProductionEmployees($sawmill_production_id);
 
 	$working_times = new WorkingTimes();
-	$working_times->DeleteAllWorkingEmployees($sawmill_production_invoice);
+	$working_times->DeleteAllWorkingEmployees($sawmill_production_invoice, $production['date'], $production['datetime']);
 
 	$times = new Times();
-	$times->DeleteAllNonWorkingEmployees($sawmill_production_invoice);
+	$times->DeleteAllNonWorkingEmployees($sawmill_production_invoice, $production['date'], $production['datetime']);
 
 	for($i = 0; $i < count($ids); $i++)
 	{
@@ -345,6 +348,7 @@
 		if($working_hours[$i] != '' && $working_hours > 0)
 		{
 			$working_times->date = $date;
+			$working_times->datetime = $production['datetime'];
 			$working_times->invoice = $invoice;
 			$working_times->working_hours = $working_hours[$i];
 			$working_times->employee_id = $ids[$i];
@@ -372,6 +376,7 @@
 			}
 
 			$times->date = $date;
+			$times->datetime = $production['datetime'];
 			$times->invoice = $invoice;
 			$times->pregnancy = NULL;
 			$times->employee_id = $ids[$i];

@@ -37,6 +37,9 @@
 		exit();
 	}
 
+	//Returns all sorting_productions data
+	$production = SortingProduction::GetSortingProductionData($sorting_production_id);
+
 	//Object
 	$sortingProduction = new SortingProduction();
 	$sortedProduction = new SortedProduction();
@@ -54,9 +57,9 @@
 	{
 		$employees_sorted_procutions->DeleteAllSortedProductionEmployees($all_sorted_production['id']);
 
-		$working_times->DeleteAllWorkingEmployees($all_sorted_production['id']);
+		$working_times->DeleteAllWorkingEmployees($all_sorted_production['id'], $production['date'], $production['datetime']);
 
-		$times->DeleteAllNonWorkingEmployees($all_sorted_production['id']);
+		$times->DeleteAllNonWorkingEmployees($all_sorted_production['id'], $production['date'], $production['datetime']);
 	}
 	$sortedProduction->DeleteAllSortingProductionSortedProductions($production_id);
 

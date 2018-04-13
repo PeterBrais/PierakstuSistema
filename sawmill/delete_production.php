@@ -37,6 +37,9 @@
 		exit();
 	}
 
+	//Returns all sawmill_productions data
+	$production = SawmillProduction::GetSawmillProductionData($production_id);
+
 	//Object
 	$sawmillProduction = new SawmillProduction();
 	$sawmillProduction->id = $production_id;
@@ -49,10 +52,10 @@
 	$employees_sawmill_productions->DeleteAllSawmillProductionEmployees($production_id);
 
 	$working_times = new WorkingTimes();
-	$working_times->DeleteAllWorkingEmployees($production_invoice);
+	$working_times->DeleteAllWorkingEmployees($production_invoice, $production['date'], $production['datetime']);
 
 	$times = new Times();
-	$times->DeleteAllNonWorkingEmployees($production_invoice);
+	$times->DeleteAllNonWorkingEmployees($production_invoice, $production['date'], $production['datetime']);
 
 
 	$_SESSION['success'] = "Zāģētavas produkcija izdzēsta!";

@@ -5,12 +5,12 @@
 
 	if(!isset($_SESSION['id']) && !isset($_SESSION['role']))	//Check if user is logged in
 	{
-		header("Location: /");
+		header("Location: 404");
 		exit();
 	}
 	if(($_SESSION['role'] != "a") && ($_SESSION['role'] != "p"))	//Check if user have permission to view data
 	{
-		header("Location: /");
+		header("Location: 404");
 		exit();
 	}
 
@@ -56,7 +56,5 @@
 </script>
 
 <?php
-
 	include_once "../footer.php";
-
 ?>

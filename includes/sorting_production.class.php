@@ -7,6 +7,7 @@
 		private $conn;
 		public $id;
 		public $date;
+		public $datetime;
 		public $time_from;
 		public $time_to;
 		public $invoice;
@@ -28,8 +29,8 @@
 		{
 			try
 			{
-				$sql = $this->conn->prepare("INSERT INTO sorting_productions VALUES (DEFAULT, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-				$sql->bind_param('sssiiiiidii', $this->date, $this->time_from, $this->time_to, $this->invoice, $this->thickness, $this->width, $this->length, $this->count, $this->capacity, $this->defect_count, $this->reserved);
+				$sql = $this->conn->prepare("INSERT INTO sorting_productions VALUES (DEFAULT, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+				$sql->bind_param('ssssiiiiidii', $this->date, $this->datetime, $this->time_from, $this->time_to, $this->invoice, $this->thickness, $this->width, $this->length, $this->count, $this->capacity, $this->defect_count, $this->reserved);
 				$sql->execute();
 
 				$this->id = $this->conn->insert_id; //Sets object id
@@ -47,8 +48,8 @@
 		{
 			try
 			{
-				$sql = $this->conn->prepare("UPDATE sorting_productions SET date = ?, time_from = ?, time_to = ?, invoice = ?, thickness = ?, width = ?, length = ?, count = ?, capacity = ?, defect_count = ?, reserved = ? WHERE sorting_productions.id = ?");
-				$sql->bind_param('sssiiiiidiis', $this->date, $this->time_from, $this->time_to, $this->invoice, $this->thickness, $this->width, $this->length, $this->count, $this->capacity, $this->defect_count, $this->reserved, $this->id);
+				$sql = $this->conn->prepare("UPDATE sorting_productions SET date = ?, time_from = ?, time_to = ?, invoice = ?, thickness = ?, width = ?, length = ?, count = ?, capacity = ?, defect_count = ? WHERE sorting_productions.id = ?");
+				$sql->bind_param('sssiiiiidis', $this->date, $this->time_from, $this->time_to, $this->invoice, $this->thickness, $this->width, $this->length, $this->count, $this->capacity, $this->defect_count, $this->id);
 				$sql->execute();
 				$sql->close();
 			}
@@ -82,6 +83,20 @@
 			global $conn;
 
 			$sql = $conn->prepare("SELECT id FROM sorting_productions WHERE id = ? AND reserved = 0");
+			$sql->bind_param('s', $id);
+			$sql->execute();
+			$result = $sql->get_result();
+
+			$resultCheck = mysqli_num_rows($result);
+
+			return $resultCheck >= 1;
+		}
+
+		public static function ExistsReservedProductionWithID($id) //Checks if reserved sorting production with such ID exists
+		{
+			global $conn;
+
+			$sql = $conn->prepare("SELECT id FROM sorting_productions WHERE id = ? AND reserved = 1");
 			$sql->bind_param('s', $id);
 			$sql->execute();
 			$result = $sql->get_result();

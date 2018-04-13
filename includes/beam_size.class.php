@@ -18,7 +18,7 @@
 		{
 			global $conn;
 
-			$sql = $conn->prepare("SELECT size FROM beam_sizes WHERE size=?");
+			$sql = $conn->prepare("SELECT size FROM beam_sizes WHERE size = ?");
 			$sql->bind_param('d', $size);
 			$sql->execute();
 			$result = $sql->get_result();
@@ -32,7 +32,7 @@
 		{
 			global $conn;
 
-			$sql = $conn->prepare("SELECT id FROM beam_sizes WHERE id=?");
+			$sql = $conn->prepare("SELECT id FROM beam_sizes WHERE id = ?");
 			$sql->bind_param('i', $id);
 			$sql->execute();
 			$result = $sql->get_result();
@@ -46,7 +46,7 @@
 		{
 			global $conn;
 
-			$sql = $conn->prepare("SELECT * FROM beam_sizes WHERE id=?");
+			$sql = $conn->prepare("SELECT * FROM beam_sizes WHERE id = ?");
 			$sql->bind_param('i', $id);
 			$sql->execute();
 			$result = $sql->get_result();

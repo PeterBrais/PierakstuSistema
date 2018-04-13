@@ -5,74 +5,91 @@
 	$invoices = Manager::GetSortingProductionsByInvoice($date_string);
 	$employees = Manager::GetSortingEmployeesByDate($date_string);
 	$total = Manager::GetAllSortingProductionSummByDate($date_string);
+	$total_without_useless = Manager::GetAllUselessSortingProductionSummByDate($date_string);
 ?>
-	<div class="card-body">
-		<h4 class="card-title text-center">Šķirotavas produkcijas</h4>
-		<table class="table table-bordered">
-			<thead class="thead-default table-active">
-				<tr>
-					<th>Pavadzīmes Nr.</th>
-					<th>Datums</th>
-					<th>Laiks</th>
-					<th>
-						Izmērs <abbr title="Biezums x Platums x Garums">(BxPxG)</abbr>
-					</th>
-					<th>
-						<abbr title="Kopējais Skaits - Brāķi = Skaits">Skaits</abbr>
-					</th>
-					<th>Tilpums (m<sup>3</sup>)</th>
-					<th>Garināts / Šķirots</th>
-					<th>Skaits</th>
-					<th>
-						Izmērs <abbr title="Biezums x Platums x Garums">(BxPxG)</abbr>
-					</th>
-					<th>Tilpums (m<sup>3</sup>)</th>
-					<th>m<sup>3</sup>/gab</th>
-					<th>Darba veicēji</th>
-					<th>Labot</th>
-				</tr>
-			</thead>
-			<tbody>
-	<?php
-		foreach($invoices as $invoice)
+
+<div class="card-body">
+	<h4 class="card-title text-center">Šķirotavas produkcijas</h4>
+	<table class="table table-bordered">
+		<thead class="thead-default table-active">
+			<tr>
+				<th>Pavadzīmes Nr.</th>
+				<th>Datums</th>
+				<th>Laiks</th>
+				<th>
+					Izmērs <abbr title="Biezums x Platums x Garums">(BxPxG)</abbr>
+				</th>
+				<th>
+					<abbr title="Kopējais Skaits - Brāķi = Skaits">Skaits</abbr>
+				</th>
+				<th>Tilpums (m<sup>3</sup>)</th>
+				<th>Garināts / Šķirots</th>
+				<th>Skaits</th>
+				<th>
+					Izmērs <abbr title="Biezums x Platums x Garums">(BxPxG)</abbr>
+				</th>
+				<th>Tilpums (m<sup>3</sup>)</th>
+				<th>m<sup>3</sup>/gab</th>
+				<th>Darba veicēji</th>
+				<th>Labot</th>
+			</tr>
+		</thead>
+		<tbody>
+<?php
+	foreach($invoices as $invoice)
+	{
+		$productions = Manager::GetSortingProductions($invoice['invoice']);
+		foreach($productions as $production)
 		{
-			$productions = Manager::GetSortingProductions($invoice['invoice']);
-			foreach($productions as $production)
+			$rows = $production['total_sorted'];
+			if($rows == 0)
 			{
-				$rows = $production['total_sorted'];
-	?>
-				<tr>
-					<td rowspan="<?=$rows?>"><?=$invoice['invoice']?></td>
-					<td rowspan="<?=$rows?>"><?=$production['date']?></td>
-					<td rowspan="<?=$rows?>">
-						<?=$production['time_from']?> - <?=$production['time_to']?>
-					</td>
-					<td rowspan="<?=$rows?>">
-						<?=$production['thickness']?> x <?=$production['width']?> x <?=$production['length']?>
-					</td>
-					<td rowspan="<?=$rows?>"><?=$production['count']?> - 
-						<?php
-							if(!isset($production['defect_count']))
-							{
-								echo "0";
-							}
-							else
-							{
-								echo $production['defect_count'];
-							}
-							$total_count = $production['count'] - $production['defect_count'];
-							echo " = ".$total_count;
-						?>			
-					</td>
-					<td rowspan="<?=$rows?>"><?=$production['capacity']?></td>
-			<?php
+				$rows = 1;	//If Reserved, set to 1
+			}
+?>
+			<tr>
+				<td rowspan="<?=$rows?>"><?=$invoice['invoice']?></td>
+				<td rowspan="<?=$rows?>"><?=$production['date']?></td>
+				<td rowspan="<?=$rows?>">
+					<?=$production['time_from']?> - <?=$production['time_to']?>
+				</td>
+				<td rowspan="<?=$rows?>">
+					<?=$production['thickness']?> x <?=$production['width']?> x <?=$production['length']?>
+				</td>
+				<td rowspan="<?=$rows?>">
+				<?php
+					if($production['reserved'] == 0)
+					{
+						echo $production['count']." - ";
+						if(!isset($production['defect_count']))
+						{
+							echo "0";
+						}
+						else
+						{
+							echo $production['defect_count'];
+						}
+
+						$total_count = $production['count'] - $production['defect_count'];
+						echo " = ".$total_count;
+					}
+					else
+					{
+						echo $production['count'];
+					}
+				?>			
+				</td>
+				<td rowspan="<?=$rows?>"><?=$production['capacity']?></td>
+		<?php
+			if($production['reserved'] == 0)
+			{
 				$sorted_productions = Manager::GetSortedProductionsByID($production['id']);
 				$k = 0;
 				foreach($sorted_productions as $sorted_production)
 				{
 					if($k == 0)
 					{
-			?>
+		?>
 							<td>
 							<?php
 								if($sorted_production['type'] == "W")
@@ -166,49 +183,138 @@
 							?>
 							</td>
 						</tr>
-	<?php
+<?php
 					}
 					$k++;
 				}
 			}
-		?>
-			<tr class="table-light">
-				<td colspan="13"></td>
-			</tr>
-	<?php
+			else
+			{
+?>
+					<td>Rezervēts</td>
+					<td colspan="5" class="table-active"></td>
+					<td>
+						<a href="edit_reserved_production?id=<?=$production['id']?>" class="btn btn-info">
+							Labot
+						</a>
+					</td>
+				</tr>
+<?php
+			}
 		}
 	?>
-				<tr class="table-info">
-					<td colspan="4" class="text-right"><strong> Kopā: </strong></td>
-					<td>
-						<?php
-							echo $total['count'];
-							echo " - ";
-							if(!isset($total['defect_count']))
-							{
-								echo "0";
-							}
-							else
-							{
-								echo $total['defect_count'];
-							}
+		<tr class="table-light">
+			<td colspan="13"></td>
+		</tr>
+<?php
+	}
+?>
+			<tr class="table-info">
+				<td colspan="4" class="text-right"><strong> Kopā: </strong></td>
+				<td>
+					<?php
+						echo $total['count'];
+						echo " - ";
+						if(!isset($total['defect_count']))
+						{
+							echo "0";
+						}
+						else
+						{
+							echo $total['defect_count'];
+						}
 
-							$total_count = $total['count'] - $total['defect_count'];
-							echo " = ".$total_count;
-						?>	
-					</td>
-					<td><?=$total['capacity']?></td>
-					<td></td>
-					<td><?=$total['sorted_count']?></td>
-					<td></td>
-					<td><?=$total['sorted_capacity']?></td>
-					<td></td>
-					<td></td>
-					<td></td>
-				</tr>
-			</tbody>
-		</table>
-	</div>
+						$total_count = $total['count'] - $total['defect_count'];
+						echo " = ".$total_count;
+					?>	
+				</td>
+				<td><?=$total['capacity']?></td>
+				<td></td>
+				<td><?=$total['sorted_count']?></td>
+				<td></td>
+				<td><?=$total['sorted_capacity']?></td>
+				<td></td>
+				<td></td>
+				<td></td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+
+<div class="card-body">
+	<table class="table table-bordered table-hover">
+		<thead class="thead-default table-active">
+			<tr>
+				<th colspan="3">Izejviela</th>
+				<th colspan="3">Ražojums</th>
+			</tr>
+			<tr>
+				<th>Noliktava</th>
+				<th>Skaits (gab)</th>
+				<th>Tilpums (m<sup>3</sup>)</th>
+				<th>Noliktava</th>
+				<th>Skaits (gab)</th>
+				<th>Tilpums (m<sup>3</sup>)</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr class="table-info">
+				<td></td>
+				<td><?=$total['count']?></td>
+				<td><?=$total['capacity']?></td>
+				<td></td>
+				<td><?=$total['sorted_count']?></td>
+				<td><?=$total['sorted_capacity']?></td>
+			</tr>
+			<tr>
+				<td><b>K20</b></td>
+				<td><?=$total_without_useless['reserved_count']?></td>
+				<td><?=$total_without_useless['reserved_capacity']?></td>
+				<td><b>K21</b></td>
+				<td><?=$total_without_useless['soaked_count']?></td>
+				<td><?=$total_without_useless['soaked_capacity']?></td>
+			</tr>
+			<tr>
+				<td><b>K13</b></td>
+				<td>
+				<?php 
+					echo $total['count'] - $total_without_useless['reserved_count'];
+				?>
+				</td>
+				<td>
+				<?php 
+					echo $total['capacity'] - $total_without_useless['reserved_capacity'];
+				?>
+				</td>
+				<td><b>K14 / K20</b></td>
+				<td>
+				<?php 
+					echo $total['sorted_count'] - $total_without_useless['soaked_count'];
+				?>
+				</td>
+				<td>
+				<?php
+					echo $total['sorted_capacity'] - $total_without_useless['soaked_capacity'];
+				?>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2" class="text-right"><b> Saražots: </b></td>
+				<td>
+				<?php 
+					echo $total['capacity'] - $total_without_useless['reserved_capacity'] - $total_without_useless['soaked_capacity'];
+				?>
+				</td>
+				<td colspan="2" class="text-right"><b> Šķelda: </b></td>
+				<td>
+				<?php
+					echo $total['capacity'] - $total['sorted_capacity'];
+				?>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
 
 <div class="card-body">
 	<h4 class="card-title text-center">Šķirotavas Darbinieki</h4>
