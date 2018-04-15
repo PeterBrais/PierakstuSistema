@@ -11,7 +11,7 @@
 	//Check if user exists in database
 	if(!Administrator::ExistsUserWithID($_POST['user_id']))
 	{
-		header("Location: show_users");
+		header("Location: 404");
 		exit();
 	}
 
@@ -21,7 +21,7 @@
 	{
 		if(!isset($_POST[$input]))
 		{
-			header("Location: /");
+			header("Location: 404");
 			exit();
 		}
 	}

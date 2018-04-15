@@ -163,19 +163,19 @@
 			global $conn;
 
 			$sql = $conn->prepare("SELECT DISTINCT 
-				(SELECT SUM(sawmill_productions.beam_count) FROM sawmill_productions 
-				WHERE DATE_FORMAT(sawmill_productions.date, '%Y-%m') = ?) AS beam_count,
-				(SELECT SUM(sawmill_productions.beam_capacity) FROM sawmill_productions 
-				WHERE DATE_FORMAT(sawmill_productions.date, '%Y-%m') = ?) AS beam_capacity,
-				(SELECT SUM(sawmill_productions.lumber_count) FROM sawmill_productions
-				WHERE DATE_FORMAT(sawmill_productions.date, '%Y-%m') = ?) AS lumber_count,
-				(SELECT SUM(sawmill_productions.lumber_capacity) FROM sawmill_productions
-				WHERE DATE_FORMAT(sawmill_productions.date, '%Y-%m') = ?) AS lumber_capacity,
-				(SELECT SUM(sawmill_maintenance.time) FROM sawmill_maintenance 
-				JOIN sawmill_productions
-				ON sawmill_productions.id = sawmill_maintenance.sawmill_production_id
-				WHERE DATE_FORMAT(sawmill_productions.date, '%Y-%m') = ?) AS maintenance
-				FROM sawmill_productions");
+									(SELECT SUM(sawmill_productions.beam_count) FROM sawmill_productions 
+									WHERE DATE_FORMAT(sawmill_productions.date, '%Y-%m') = ?) AS beam_count,
+									(SELECT SUM(sawmill_productions.beam_capacity) FROM sawmill_productions 
+									WHERE DATE_FORMAT(sawmill_productions.date, '%Y-%m') = ?) AS beam_capacity,
+									(SELECT SUM(sawmill_productions.lumber_count) FROM sawmill_productions
+									WHERE DATE_FORMAT(sawmill_productions.date, '%Y-%m') = ?) AS lumber_count,
+									(SELECT SUM(sawmill_productions.lumber_capacity) FROM sawmill_productions
+									WHERE DATE_FORMAT(sawmill_productions.date, '%Y-%m') = ?) AS lumber_capacity,
+									(SELECT SUM(sawmill_maintenance.time) FROM sawmill_maintenance 
+									JOIN sawmill_productions
+									ON sawmill_productions.id = sawmill_maintenance.sawmill_production_id
+									WHERE DATE_FORMAT(sawmill_productions.date, '%Y-%m') = ?) AS maintenance
+									FROM sawmill_productions");
 			$sql->bind_param('sssss', $date_string, $date_string, $date_string, $date_string, $date_string);
 			$sql->execute();
 			$result = $sql->get_result();
@@ -524,6 +524,123 @@
 			$result = $sql->get_result();
 
 			return mysqli_fetch_all($result, MYSQLI_ASSOC);
+		}
+
+		public static function GetSortingEmployeeProductionsDaysWorked($date_string, $id)	//Returns all sorting employees days worked
+		{
+			global $conn;
+
+			$sql = $conn->prepare("SELECT COUNT(DISTINCT working_times.date) as working                            
+									FROM employees
+									JOIN employees_sorted_productions
+									ON employees_sorted_productions.employee_id = employees.id
+									JOIN sorted_productions
+									ON sorted_productions.id = employees_sorted_productions.sorted_id
+									JOIN sorting_productions
+									ON sorting_productions.id = sorted_productions.sorting_id
+									JOIN working_times
+									ON working_times.employee_id = employees.id
+									WHERE employees.id = ? AND 
+									DATE_FORMAT(sorting_productions.date, '%Y-%m') = ? 
+									AND employees.id = working_times.employee_id 
+									AND sorting_productions.date = working_times.date 
+									AND sorted_productions.id = working_times.invoice
+									AND sorting_productions.datetime = working_times.datetime");
+			$sql->bind_param('ss', $id, $date_string);
+			$sql->execute();
+			$result = $sql->get_result();
+
+			return mysqli_fetch_assoc($result);
+		}
+
+		public static function GetSortingEmployeeProductionsSortedHoursWorked($date_string, $id)	//Returns all sorting employees sorted hours worked
+		{
+			global $conn;
+
+			$sql = $conn->prepare("SELECT SUM(working_times.working_hours) as working_hours
+									FROM employees
+									JOIN employees_sorted_productions
+									ON employees_sorted_productions.employee_id = employees.id
+									JOIN sorted_productions
+									ON sorted_productions.id = employees_sorted_productions.sorted_id
+									JOIN sorting_productions
+									ON sorting_productions.id = sorted_productions.sorting_id
+									JOIN working_times
+									ON working_times.employee_id = employees.id
+									WHERE employees.id = ? AND 
+									DATE_FORMAT(sorting_productions.date, '%Y-%m') = ?
+									AND employees.id = working_times.employee_id
+									AND sorting_productions.date = working_times.date 
+									AND sorted_productions.id = working_times.invoice
+									AND sorting_productions.datetime = working_times.datetime
+									AND sorted_productions.type = 'S'");
+			$sql->bind_param('ss', $id, $date_string);
+			$sql->execute();
+			$result = $sql->get_result();
+
+			return mysqli_fetch_assoc($result);
+		}
+
+		public static function GetSortingEmployeeProductionsStretchedHoursWorked($date_string, $id)	//Returns all sorting employees streched hours worked
+		{
+			global $conn;
+
+			$sql = $conn->prepare("SELECT SUM(CASE WHEN working_times.working_hours <= 8 THEN 
+									working_times.working_hours ELSE 8 END) as working_hours,
+									SUM(CASE WHEN working_times.working_hours > 8 THEN 
+									(working_times.working_hours)-8 ELSE 0 END) as overtime_hours
+									FROM employees
+									JOIN employees_sorted_productions
+									ON employees_sorted_productions.employee_id = employees.id
+									JOIN sorted_productions
+									ON sorted_productions.id = employees_sorted_productions.sorted_id
+									JOIN sorting_productions
+									ON sorting_productions.id = sorted_productions.sorting_id
+									JOIN working_times
+									ON working_times.employee_id = employees.id
+									WHERE employees.id = ? AND 
+									DATE_FORMAT(sorting_productions.date, '%Y-%m') = ?
+									AND employees.id = working_times.employee_id
+									AND sorting_productions.date = working_times.date 
+									AND sorted_productions.id = working_times.invoice
+									AND sorting_productions.datetime = working_times.datetime
+									AND sorted_productions.type = 'G'");
+			$sql->bind_param('ss', $id, $date_string);
+			$sql->execute();
+			$result = $sql->get_result();
+
+			return mysqli_fetch_assoc($result);
+		}
+
+		public static function GetSortingEmployeeProductionsSortedCapacity($date_string, $id)	//Returns employees amount of sorted work done
+		{
+			global $conn;
+
+			$sql = $conn->prepare("SELECT SUM(CASE WHEN sorted_productions.capacity_piece < 0.009 THEN 
+									sorted_productions.capacity ELSE 0 END) as cap_one,
+									SUM(CASE WHEN (sorted_productions.capacity_piece >= 0.009 AND sorted_productions.capacity_piece <= 0.0160) THEN sorted_productions.capacity ELSE 0 END) as cap_two,
+									SUM(CASE WHEN sorted_productions.capacity_piece > 0.0160 THEN sorted_productions.capacity ELSE 0 END) as cap_three,
+									SUM(sorted_productions.capacity) as total_cap
+									FROM employees
+									JOIN employees_sorted_productions
+									ON employees_sorted_productions.employee_id = employees.id
+									JOIN sorted_productions
+									ON sorted_productions.id = employees_sorted_productions.sorted_id
+									JOIN sorting_productions
+									ON sorting_productions.id = sorted_productions.sorting_id
+									JOIN working_times
+									ON working_times.employee_id = employees.id
+									WHERE employees.id = ? AND 
+									DATE_FORMAT(sorting_productions.date, '%Y-%m') = ?
+									AND employees.id = working_times.employee_id
+									AND sorting_productions.date = working_times.date 
+									AND sorted_productions.id = working_times.invoice
+									AND sorting_productions.datetime = working_times.datetime");
+			$sql->bind_param('ss', $id, $date_string);
+			$sql->execute();
+			$result = $sql->get_result();
+
+			return mysqli_fetch_assoc($result);
 		}
 	}
 ?>

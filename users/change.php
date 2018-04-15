@@ -11,7 +11,7 @@
 	//Check if user exists in database
 	if(!Administrator::ExistsUserWithID($_POST['user_id']))
 	{
-		header("Location: show_users");
+		header("Location: 404");
 		exit();
 	}
 
@@ -31,7 +31,7 @@
 	//Admin cannot change other admins password except first admin
 	if((($_POST['user_id'] != $_SESSION['id']) && ($user['role'] == "a") && ($user['active'] == 1)) && ($_SESSION['id'] != 1))
 	{
-		header("Location: /");
+		header("Location: 404");
 		exit();
 	}
 

@@ -9,7 +9,8 @@
 		header("Location: 404");
 		exit();
 	}
-	if(($_SESSION['role'] != "p") && ($_SESSION['role'] != "a") && ($_SESSION['active'] != 1))	//Check if user have permission to delete data
+	
+	if((($_SESSION['role'] != "a") && ($_SESSION['role'] != "p") && ($_SESSION['role'] != "l")) || ($_SESSION['active'] != 1))	//Check if user have permission to edit data
 	{
 		header("Location: 404");
 		exit();

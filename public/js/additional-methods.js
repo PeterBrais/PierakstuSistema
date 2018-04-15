@@ -1,9 +1,17 @@
+// jQuery.validator.addMethod("IsValidText", function(value, element) {
+// 	return this.optional(element) || (/^[0-9\p{L}][\p{L}\/0-9\s.,_-]+$/u).test(value);
+// }, "Letters, numbers and special symbols only allowed");
+
 jQuery.validator.addMethod("IsValidText", function(value, element) {
-	return this.optional(element) || /^[0-9\p{L}][\p{L}\/0-9\s.,_-]+$/u.test(value);
+	return this.optional(element) || (/^[0-9a-zāčēģīķļņšūžA-ZĀČĒĢĪĶĻŅŠŪŽ][a-zāčēģīķļņšūžA-ZĀČĒĢĪĶĻŅŠŪŽ\/0-9\s.,_-]+$/u).test(value);
 }, "Letters, numbers and special symbols only allowed");
 
+// jQuery.validator.addMethod("IsValidName", function(value, element) {
+// 	return this.optional(element) || /^\p{L}[\p{L}\s-]+$/u.test(value);
+// }, "Letters, numbers and special symbols only allowed");
+
 jQuery.validator.addMethod("IsValidName", function(value, element) {
-	return this.optional(element) || /^\p{L}[\p{L}\s-]+$/u.test(value);
+	return this.optional(element) || /^[a-zāčēģīķļņšūžA-ZĀČĒĢĪĶĻŅŠŪŽ][a-zāčēģīķļņšūžA-ZĀČĒĢĪĶĻŅŠŪŽ\s-]+$/u.test(value);
 }, "Letters, numbers and special symbols only allowed");
 
 jQuery.validator.addMethod("ChosenWorkplaceDropdown", function(value, element) {

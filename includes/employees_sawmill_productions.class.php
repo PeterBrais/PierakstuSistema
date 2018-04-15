@@ -33,7 +33,8 @@
 			}
 		}
 
-		function DeleteAllSawmillProductionEmployees($id){	//Deletes sub table data M:M relations
+		function DeleteAllSawmillProductionEmployees($id)	//Deletes sub table data M:M relations
+		{
 			try
 			{
 				$sql = $this->conn->prepare("DELETE FROM employees_sawmill_productions WHERE sawmill_id = ?");
@@ -47,7 +48,5 @@
 				exit();
 			}
 		}
-
 	}
-
 ?>

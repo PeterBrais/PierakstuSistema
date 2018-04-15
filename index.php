@@ -41,7 +41,7 @@
 							}
 							else
 							{
-								if(($_SESSION['role'] != "a") && ($_SESSION['role'] != "p"))
+								if((($_SESSION['role'] != "a") && ($_SESSION['role'] != "p") && ($_SESSION['role'] != "l")) || ($_SESSION['active'] != 1))
 								{
 									echo "<p class='text-danger'>";
 									echo "Jūsu konts ir bloķēts!";
@@ -49,18 +49,9 @@
 								}
 								else
 								{
-									if($_SESSION['active'] == 0)
-									{
-										echo "<p class='text-danger'>";
-										echo "Jūsu konts ir bloķēts!";
-										echo "</p>";
-									}
-									else if($_SESSION['active'] == 1)
-									{
-										echo "<p class='text-dark'>";
-										echo "Jūs esat pieteicies!";
-										echo "</p>";
-									}
+									echo "<p class='text-dark'>";
+									echo "Jūs esat pieteicies!";
+									echo "</p>";
 								}
 							}
 						?>

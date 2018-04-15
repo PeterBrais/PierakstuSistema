@@ -5,17 +5,19 @@
 
 	if(!isset($_SESSION['id']) && !isset($_SESSION['role']))	//Editing employee data possible if user is logged in
 	{
-		header("Location: /");
+		header("Location: 404");
 		exit();
 	}
-	if(($_SESSION['role'] != "p") && ($_SESSION['role'] != "a"))	//Check if user have permission
+
+	if((($_SESSION['role'] != "a") && ($_SESSION['role'] != "p")) || ($_SESSION['active'] != 1))	//Check if user have permission to edit data
 	{
-		header("Location: /");
+		header("Location: 404");
 		exit();
 	}
+
 	if(!isset($_GET['id']))		//Check if ID is set
 	{
-		header("Location: show_employee");
+		header("Location: 404");
 		exit();
 	}
 
@@ -23,7 +25,7 @@
 	$user_id = $_GET['id'];
 	if(!Employee::ExistsEmployeeWithID($user_id))
 	{
-		header("Location: show_employee");
+		header("Location: 404");
 		exit();
 	}
 

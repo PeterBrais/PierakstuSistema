@@ -8,19 +8,20 @@
 
 	if(!isset($_SESSION['id']) && !isset($_SESSION['role']))	//Check if user is logged in
 	{
-		header("Location: /");
+		header("Location: 404");
 		exit();
 	}
+
 	if(($_SESSION['role'] != "p") && ($_SESSION['role'] != "a") && ($_SESSION['active'] != 1))	//Check if user have permission to delete data
 	{
-		header("Location: /");
+		header("Location: 404");
 		exit();
 	}
 
 	//Check if ID is set
 	if(!isset($_GET['id']))
 	{
-		header("Location: show_beam_sizes");
+		header("Location: 404");
 		exit();
 	}
 
@@ -28,14 +29,14 @@
 	$beam_size_id = $_GET['id'];
 	if(!BeamSize::ExistsId($beam_size_id))
 	{
-		header("Location: show_beam_sizes");
+		header("Location: 404");
 		exit();
 	}
 
 	//Check if beam_size with ID is not used, than allow to delete it
 	if(BeamSize::IsSizeUsed($beam_size_id))
 	{
-		header("Location: show_beam_sizes");
+		header("Location: 404");
 		exit();
 	}
 

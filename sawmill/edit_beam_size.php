@@ -6,21 +6,21 @@
 	//Editing position data possible if user is logged in
 	if(!isset($_SESSION['id']) && !isset($_SESSION['role']))
 	{
-		header("Location: /");
+		header("Location: 404");
 		exit();
 	}
 
 	//Check if user have permission
 	if(($_SESSION['role'] != "p") && ($_SESSION['role'] != "a") && ($_SESSION['active'] != 1))	
 	{
-		header("Location: /");
+		header("Location: 404");
 		exit();
 	}
 
 	//Check if ID is set
 	if(!isset($_GET['id']))
 	{
-		header("Location: show_beam_size");
+		header("Location: 404");
 		exit();
 	}
 
@@ -28,7 +28,7 @@
 	$beam_size_id = $_GET['id'];
 	if(!BeamSize::ExistsId($beam_size_id))
 	{
-		header("Location: show_beam_sizes");
+		header("Location: 404");
 		exit();
 	}
 

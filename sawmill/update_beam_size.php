@@ -10,7 +10,7 @@
 	//Check if beam size exists in database
 	if(!BeamSize::ExistsId($_POST['size_id']))
 	{
-		header("Location: /");
+		header("Location: 404");
 		exit();
 	}
 

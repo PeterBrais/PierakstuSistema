@@ -10,14 +10,14 @@
 	//Check if user exists in database
 	if(!Administrator::ExistsUserWithID($_POST['user_id']))
 	{
-		header("Location: show_users");
+		header("Location: 404");
 		exit();
 	}
 
 	//Admin cannot block himself
 	if(($_POST['user_id']) == ($_SESSION['id']))
 	{
-		header("Location: /");
+		header("Location: 404");
 		exit();
 	}
 

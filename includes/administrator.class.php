@@ -63,7 +63,5 @@
 
 			return password_verify($password, $row['password']);
 		}
-
 	}
-
 ?>

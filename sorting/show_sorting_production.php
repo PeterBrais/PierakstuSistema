@@ -8,7 +8,8 @@
 		header("Location: 404");
 		exit();
 	}
-	if(($_SESSION['role'] != "a") && ($_SESSION['role'] != "p"))	//Check if user have permission to view data
+
+	if((($_SESSION['role'] != "a") && ($_SESSION['role'] != "p") && ($_SESSION['role'] != "l")) || ($_SESSION['active'] != 1))	//Check if user have permission
 	{
 		header("Location: 404");
 		exit();

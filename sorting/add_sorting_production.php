@@ -7,7 +7,7 @@
 		exit();
 	}
 
-	if(($_SESSION['role'] != "p") && ($_SESSION['role'] != "a") && ($_SESSION['active'] != 1))	//Check if user have permission add new sorting production
+	if((($_SESSION['role'] != "a") && ($_SESSION['role'] != "p") && ($_SESSION['role'] != "l")) || ($_SESSION['active'] != 1))	//Check if user have permission add new sorting production
 	{
 		header("Location: 404");
 		exit();

@@ -3,7 +3,6 @@
 	include_once "../includes/employee.class.php";
 	include_once "../includes/manager.class.php";
 	include_once "../includes/validate.class.php";
-	include_once "../includes/position.class.php";
 
 	if(!isset($_SESSION['id']) && !isset($_SESSION['role']))	//View data only allowed when user is logged in
 	{
@@ -48,6 +47,12 @@
 
 	//Returns employees positions
 	$positions = Manager::EmployeePositions($employee['id']);
+
+	//Returns employees sorted productions all capacities
+	$sorted_capacity = Manager::GetSortingEmployeeProductionsSortedCapacity($period, $employee['id']);
+
+	//Returns employees hours and overtime hours for lengthening capacity
+	$stretch_hours = Manager::GetSortingEmployeeProductionsStretchedHoursWorked($period, $employee['id']);
 ?>
 	
 	<!-- Show report of employee -->
@@ -69,7 +74,7 @@
 							<div class="row">
 								<div class="col-md-6">
 									<p class="font-weight-bold">
-										DARBU NODOŠANAS - PIEŅEMŠANAS AKTS Nr. DAL
+										DARBU NODOŠANAS - PIEŅEMŠANAS AKTS Nr. DNA
 										<?=$serial_number?> /420-<?=$period_year_number?>
 									</p>
 								</div>
@@ -157,43 +162,10 @@
 							<p class="font-weight-normal">
 								Darbā ierašanās dienas: 
 								<?php
-									$worked = Manager::GetEmployeeProductionsDaysWorked($period, $employee['id']);
+									$worked = Manager::GetSortingEmployeeProductionsDaysWorked($period, $employee['id']);
 									echo $worked['working'];
-									echo " no ";
-									echo $worked['all_productions'];
 								?>
 							</p>
-							Darbā neierašanās reizes:
-							<ul>
-							<?php
-								$nonworked_days = Manager::GetEmployeeProductionsDaysNonWorked($period, $employee['id']);
-								echo "<li>Atvaļinājums: ";
-								foreach($nonworked_days as $nonworked_day)
-								{
-									if(isset($nonworked_day['vacation']))
-									{
-										echo $nonworked_day['date'].", ";
-									}
-								}
-								echo "</li><li>Slimības lapa: ";
-								foreach($nonworked_days as $nonworked_day)
-								{
-									if(isset($nonworked_day['sick_leave']))
-									{
-										echo $nonworked_day['date'].", ";
-									}
-								}
-								echo "</li><li>Neapmeklējums: ";
-								foreach($nonworked_days as $nonworked_day)
-								{
-									if(isset($nonworked_day['nonattendace']))
-									{
-										echo $nonworked_day['date'].", ";
-									}
-								}
-								echo "</li>";
-							?>
-							</ul>
 						</div>
 						<div class="col-md-12">
 							<table class="table table-bordered table-hover">
@@ -210,102 +182,92 @@
 								<tbody>
 									<tr>
 										<th>1</th>
-										<td>Saražotie zāģmateriāli</td>
+										<td>Šķirošana no 0,0161 m3/gab. līdz &#8734;</td>
 										<td>m<sup>3</sup></td>
+										<td><?=$sorted_capacity['cap_one']?></td>
+										<td>1,35</td>
 										<td>
 										<?php
-											$capacities = Manager::GetEmployeeProductionsCapacity($period, $employee['id']);
-											$total_capacity = 0;
-											foreach($capacities as $capacity)
-											{
-												$total_capacity = $total_capacity + round((($capacity['lumber_capacity']/8)*$capacity['working_hours']), 3);
-											}
-											echo $total_capacity;
-										?>
-										</td>
-										<td>
-											<?=$employee['capacity_rate']?>
-										</td>
-										<td>
-										<?php
-											$capacities = Manager::GetEmployeeProductionsCapacity($period, $employee['id']);
-											$capacity_per_production = 0;
-											$total_sum = 0;
-											$rate_per_emp = 0;
-
-											if(Position::IsPositionOperatorOrAssistant($employee['id']))
-											{
-												//1. capacity_per_production = (lumber_capacity / 8) * hours_worked
-												//2. all_attended_workers = count / rates
-												//3. capacity_rate = capacity_rate + all_attended_workers
-												//4. total = total + (capacity_per_production * capacity_rate)
-												//5. print sum -> total
-												foreach($capacities as $capacity)
-												{
-													$capacity_per_production = round((($capacity['lumber_capacity']/8)*$capacity['working_hours']), 3);
-
-													//Get COUNT of all attended employees and SUM of nonattended employees rate
-													$employee_count = Manager::GetOperatorsAndAssistantsFromProduction($capacity['id'], $employee['shift']);
-													$employee_rates = Manager::GetNonAttendedEmployeeCapacityRatesFromProduction($capacity['id'], $employee['shift']);
-
-													if($employee_rates['rates'] != NULL)
-													{
-														$rate_per_emp = $employee_rates['rates'] / $employee_count['emp_count'];
-													}
-													else
-													{
-														$rate_per_emp = 0;
-													}
-
-													
-													$total_sum = $total_sum + (round(($capacity_per_production * ($rate_per_emp + $employee['capacity_rate'])), 2));
-													$rate_per_emp = 0;
-													$capacity_per_production = 0;
-
-												}
-											}
-											else
-											{
-												//1. capacity_per_production = (lumber_capacity / 8) * hours_worked
-												//2. total = total + (capacity_per_production * capacity_rate)
-												//3. print sum -> total
-												foreach($capacities as $capacity)
-												{
-													$capacity_per_production = round((($capacity['lumber_capacity']/8)*$capacity['working_hours']), 3);
-													$total_sum = $total_sum + (round(($capacity_per_production * $employee['capacity_rate']), 2));
-													$capacity_per_production = 0;
-												}
-											}
-
-											echo $total_sum;
+											echo round(($sorted_capacity['cap_one']*1.35), 2);
 										?>
 										</td>
 									</tr>
 									<tr>
 										<th>2</th>
-										<td>Remontdarbi</td>
-										<td>h</td>
+										<td>Šķirošana no 0,009 m3/gab. līdz 0,0160 m3/gab.</td>
+										<td>m<sup>3</sup></td>
+										<td><?=$sorted_capacity['cap_two']?></td>
+										<td>1,60</td>
 										<td>
 										<?php
-											$maintenance = Manager::GetEmployeeProductionsMaintenances($period, $employee['id']);
-											if(!isset($maintenance['maintenance']))
+											echo round(($sorted_capacity['cap_two']*1.60), 2);
+										?>
+										</td>
+									</tr>
+									<tr>
+										<th>3</th>
+										<td>Šķirošana līdz 0,0089 m3/gab.</td>
+										<td>m<sup>3</sup></td>
+										<td><?=$sorted_capacity['cap_three']?></td>
+										<td>2,45</td>
+										<td>
+										<?php
+											echo round(($sorted_capacity['cap_three']*2.45), 2);
+										?>
+										</td>
+									</tr>
+									<tr>
+										<th>4</th>
+										<td>Garināšana</td>
+										<td>h</td>
+										<td>
+										<?php 
+											if(!empty($stretch_hours['working_hours']))
 											{
-												echo "0 min";
-											}
-											else
-											{
-												echo $maintenance['maintenance']." min / ";
-												echo round($maintenance['maintenance']/60, 3)." h";
+												echo $stretch_hours['working_hours'];
 											}
 										?>
 										</td>
-										<td>
-											<?=$employee['hour_rate']?>
+										<td>3,90</td>
+										<td id="lengthening_hours">
+										<?php 
+											if(!empty($stretch_hours['working_hours']))
+											{
+												echo round(($stretch_hours['working_hours']*3.9), 2);
+											}
+										?>
 										</td>
+									</tr>
+									<tr>
+										<th>5</th>
+										<td>Garināšana virstundas</td>
+										<td>h</td>
 										<td>
+										<?php 
+											if(!empty($stretch_hours['overtime_hours']))
+											{
+												echo $stretch_hours['overtime_hours'];
+											}
+										?>
+										</td>
+										<td>7,80</td>
+										<td id="lengthening_overtime">
+										<?php 
+											if(!empty($stretch_hours['overtime_hours']))
+											{
+												echo round(($stretch_hours['overtime_hours']*7.8), 2);
+											}
+										?>
+										</td>
+									</tr>
+									<tr>
+										<td colspan="3" class="text-right">Kopā m<sup>3</sup>:</td>
+										<td><?=$sorted_capacity['total_cap']?></td>
+										<td></td>
+										<td id="summ">
 										<?php
-											$total_h = round((round($maintenance['maintenance']/60, 3) * $employee['hour_rate']), 2);
-											echo $total_h;
+											$total_sum = (round(($sorted_capacity['cap_one']*1.35), 2) + round(($sorted_capacity['cap_two']*1.60), 2) + round(($sorted_capacity['cap_three']*2.45), 2));
+											echo $total_sum;
 										?>
 										</td>
 									</tr>
@@ -315,16 +277,13 @@
 										</td>
 										<td>
 											<div class="input-group">
-												<input type="number" min="0" step="1" name="efficiency_rate" class="form-control" id="efficiency_rate">
+												<input type="number" min="0" step="1" name="efficiency_rate" class="form-control" id="efficiency_rate" value="0">
 												<div class="input-group-append">
 													<span class="input-group-text">%</span>
 												</div>
 											</div>
 										</td>
-										<td id="summ">
-										<?php
-											 echo $total_sum+$total_h;
-										?>
+										<td id="percentage_summ">
 										</td>
 									</tr>
 									<tr>
@@ -356,7 +315,7 @@
 						<div class="col-md-6 pt-5 px-5">
 							<p>
 								Darbu pieņēma <input type="text" class="signature"><br><br>
-								Kokzāģētavas vadītāja vietnieks: Kalvis Ķiesneris
+								Zāģēšanas iecirkņa vadītājs: J.Zemītis
 							</p>
 						</div>
 
@@ -366,7 +325,7 @@
 		</div>
 	</div>
 
-<script src="../public/js/sawmill_employee_report.js"></script>
+<script src="../public/js/sorting_employee_report.js"></script>
 
 <?php
 	include_once "../footer.php";

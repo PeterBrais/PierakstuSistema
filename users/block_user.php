@@ -4,27 +4,27 @@
 
 	if(!isset($_SESSION['id']) && !isset($_SESSION['role']))	//Editing user data possible if user is logged in
 	{
-		header("Location: /");
+		header("Location: 404");
 		exit();
 	}
 
 	if(($_SESSION['role'] != "a") || ($_SESSION['active'] != 1))	//Check if user is Administrator and not blocked
 	{
-		header("Location: /");
+		header("Location: 404");
 		exit();
 	}
 
 	//Check if ID is set
 	if(!isset($_GET['id']))		
 	{
-		header("Location: show_users");
+		header("Location: 404");
 		exit();
 	}
 
 	//Admin cannot block himself
 	if(($_GET['id']) == ($_SESSION['id']))
 	{
-		header("Location: /");
+		header("Location: 404");
 		exit();
 	}
 
@@ -32,7 +32,7 @@
 	$user_id = $_GET['id'];
 	if(!Administrator::ExistsUserWithID($user_id))
 	{
-		header("Location: show_users");
+		header("Location: 404");
 		exit();
 	}
 

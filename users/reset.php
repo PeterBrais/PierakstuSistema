@@ -4,20 +4,20 @@
 
 	if(!isset($_SESSION['id']) && !isset($_SESSION['role']))	//Editing user data possible if user is logged in
 	{
-		header("Location: /");
+		header("Location: 404");
 		exit();
 	}
 
 	if(($_SESSION['role'] != "a") || ($_SESSION['active'] != 1))	//Check if user is Administrator and not blocked
 	{
-		header("Location: /");
+		header("Location: 404");
 		exit();
 	}
 
 	//Check if ID is set
 	if(!isset($_GET['id']))		
 	{
-		header("Location: show_users");
+		header("Location: 404");
 		exit();
 	}
 
@@ -25,7 +25,7 @@
 	$user_id = $_GET['id'];
 	if(!Administrator::ExistsUserWithID($user_id))
 	{
-		header("Location: show_users");
+		header("Location: 404");
 		exit();
 	}
 
@@ -35,12 +35,12 @@
 	//Admin cannot change other admins password except first admin
 	if((($_GET['id'] != $_SESSION['id']) && ($user['role'] == "a") && ($user['active'] == 1)) && ($_SESSION['id'] != 1))
 	{
-		header("Location: /");
+		header("Location: 404");
 		exit();
 	}
 ?>
 
-	<!-- Change user password -->
+	<!-- Change password -->
 	<div class="container">
 		<div class="row cont-space">
 			<div class="col-md-12">

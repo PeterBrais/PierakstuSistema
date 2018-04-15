@@ -10,5 +10,5 @@ RewriteCond %{REQUEST_FILENAME}\.html -f
 RewriteRule ^([^\.]+)$ $1.html [NC,L]
 RewriteEngine off
 RewriteEngine on
-ErrorDocument 404 /404.php
+ErrorDocument 404 http://localhost/404
 RewriteEngine off

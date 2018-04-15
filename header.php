@@ -28,7 +28,7 @@ ob_start(); //Output buffering
 			<div class="navbar-collapse" id="navbarText">
 				<ul class="navbar-nav mr-auto">
 					<?php
-						if(isset($_SESSION['id']) && isset($_SESSION['role']) && (($_SESSION['role'] == "p") || ($_SESSION['role'] == "a")))
+						if(isset($_SESSION['id']) && isset($_SESSION['role']) && (($_SESSION['role'] == "p") || ($_SESSION['role'] == "a") || ($_SESSION['role'] == "l")) && ($_SESSION['active'] == 1))
 						{
 					?>
 							<li class="nav-item">

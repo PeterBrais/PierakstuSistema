@@ -240,7 +240,7 @@ $(function(){
 				"nonworking[]": {
 					ChosenNonWorkingDropdown: "Lūdzu izvēlieties 'Cits iemesls' veidu!",
 				},
-			}
+			},
 		});
 	});
 });

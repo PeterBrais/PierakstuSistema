@@ -10,7 +10,7 @@
 	//Check if position exists in database
 	if(!Position::Exists($_POST['position_id']))
 	{
-		header("Location: show_positions");
+		header("Location: 404");
 		exit();
 	}
 

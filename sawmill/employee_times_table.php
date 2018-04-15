@@ -52,7 +52,7 @@
 	}
 	else
 	{
-		header("Location: /");
+		header("Location: 404");
 		exit();
 	}
 ?>

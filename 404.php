@@ -9,7 +9,17 @@
 				<div class="card">
 					<div class="card-body">
 						<div class="alert alert-danger alert_space" role="alert">
-							<h4 class="text-danger text-center">Šī tīmekļa lapa nav atrasta.</h4>
+							<h4 class="text-danger text-center">
+								Šī tīmekļa lapa nav atrasta. 
+								<?php
+									if(isset($_SESSION['id']))
+									{
+								?>
+									<a href="/">Pāriet uz sākumu!</a>
+								<?php
+									}
+								?>
+							</h4>
 						</div>
 					</div>
 				</div>

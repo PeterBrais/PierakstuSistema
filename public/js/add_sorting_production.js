@@ -188,4 +188,88 @@ $(document).ready(function(){
 		}
 		$(this).parent().parent().next().next().next().children().find('.sorted_capacities_pieces').html(total_cap_piece+measure_piece);
 	});
+	$(document).on('input', '.sorted_thicknesses', function(){
+	    var sorted_thickness = $(this).val();
+	    var sorted_count = $(this).parent().parent().parent().parent().prev().children().find('.sorted_counts').val();
+	    var sorted_width = $(this).parent().next().find('.sorted_widths').val();
+	    var sorted_length = $(this).parent().next().next().find('.sorted_lengths').val();
+	    var total_cap = ((sorted_thickness*sorted_width*sorted_length)/1000000000)*sorted_count;
+	    var total_cap_piece = (sorted_thickness*sorted_width*sorted_length)/1000000000;
+
+	    if(isNaN(total_cap))
+		{
+			total_cap = "0.000";
+		}
+		else
+		{
+			total_cap = total_cap.toFixed(3);
+		}
+		$(this).parent().parent().parent().parent().next().children().find('.sorted_capacities').html(total_cap+measure_unit);
+
+		if(isNaN(total_cap_piece))
+		{
+			total_cap_piece = "0.00000"
+		}
+		else
+		{
+			total_cap_piece = total_cap_piece.toFixed(5);
+		}
+		$(this).parent().parent().parent().parent().next().next().children().find('.sorted_capacities_pieces').html(total_cap_piece+measure_piece);
+	});
+	$(document).on('input', '.sorted_widths', function(){
+	    var sorted_width = $(this).val();
+	    var sorted_count = $(this).parent().parent().parent().parent().prev().children().find('.sorted_counts').val();
+	    var sorted_thickness = $(this).parent().prev().find('.sorted_thicknesses').val();
+	    var sorted_length = $(this).parent().next().find('.sorted_lengths').val();
+	    var total_cap = ((sorted_thickness*sorted_width*sorted_length)/1000000000)*sorted_count;
+	    var total_cap_piece = (sorted_thickness*sorted_width*sorted_length)/1000000000;
+
+	    if(isNaN(total_cap))
+		{
+			total_cap = "0.000";
+		}
+		else
+		{
+			total_cap = total_cap.toFixed(3);
+		}
+		$(this).parent().parent().parent().parent().next().children().find('.sorted_capacities').html(total_cap+measure_unit);
+
+		if(isNaN(total_cap_piece))
+		{
+			total_cap_piece = "0.00000"
+		}
+		else
+		{
+			total_cap_piece = total_cap_piece.toFixed(5);
+		}
+		$(this).parent().parent().parent().parent().next().next().children().find('.sorted_capacities_pieces').html(total_cap_piece+measure_piece);
+	});
+	$(document).on('input', '.sorted_lengths', function(){
+	    var sorted_length = $(this).val();
+	    var sorted_count = $(this).parent().parent().parent().parent().prev().children().find('.sorted_counts').val();
+	    var sorted_thickness = $(this).parent().prev().prev().find('.sorted_thicknesses').val();
+	    var sorted_width = $(this).parent().prev().find('.sorted_widths').val();
+	    var total_cap = ((sorted_thickness*sorted_width*sorted_length)/1000000000)*sorted_count;
+	    var total_cap_piece = (sorted_thickness*sorted_width*sorted_length)/1000000000;
+
+	    if(isNaN(total_cap))
+		{
+			total_cap = "0.000";
+		}
+		else
+		{
+			total_cap = total_cap.toFixed(3);
+		}
+		$(this).parent().parent().parent().parent().next().children().find('.sorted_capacities').html(total_cap+measure_unit);
+
+		if(isNaN(total_cap_piece))
+		{
+			total_cap_piece = "0.00000"
+		}
+		else
+		{
+			total_cap_piece = total_cap_piece.toFixed(5);
+		}
+		$(this).parent().parent().parent().parent().next().next().children().find('.sorted_capacities_pieces').html(total_cap_piece+measure_piece);
+	});
 });

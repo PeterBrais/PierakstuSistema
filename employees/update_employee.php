@@ -12,7 +12,7 @@
 	//Check if user exists in database
 	if(!Employee::ExistsEmployeeWithID($_POST['employee_id']))
 	{
-		header("Location: show_employee");
+		header("Location: 404");
 		exit();
 	}
 

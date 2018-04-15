@@ -15,6 +15,13 @@
 	$employees = Manager::GetSortingEmployeesByDate($date_string);
 	$total = Manager::GetAllSortingProductionSummByDate($date_string);
 	$total_without_useless = Manager::GetAllUselessSortingProductionSummByDate($date_string);
+
+	//Gets month number
+	$period_month_number = date('n', strtotime($date_string));
+	$period_month_number = $period_month_number-1;
+
+	//Employee count
+	$employee_count = count($employees);
 ?>
 
 <div class="card-body">
@@ -327,23 +334,24 @@
 
 <div class="card-body">
 	<h4 class="card-title text-center">Šķirotavas Darbinieki</h4>
-	<table class="table table-bordered table-hover">
+	<table class="table table-bordered">
 		<thead class="thead-default table-active">
 			<tr>
 				<th rowspan="2">Nr.p.k</th>
+				<th rowspan="2">DNA</th>
 				<th rowspan="2">V. Uzvārds</th>
 				<th rowspan="2">Amats</th>
-				<th colspan="4">Darba aprēķins</th>
-				<th colspan="2">Stundas</th>
+				<th colspan="7">Darba aprēķins</th>
 				<th rowspan="2">Atskaite</th>
 			</tr>
 			<tr>
-				<th>Līdz 0,0089 m3</th>
+				<th>Veids</th>
+				<th>Stundas</th>
+				<th>Dienas</th>
+				<th>Līdz 0,0089 m3/gab</th>
 				<th>No 0,009 līdz 0,0160 m3/gab</th>
 				<th>No 0,0161 m3/gab</th>
 				<th>Kopā</th>
-				<th>Stundas</th>
-				<th>Dienas</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -353,9 +361,16 @@
 		{
 	?>
 			<tr>
-				<th><?=$i++?></th>
-				<td><?=$employee['name']?> <?=$employee['last_name']?></td>
-				<td>
+				<th rowspan="2"><?=$i++?></th>
+				<td rowspan="2">
+				<?php
+					$emp_serial_number = (($period_month_number * $employee_count)+($i-1));
+					$emp_serial_number = sprintf('%03d', $emp_serial_number);
+					echo $emp_serial_number;
+				?>
+				</td>
+				<td rowspan="2"><?=$employee['name']?> <?=$employee['last_name']?></td>
+				<td rowspan="2">
 				<?php
 					$positions = Manager::EmployeePositions($employee['id']);
 					foreach($positions as $position)
@@ -364,16 +379,75 @@
 					}
 				?>
 				</td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
+				<td>Šķirots</td>
 				<td>
-					<a href="report?id=<?=$employee['id']?>&period=<?=$date_string?>" class="btn btn-success">
+				<?php
+					$sorting_hours = Manager::GetSortingEmployeeProductionsSortedHoursWorked($date_string, $employee['id']);
+					if(!empty($sorting_hours['working_hours']))
+					{
+						echo $sorting_hours['working_hours'];
+					}
+					else
+					{
+						echo "0";
+					}
+				?>
+				</td>
+				<td>
+				<?php
+					if(!empty($sorting_hours['working_hours']))
+					{
+						echo round(($sorting_hours['working_hours']/8), 1);
+					}
+					else
+					{
+						echo "0";
+					}
+				?>
+				</td>
+				<?php
+					$sorted_emp_capacity = Manager::GetSortingEmployeeProductionsSortedCapacity($date_string, $employee['id']);
+				?>
+				<td rowspan="2"><?=$sorted_emp_capacity['cap_one']?></td>
+				<td rowspan="2"><?=$sorted_emp_capacity['cap_two']?></td>
+				<td rowspan="2"><?=$sorted_emp_capacity['cap_three']?></td>
+				<td rowspan="2"><?=$sorted_emp_capacity['total_cap']?></td>
+				<td rowspan="2">
+					<a href="report?id=<?=$employee['id']?>&period=<?=$date_string?>&s=<?=$emp_serial_number?>" class="btn btn-success">
 						Skatīt
 					</a>
+				</td>
+			</tr>
+			<tr>
+				<td>Garināts</td>
+				<td>
+				<?php
+					$stretch_hours = Manager::GetSortingEmployeeProductionsStretchedHoursWorked($date_string, $employee['id']);
+					if(!empty($stretch_hours['working_hours']))
+					{
+						echo $stretch_hours['working_hours'];
+						if(!empty($stretch_hours['overtime_hours']))
+						{
+							echo "+".$stretch_hours['overtime_hours']." (virstundas)";
+						}
+					}
+					else
+					{
+						echo "0";
+					}
+				?>
+				</td>
+				<td>
+				<?php
+					if(!empty($stretch_hours['working_hours']))
+					{
+						echo round(($stretch_hours['working_hours']/8), 1);
+					}
+					else
+					{
+						echo "0";
+					}
+				?>
 				</td>
 			</tr>
 	<?php

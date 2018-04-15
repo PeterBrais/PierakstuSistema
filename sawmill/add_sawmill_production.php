@@ -3,12 +3,13 @@
 
 	if(!isset($_SESSION['id']) && !isset($_SESSION['role']))	//Adding new sawmill production possible if user is logged in
 	{
-		header("Location: /");
+		header("Location: 404");
 		exit();
 	}
-	if(($_SESSION['role'] != "p") && ($_SESSION['role'] != "a"))	//Check if user have permission
+
+	if((($_SESSION['role'] != "a") && ($_SESSION['role'] != "p") && ($_SESSION['role'] != "l")) || ($_SESSION['active'] != 1))	//Check if user have permission
 	{
-		header("Location: /");
+		header("Location: 404");
 		exit();
 	}
 	

@@ -9,7 +9,7 @@
 
 	if(!isset($_POST['size']))
 	{
-		header("Location: /");
+		header("Location: 404");
 		exit();
 	}
 
