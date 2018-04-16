@@ -35,7 +35,7 @@
 		extract($_SESSION['employee']);
 	}
 
-	//Returns aemployees data
+	//Returns employees data
 	$employee = Employee::GetEmployeesData($user_id);
 ?>
 
@@ -282,7 +282,7 @@
 									$positions = Manager::Positions();
 								?>
 									<select class="custom-select mb-2" name="positions[]">
-										<option value="">Izvēlieties amatu</option>
+										<option value="" style="font-weight:bold;">Izvēlieties amatu</option>
 								<?php
 									foreach($positions as $position)
 									{
@@ -326,7 +326,7 @@
 									$positions = Manager::Positions();
 								?>
 									<select class="custom-select mb-2" name="positions[]">
-										<option value="">Izvēlieties amatu</option>
+										<option value="" style="font-weight:bold;">Izvēlieties amatu</option>
 								<?php
 									foreach($positions as $position)
 									{

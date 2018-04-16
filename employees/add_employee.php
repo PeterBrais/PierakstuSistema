@@ -119,7 +119,7 @@
 								</label>
 								<div class="col-md-5">
 									<select class="custom-select" name="place" id="place_selects">
-										<option value="0" <?php echo (isset($_SESSION['employee']) && $place == "0") ? 'selected' : ''; ?> >Izvēlieties darba vietu</option>
+										<option value="0" <?php echo (isset($_SESSION['employee']) && $place == "0") ? 'selected' : ''; ?> style="font-weight:bold;">Izvēlieties darba vietu</option>
 										<option value="1" <?php echo (isset($_SESSION['employee']) && $place == "1") ? 'selected' : ''; ?> >Birojs</option>
 										<option value="2" <?php echo (isset($_SESSION['employee']) && $place == "2") ? 'selected' : ''; ?> >Zāģētava</option>
 										<option value="3" <?php echo (isset($_SESSION['employee']) && $place == "3") ? 'selected' : ''; ?> >Šķirotava</option>

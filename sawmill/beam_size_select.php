@@ -5,7 +5,7 @@
 ?>
 
 	<select class="custom-select" name="sizes" id="beam_size_select">
-		<option selected value="">Izvēlieties kubatūras izmēru</option>
+		<option selected value="" style="font-weight:bold;">Izvēlieties kubatūras izmēru</option>
 
 <?php
 	foreach($sizes as $size)

@@ -122,7 +122,7 @@
 								</label>
 								<div class="col-md-5">
 									<select class="custom-select" name="role">
-										<option value="0" <?php echo (isset($_SESSION['register']) && $role == "0") ? 'selected' : ''; ?> >Izvēlieties lietotāja lomu</option>
+										<option value="0" <?php echo (isset($_SESSION['register']) && $role == "0") ? 'selected' : ''; ?> style="font-weight:bold;">Izvēlieties lietotāja lomu</option>
 										<option value="1" <?php echo (isset($_SESSION['register']) && $role == "1") ? 'selected' : ''; ?> >Darbinieks</option>
 										<option value="2" <?php echo (isset($_SESSION['register']) && $role == "2") ? 'selected' : ''; ?> >Pārvaldnieks</option>
 										<option value="3" <?php echo (isset($_SESSION['register']) && $role == "3") ? 'selected' : ''; ?> >Administrators</option>

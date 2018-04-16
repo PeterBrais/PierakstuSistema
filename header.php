@@ -89,6 +89,10 @@ ob_start(); //Output buffering
 									</a>
 								</div>
 							</div>
+
+							<li class="nav-item">
+								<a class="nav-link" href="/office/office_time_table">Birojs</a>
+							</li>
 					<?php
 						}
 					?>

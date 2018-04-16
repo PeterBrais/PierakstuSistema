@@ -192,7 +192,7 @@
 									$sizes = Manager::BeamSizes();
 								?>
 									<select class="custom-select" name="sizes" id="beam_size_select">
-										<option value="">Izvēlieties kubatūras izmēru</option>
+										<option value="" style="font-weight:bold;">Izvēlieties kubatūras izmēru</option>
 								<?php
 									foreach($sizes as $size)
 									{
@@ -408,7 +408,7 @@
 									$workers_shift = SawmillProduction::GetSawmillProductionWorkersShift($production['id']);
 								?>
 									<select class="custom-select" name="shifts" id="employees_shift">
-										<option value="">Izvēlieties maiņu</option>
+										<option value="" style="font-weight:bold;">Izvēlieties maiņu</option>
 								<?php
 									foreach($shifts as $shift)
 									{
@@ -441,7 +441,8 @@
 								</div>
 								<div class="col-md-12 mt-3" id="table_show">
 								<?php
-									$employees = Manager::GetEmployeesByShift($workers_shift['shift']);
+									$this_date = date('Y-m'); //This year and month
+									$employees = Manager::GetEmployeesByShift($workers_shift['shift'], $this_date);
 								?>
 									<table class="table table-bordered table-hover">
 										<thead class="thead-default table-active">

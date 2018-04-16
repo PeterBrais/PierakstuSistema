@@ -245,8 +245,8 @@
 													$capacity_per_production = round((($capacity['lumber_capacity']/8)*$capacity['working_hours']), 3);
 
 													//Get COUNT of all attended employees and SUM of nonattended employees rate
-													$employee_count = Manager::GetOperatorsAndAssistantsFromProduction($capacity['id'], $employee['shift']);
-													$employee_rates = Manager::GetNonAttendedEmployeeCapacityRatesFromProduction($capacity['id'], $employee['shift']);
+													$employee_count = Manager::GetOperatorsAndAssistantsFromProduction($capacity['id'], $employee['shift'], $period);
+													$employee_rates = Manager::GetNonAttendedEmployeeCapacityRatesFromProduction($capacity['id'], $employee['shift'], $period);
 
 													if($employee_rates['rates'] != NULL)
 													{

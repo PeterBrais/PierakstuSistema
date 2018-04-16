@@ -12,7 +12,7 @@ $(document).ready(function(){
 							</label>
 							<div class="col-md-5">
 								<select class="custom-select sorting_prod_type" name="sorted_types[]">
-									<option selected value="0">Izvēlieties šķirošanas veidu</option>
+									<option selected value="0" style="font-weight:bold;">Izvēlieties šķirošanas veidu</option>
 									<option value="1">Šķirots</option>
 									<option value="2">Garināts</option>
 									<option value="3">Mērcēts</option>

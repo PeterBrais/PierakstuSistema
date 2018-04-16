@@ -7,7 +7,8 @@
 
 		if(!empty($shift))
 		{
-			$employees = Manager::GetEmployeesByShift($shift);
+			$this_date = date('Y-m'); //This year and month
+			$employees = Manager::GetEmployeesByShift($shift, $this_date);
 ?>
 			<table class="table table-bordered table-hover">
 				<thead class="thead-default table-active">

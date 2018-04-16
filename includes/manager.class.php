@@ -89,12 +89,15 @@
 			return mysqli_fetch_all($sql, MYSQLI_ASSOC);
 		}
 
-		public static function GetEmployeesByShift($shift)	//Returns all employees with selected shift
+		public static function GetEmployeesByShift($shift, $date_string)	//Returns all employees with selected shift
 		{
 			global $conn;
 
-			$sql = $conn->prepare("SELECT * FROM employees WHERE shift = ?");
-			$sql->bind_param('s', $shift);
+			$sql = $conn->prepare("SELECT * FROM employees WHERE shift = ? AND 
+									DATE_FORMAT(employees.working_from, '%Y-%m') <= ? AND
+									(DATE_FORMAT(employees.working_to, '%Y-%m') >= ? 
+									OR employees.working_to IS NULL)");
+			$sql->bind_param('sss', $shift, $date_string, $date_string);
 			$sql->execute();
 			$result = $sql->get_result();
 
@@ -250,7 +253,7 @@
 			return mysqli_fetch_all($result, MYSQLI_ASSOC);
 		}
 
-		public static function GetOperatorsAndAssistantsFromProduction($production_id, $shift)	//Returns all attended (operators and assistants) employees from current production
+		public static function GetOperatorsAndAssistantsFromProduction($production_id, $shift, $date_string)	//Returns all attended (operators and assistants) employees from current production
 		{
 			global $conn;
 
@@ -271,15 +274,17 @@
 									AND employees.id = working_times.employee_id
 									AND sawmill_productions.date = working_times.date 
 									AND sawmill_productions.invoice = working_times.invoice
-									AND sawmill_productions.datetime = working_times.datetime");
-			$sql->bind_param('ss', $production_id, $shift);
+									AND sawmill_productions.datetime = working_times.datetime AND
+                                    DATE_FORMAT(employees.working_from, '%Y-%m') <= ? AND
+									(DATE_FORMAT(employees.working_to, '%Y-%m') >= ? OR employees.working_to IS NULL)");
+			$sql->bind_param('ssss', $production_id, $shift, $date_string, $date_string);
 			$sql->execute();
 			$result = $sql->get_result();
 
 			return mysqli_fetch_assoc($result);
 		}
 
-		public static function GetNonAttendedEmployeeCapacityRatesFromProduction($production_id, $shift)	//Returns sum of nonattended employees capacity rates from current production
+		public static function GetNonAttendedEmployeeCapacityRatesFromProduction($production_id, $shift, $date_string)	//Returns sum of nonattended employees capacity rates from current production
 		{
 			global $conn;
 
@@ -295,8 +300,10 @@
 									AND employees.id = times.employee_id
 									AND sawmill_productions.date = times.date 
 									AND sawmill_productions.invoice = times.invoice
-									AND sawmill_productions.datetime = times.datetime");
-			$sql->bind_param('ss', $production_id, $shift);
+									AND sawmill_productions.datetime = times.datetime AND
+									DATE_FORMAT(employees.working_from, '%Y-%m') <= ? AND
+									(DATE_FORMAT(employees.working_to, '%Y-%m') >= ? OR employees.working_to IS NULL)");
+			$sql->bind_param('ssss', $production_id, $shift, $date_string, $date_string);
 			$sql->execute();
 			$result = $sql->get_result();
 

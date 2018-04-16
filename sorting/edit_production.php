@@ -270,7 +270,7 @@
 											</label>
 											<div class="col-md-5">
 												<select class="custom-select sorting_prod_type" name="sorted_types[]">
-													<option value="" <?php echo ((isset($_SESSION['edit_sorting_prod']) && $sorted_types[0] == "0") || ($all_sorted_production['type'] == "0")) ? 'selected' : ''; ?> >Izvēlieties šķirošanas veidu</option>
+													<option value="" <?php echo ((isset($_SESSION['edit_sorting_prod']) && $sorted_types[0] == "0") || ($all_sorted_production['type'] == "0")) ? 'selected' : ''; ?> style="font-weight:bold;">Izvēlieties šķirošanas veidu</option>
 													<option value="1" <?php echo ((isset($_SESSION['edit_sorting_prod']) && $sorted_types[0] == "1") || ($all_sorted_production['type'] == "S")) ? 'selected' : ''; ?> >Šķirots</option>
 													<option value="2" <?php echo ((isset($_SESSION['edit_sorting_prod']) && $sorted_types[0] == "2") || ($all_sorted_production['type'] == "G")) ? 'selected' : ''; ?> >Garināts</option>
 													<option value="3" <?php echo ((isset($_SESSION['edit_sorting_prod']) && $sorted_types[0] == "3") || ($all_sorted_production['type'] == "W")) ? 'selected' : ''; ?> >Mērcēts</option>
@@ -457,7 +457,7 @@
 											</label>
 											<div class="col-md-5">
 												<select class="custom-select sorting_prod_type" name="sorted_types[]">
-													<option value="" <?php echo ((isset($_SESSION['edit_sorting_prod']) && $sorted_types[0] == "0") || ($all_sorted_production['type'] == "0")) ? 'selected' : ''; ?> >Izvēlieties šķirošanas veidu</option>
+													<option value="" <?php echo ((isset($_SESSION['edit_sorting_prod']) && $sorted_types[0] == "0") || ($all_sorted_production['type'] == "0")) ? 'selected' : ''; ?> style="font-weight:bold;">Izvēlieties šķirošanas veidu</option>
 													<option value="1" <?php echo ((isset($_SESSION['edit_sorting_prod']) && $sorted_types[0] == "1") || ($all_sorted_production['type'] == "S")) ? 'selected' : ''; ?> >Šķirots</option>
 													<option value="2" <?php echo ((isset($_SESSION['edit_sorting_prod']) && $sorted_types[0] == "2") || ($all_sorted_production['type'] == "G")) ? 'selected' : ''; ?> >Garināts</option>
 													<option value="3" <?php echo ((isset($_SESSION['edit_sorting_prod']) && $sorted_types[0] == "3") || ($all_sorted_production['type'] == "W")) ? 'selected' : ''; ?> >Mērcēts</option>
