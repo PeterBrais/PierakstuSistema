@@ -19,13 +19,13 @@
 			$sql = $conn->prepare("SELECT DISTINCT DATE_FORMAT(date, '%Y-%m') AS date,
 									DATE_FORMAT(date, '%M %Y') AS month_year
 									FROM working_times
-									WHERE working_times.invoice IS NOT NULL AND 
+									WHERE working_times.invoice IS NULL AND 
 									DATE_FORMAT(working_times.date, '%Y-%m') < ?
 									UNION
 									SELECT DISTINCT DATE_FORMAT(date, '%Y-%m') AS date,
 									DATE_FORMAT(date, '%M %Y') AS month_year
 									FROM times
-									WHERE times.invoice IS NOT NULL AND 
+									WHERE times.invoice IS NULL AND 
 									DATE_FORMAT(times.date, '%Y-%m') < ?
 									ORDER BY date DESC");
 
@@ -67,86 +67,87 @@
 			return $resultCheck >= 1;
 		}
 
-		// function Calendar($month_index, $year_index)
-		// {
-		// 	//Array of week days
-		// 	$daysOfWeek = array('P','O','T','C','P','S','Sv');
+		public static function BureauEmployeeWorkingTimes($id, $date)	//Gets all bureau employee working times from database
+		{
+			global $conn;
 
-		// 	//Get first day of month timestamp
-		// 	$firstDayOfMonth = mktime(0, 0, 0, $month_index, 1, $year_index);
+			$sql = $conn->prepare("SELECT working_times.working_hours, working_times.overtime_hours 
+									FROM working_times WHERE working_times.employee_id = ? AND
+									 working_times.date = ? AND working_times.invoice IS NULL");
+			$sql->bind_param('ss', $id, $date);
+			$sql->execute();
+			$result = $sql->get_result();
 
-		// 	//Number of days in month
-		// 	$numberDays = date('t', $firstDayOfMonth);
+			return mysqli_fetch_assoc($result);
+		}
 
-		// 	//Retrieve information about first day of the month
-		// 	$dateComponents = getdate($firstDayOfMonth);
+		public static function BureauEmployeeNonWorkingTimes($id, $date)	//Gets all bureau employee nonworking times from database
+		{
+			global $conn;
 
-		// 	//Index value of the first day
-		// 	$dayOfWeek = $dateComponents['wday'];
-		// 	if($dayOfWeek == 0)
-		// 	{
-		// 		$dayOfWeek = 6;
-		// 	}
-		// 	else
-		// 	{
-		// 		$dayOfWeek = $dayOfWeek - 1;
-		// 	}
+			$sql = $conn->prepare("SELECT CONCAT_WS('', times.vacation, times.sick_leave, times.nonattendace,
+									times.pregnancy) as nonworking
+									FROM times WHERE times.employee_id = ? AND times.date = ? 
+									AND times.invoice IS NULL");
+			$sql->bind_param('ss', $id, $date);
+			$sql->execute();
+			$result = $sql->get_result();
 
-		//     //Creating table with concatenation
-		// 	$calendar = "<table class='table table-bordered'>";
-		// 	$calendar .= "<thead class='thead-default table-active'><tr>";
+			return mysqli_fetch_assoc($result);
+		}
 
-		// 	//Calendar header
-		// 	foreach($daysOfWeek as $day)
-		// 	{
-		// 		$calendar .= "<th>$day</th>";
-		// 	}
+		public static function BureauEmployeeWorkingStatistic($id, $date_string)	//Returns all bureau employees days worked statistic
+		{
+			global $conn;
 
-		// 	$calendar .= "</tr></thead><tr>";
+			$sql = $conn->prepare("SELECT COUNT(DISTINCT working_times.date) as working_days, 
+									SUM(working_times.working_hours) as working_hours, 
+									SUM(working_times.overtime_hours) as overtime_hours
+									FROM working_times
+									WHERE working_times.employee_id = ? AND 
+									DATE_FORMAT(working_times.date, '%Y-%m') = ? 
+									AND working_times.invoice IS NULL");
+			$sql->bind_param('ss', $id, $date_string);
+			$sql->execute();
+			$result = $sql->get_result();
 
-		// 	//Current day starts with 1
-		// 	$currentDay = 1;
+			return mysqli_fetch_assoc($result);
+		}
 
-		// 	//Colspan to the starting month day (7 columns)
-		// 	if($dayOfWeek > 0)
-		// 	{ 
-		// 		$calendar .= "<td colspan='$dayOfWeek' class='table-light'></td>"; 
-		// 	}
+		public static function BureauEmployeeNonWorkingStatistic($id, $date_string)	//Returns all bureau employees days nonworked statistic
+		{
+			global $conn;
 
-		// 	//Month index with leading zero
-		// 	$month = str_pad($month_index, 2, "0", STR_PAD_LEFT);
+			$sql = $conn->prepare("SELECT COUNT(DISTINCT times.date) as nonworking_days, 
+									COUNT(times.vacation) as vacation, 
+									COUNT(times.sick_leave) as sick_leave,
+									COUNT(times.nonattendace) as nonattendance,
+									COUNT(times.pregnancy) as pregnancy
+									FROM times
+									WHERE times.employee_id = ? AND 
+									DATE_FORMAT(times.date, '%Y-%m') = ?
+									AND times.invoice IS NULL");
+			$sql->bind_param('ss', $id, $date_string);
+			$sql->execute();
+			$result = $sql->get_result();
 
-		// 	//Goes thru all month days
-		// 	while($currentDay <= $numberDays)
-		// 	{
-		// 		//New week starts in new table row
-		// 		if($dayOfWeek == 7)
-		// 		{
-		// 			$dayOfWeek = 0;
-		// 			$calendar .= "</tr><tr>";
-		// 		}
+			return mysqli_fetch_assoc($result);
+		}
 
-		// 		$currentDayRel = str_pad($currentDay, 2, "0", STR_PAD_LEFT);
+		public static function Weekdays($month_index, $year_index)	//Get count of week days
+		{
+			$lastday = date("t", mktime(0, 0, 0, $month_index, 1, $year_index));	//Count of days in month
+			$weekdays = 0;
+			for($d = 29;$d <= $lastday; $d++)
+			{
+				$wd = date("w",mktime(0, 0, 0, $month_index, $d, $year_index));
+				if($wd > 0 && $wd < 6)
+				{
+					$weekdays++;
+				}
+			}
 
-		// 		//Date index
-		// 		$date = "$year_index-$month-$currentDayRel";
-		// 		$calendar .= "<td id='$date'>$currentDay</td>";
-
-		// 		//Increases variables
-		// 		$currentDay++;
-		// 		$dayOfWeek++;
-		// 	}
-
-		// 	//Colspan to the ending month day
-		// 	if($dayOfWeek != 7)
-		// 	{ 
-		// 		$remainingDays = 7 - $dayOfWeek;
-		// 		$calendar .= "<td colspan='$remainingDays' class='table-light'></td>"; 
-		// 	}
-
-		// 	$calendar .= "</tr></table>";
-
-		// 	return $calendar;
-		// }
+			return $weekdays + 20;
+		}
 	}
 ?>

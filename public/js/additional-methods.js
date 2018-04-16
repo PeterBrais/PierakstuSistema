@@ -1,14 +1,6 @@
-// jQuery.validator.addMethod("IsValidText", function(value, element) {
-// 	return this.optional(element) || (/^[0-9\p{L}][\p{L}\/0-9\s.,_-]+$/u).test(value);
-// }, "Letters, numbers and special symbols only allowed");
-
 jQuery.validator.addMethod("IsValidText", function(value, element) {
 	return this.optional(element) || (/^[0-9a-zāčēģīķļņšūžA-ZĀČĒĢĪĶĻŅŠŪŽ][a-zāčēģīķļņšūžA-ZĀČĒĢĪĶĻŅŠŪŽ\/0-9\s.,_-]+$/u).test(value);
 }, "Letters, numbers and special symbols only allowed");
-
-// jQuery.validator.addMethod("IsValidName", function(value, element) {
-// 	return this.optional(element) || /^\p{L}[\p{L}\s-]+$/u.test(value);
-// }, "Letters, numbers and special symbols only allowed");
 
 jQuery.validator.addMethod("IsValidName", function(value, element) {
 	return this.optional(element) || /^[a-zāčēģīķļņšūžA-ZĀČĒĢĪĶĻŅŠŪŽ][a-zāčēģīķļņšūžA-ZĀČĒĢĪĶĻŅŠŪŽ\s-]+$/u.test(value);
@@ -77,3 +69,11 @@ jQuery.validator.addMethod("IsValidActNo", function(value, element) {
 jQuery.validator.addMethod("ChosenNonWorkingDropdown", function(value, element) {
 	return (value == "1" || value == "2" || value == "3" || value == "0" || value == "");
 }, "Please choose value");
+
+jQuery.validator.addMethod("IsValidWorkingHours", function(value, element) {
+	return this.optional(element) || /^[aAcCnNsS1-8]?$/.test(value);
+}, "Enter valid hours or options");
+
+jQuery.validator.addMethod("IsValidOvertimeHours", function(value, element) {
+	return this.optional(element) || /^[1-8]?$/.test(value);
+}, "Enter valid hours or options");

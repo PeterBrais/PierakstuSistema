@@ -81,6 +81,12 @@
 
 	//Month index with leading zero
 	$month = str_pad($month_index, 2, "0", STR_PAD_LEFT);
+
+	//Returns all days worked statistic and nonworked statistic
+	$days_worked = Office::BureauEmployeeWorkingStatistic($user_id, $period);
+	$days_nonworked = Office::BureauEmployeeNonWorkingStatistic($user_id, $period);
+
+	$weekday_count = Office::Weekdays($month_index, $period_year);
 ?>
 
 	<!-- Update employees work times accounting -->
@@ -147,69 +153,148 @@
 								echo ".";
 							?>
 						</h4>
-						<form id="" action="" method="POST">
+						<div class="col-md-12">
+							<div class="row">
+								<div class="col-md-6 alert alert-success mb-3" role="alert">
+									<h4 class="alert-heading">Apzīmējumi:</h4>
+									<ul>
+										<li>Stundas: <b>1</b>, <b>2</b>, <b>3</b>, <b>4</b>, <b>5</b>, <b>6</b>, <b>7</b>, <b>8</b></li>
+										<li>Atvaļinājums: <b>A</b></li>
+										<li>Neierašanās / Kavējums: <b>N</b></li>
+										<li>Slimības lapa: <b>S</b></li>
+										<li>Cits iemesls: <b>C</b></li>
+									</ul>
+									<hr>
+									<ul>
+										<li>Virsstundas: <b>1</b>, <b>2</b>, <b>3</b>, <b>4</b>, <b>5</b>, <b>6</b>, <b>7</b>, <b>8</b></li>
+									</ul>
+								</div>
+								<div class="col-md-6">
+									<h4>Statistika:</h4>
+									<ul>
+										<li>Darba dienas: <?=$weekday_count?> / Stundas kopā:  <?=$weekday_count*8?></li>
+										<hr>
+										<li>Darbā ierašanās dienas: <?=$days_worked['working_days']?></li>
+										<li>Nostrādātās stundas: <?=$days_worked['working_hours']?></li>
+										<li>Darbā ierašanās dienas: <?=$days_worked['overtime_hours']?></li>
+										<li>Stundas kopā: <?=$days_worked['working_hours']+$days_worked['overtime_hours']?></li>
+										<hr>
+										<li>Darbā neierašanās dienas: <?=$days_nonworked['nonworking_days']?></li>
+										<li>Atvaļinājums (dienas): <?=$days_nonworked['vacation']?></li>
+										<li>Slimības lapa (dienas): <?=$days_nonworked['sick_leave']?></li>
+										<li>Kavējums (dienas): <?=$days_nonworked['nonattendance']?></li>
+										<li>Cits iemesls (dienas): <?=$days_nonworked['pregnancy']?></li>
+									</ul>
+								</div>
+							</div>
+						</div>
+						<form id="work_accounting_form" action="new_work_accounting" method="POST">
+							<input type="hidden" name="employee_id" value="<?=$employee['id']?>">
+							<input type="hidden" name="period" value="<?=$period?>">
 							<div class="form-group row">
 								<div class="col-md-12">
-								<?php
-									echo "<table class='table table-bordered'>";
-									echo "<thead class='thead-default table-active'><tr>";
+									<table class='table table-bordered'>
+										<thead class='thead-default table-active'>
+											<tr>
+										<?php
+											foreach($daysOfWeek as $day)
+											{
+												echo "<th>$day</th>"; //Calendar header
+											}
+										?>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+										<?php
+											//Colspan to the starting month day (7 columns)
+											if($dayOfWeek > 0)
+											{ 
+												echo "<td colspan='$dayOfWeek' class='table-light'></td>"; 
+											}
 
-									//Calendar header
-									foreach($daysOfWeek as $day)
-									{
-										echo "<th>$day</th>";
-									}
+											//Goes thru all month days
+											while($currentDay <= $numberDays)
+											{
+												//New week starts in new table row
+												if($dayOfWeek == 7)
+												{
+													$dayOfWeek = 0;
+													echo "</tr><tr>";
+												}
 
-									echo "</tr></thead><tr>";
+												$currentDayRel = str_pad($currentDay, 2, "0", STR_PAD_LEFT);
+												$currentDayIndex = $currentDay - 1;
 
-									//Colspan to the starting month day (7 columns)
-									if($dayOfWeek > 0)
-									{ 
-										echo "<td colspan='$dayOfWeek' class='table-light'></td>"; 
-									}
+												//Date index
+												$date = "$period_year-$month-$currentDayRel";
+												$working_hours_date = "";
+												$overtime_hours_date = "";
+												
 
-									//Goes thru all month days
-									while($currentDay <= $numberDays)
-									{
-										//New week starts in new table row
-										if($dayOfWeek == 7)
-										{
-											$dayOfWeek = 0;
-											echo "</tr><tr>";
-										}
+												if(isset($_SESSION['employee_times']))
+												{
+													$working_hours_date = $working_hours[$currentDayIndex];
+													$overtime_hours_date = $overtime_hours[$currentDayIndex];
+												}
+												else
+												{
+													$nonworkig_times = Office::BureauEmployeeNonWorkingTimes($user_id, $date);
+													$working_times = Office::BureauEmployeeWorkingTimes($user_id, $date);
+													if(isset($nonworkig_times))
+													{
+														$working_hours_date = $nonworkig_times['nonworking'];
+														$overtime_hours_date = "";
+													}
+													else if(isset($working_times))
+													{
+														$working_hours_date = $working_times['working_hours'];
+														$overtime_hours_date = $working_times['overtime_hours'];
+													}
+													else
+													{
+														$working_hours_date = "";
+														$overtime_hours_date = "";
+													}
+												}
+										?>
+												<td>
+													<b><?=$currentDay?></b>
+													<div class="input-group mt-1">
+														<div class="input-group-prepend">
+															<span class="input-group-text">Stundas</span>
+														</div>
+														<input type="text" class="form-control" name="working_hours[<?=$currentDayIndex?>]" id="<?=$date?>" value="<?=$working_hours_date?>">
+													</div>
+													<div class="input-group mt-1">
+														<div class="input-group-prepend">
+															<span class="input-group-text">
+																<abbr title="Virsstundas">Virsst.</abbr>
+															</span>
+														</div>
+														<input type="number" min="1" max="8" step="1" class="form-control" name="overtime_hours[<?=$currentDayIndex?>]" id="<?=$date?>" value="<?=$overtime_hours_date?>">
+													</div>
+												</td>
+										<?php
+												//Increases variables
+												$currentDay++;
+												$dayOfWeek++;
+											}
 
-										$currentDayRel = str_pad($currentDay, 2, "0", STR_PAD_LEFT);
-										$currentDayIndex = $currentDay - 1;
-
-										//Date index
-										$date = "$period_year-$month-$currentDayRel";
-										// echo "<td id='$date'>$currentDay<input class='form-control form-control' type='text' name='working_hours[$currentDayIndex]'></td>";
-										echo "<td><div class='input-group'>
-												<div class='input-group-prepend'>
-													<span class='input-group-text'>$currentDay</span>
-												</div>
-												<input type='text' class='form-control' name='working_hours[$currentDayIndex]' id='$date'>
-											</div></td>";
-	
-
-										//Increases variables
-										$currentDay++;
-										$dayOfWeek++;
-									}
-
-									//Colspan to the ending month day
-									if($dayOfWeek != 7)
-									{ 
-										$remainingDays = 7 - $dayOfWeek;
-										echo "<td colspan='$remainingDays' class='table-light'></td>"; 
-									}
-
-									echo "</tr></table>";
-								?>				
+											//Colspan to the ending month day
+											if($dayOfWeek != 7)
+											{ 
+												$remainingDays = 7 - $dayOfWeek;
+												echo "<td colspan='$remainingDays' class='table-light'></td>"; 
+											}
+										?>
+											</tr>
+										</tbody>
+									</table>
 								</div>
 							</div>
 							<div class="form-group row">
-								<div class="col-md-3 offset-md-3">
+								<div class="col-md-2 ml-auto">
 									<button class="btn btn-info" type="submit" name="submit">Saglabāt</button>
 								</div>
 							</div>
@@ -219,6 +304,8 @@
 			</div>
 		</div>
 	</div>
+
+<script src="../public/js/work_accounting_form.js"></script>
 
 <?php
 	unset($_SESSION['employee_times']);

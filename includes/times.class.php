@@ -69,6 +69,23 @@
 			}
 		}
 
+		function DeleteAllNonWorkingBureauEmployees($id, $period){	//Deletes all bureau employee non working times
+			try
+			{
+				$sql = $this->conn->prepare("DELETE FROM times WHERE invoice IS NULL AND employee_id = ?
+												AND DATE_FORMAT(times.date, '%Y-%m') = ?");
+				$sql->bind_param('ss', $id, $period);
+				$sql->execute();
+				$sql->close();
+			}
+			catch(mysqli_sql_exception $e)
+			{
+				$_SESSION['error'] = "Radās kļūda ierakstot datus!";
+				header("Location: /");
+				exit();
+			}
+		}
+
 	}
 
 ?>

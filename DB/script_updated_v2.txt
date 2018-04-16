@@ -54,7 +54,6 @@ CREATE TABLE working_times (
 	invoice INT NULL,
 	working_hours INT NULL,
 	overtime_hours INT NULL,
-	holiday_hours INT NULL,
 	employee_id INT NOT NULL,
     FOREIGN KEY (employee_id) REFERENCES employees(id)
 );

@@ -25,12 +25,13 @@
 				<th rowspan="2">Nr.p.k</th>
 				<th rowspan="2">V. Uzvārds</th>
 				<th rowspan="2">Amats</th>
-				<th colspan="2">Darba aprēķins</th>
+				<th colspan="3">Darba aprēķins</th>
 				<th rowspan="2">Laika Uzskaite</th>
 			</tr>
 			<tr>
-				<th>Dienas</th>
-				<th>Stundas</th>
+				<th><abbr title="Darbā ierašanās dienas">Dienas</abbr></th>
+				<th><abbr title="Nostrādātās stundas">Stundas</abbr></th>
+				<th><abbr title="Nostrādātās virsstundas">Virsstundas</abbr></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -51,8 +52,23 @@
 					}
 				?>
 				</td>
-				<td></td>
-				<td></td>
+				<td>
+				<?php
+					//Returns all days worked, hours and overtime hours
+					$days_worked = Office::BureauEmployeeWorkingStatistic($employee['id'], $date_string);
+					echo $days_worked['working_days'];
+				?>
+				</td>
+				<td>
+				<?php
+					echo $days_worked['working_hours'];
+				?>
+				</td>
+				<td>
+				<?php
+					echo $days_worked['overtime_hours'];
+				?>
+				</td>
 				<td>
 					<a href="work_accounting?id=<?=$employee['id']?>&period=<?=$date_string?>" class="btn btn-success">
 						Skatīt

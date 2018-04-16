@@ -138,6 +138,16 @@
 		{
 			return preg_match("/^\d{6}-\d{5}$/", $number);
 		}
+
+		static function IsValidWorkingHours($text)
+		{
+			return preg_match("/^[aAcCnNsS1-8]?$/", $text);
+		}
+
+		static function IsValidOvertimeHours($text)
+		{
+			return preg_match("/^[1-8]?$/", $text);
+		}
 	}
 
 ?>
