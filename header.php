@@ -35,6 +35,10 @@ ob_start(); //Output buffering
 								<a class="nav-link" href="/">Sākums</a>
 							</li>
 
+						<?php 
+							if(($_SESSION['role'] == "a") && ($_SESSION['active'] == 1))
+							{
+						?>
 							<div class="dropdown nav-item">
 								<a class="nav-link dropdown-toggle" href="" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 									Lietotāji
@@ -44,7 +48,12 @@ ob_start(); //Output buffering
 									<a class="dropdown-item" href="/users/signup">Jauns lietotājs</a>
 								</div>
 							</div>
+						<?php
+							}
 
+							if((($_SESSION['role'] == "p") || ($_SESSION['role'] == "a")) && ($_SESSION['active'] == 1))
+							{
+						?>
 							<div class="dropdown nav-item">
 								<a class="nav-link dropdown-toggle" href="" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 									Darbinieki
@@ -56,6 +65,9 @@ ob_start(); //Output buffering
 									<a class="dropdown-item" href="/employees/add_position">Jauns amats</a>
 								</div>
 							</div>
+						<?php
+							}
+						?>
 
 							<div class="dropdown nav-item">
 								<a class="nav-link dropdown-toggle" href="" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -68,8 +80,15 @@ ob_start(); //Output buffering
 									<a class="dropdown-item" href="/sawmill/add_sawmill_production">
 										Jauna produkcija
 									</a>
+							<?php
+								if((($_SESSION['role'] == "p") || ($_SESSION['role'] == "a")) && ($_SESSION['active'] == 1))
+								{
+							?>
 									<a class="dropdown-item" href="/sawmill/show_beam_sizes">Visi tilpumi</a>
 									<a class="dropdown-item" href="/sawmill/add_beam_size">Jauns tilpums</a>
+							<?php
+								}
+							?>
 								</div>
 							</div>
 
@@ -90,10 +109,15 @@ ob_start(); //Output buffering
 								</div>
 							</div>
 
+						<?php
+							if((($_SESSION['role'] == "p") || ($_SESSION['role'] == "a")) && ($_SESSION['active'] == 1))
+							{
+						?>
 							<li class="nav-item">
 								<a class="nav-link" href="/office/office_time_table">Birojs</a>
 							</li>
 					<?php
+							}
 						}
 					?>
 				</ul>

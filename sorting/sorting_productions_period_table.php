@@ -332,6 +332,10 @@
 	</table>
 </div>
 
+<?php
+	if((($_SESSION['role'] == "p") || ($_SESSION['role'] == "a")) && ($_SESSION['active'] == 1))
+	{
+?>
 <div class="card-body">
 	<h4 class="card-title text-center">Šķirotavas Darbinieki</h4>
 	<table class="table table-bordered">
@@ -456,3 +460,6 @@
 		</tbody>
 	</table>
 </div>
+<?php
+	}
+?>

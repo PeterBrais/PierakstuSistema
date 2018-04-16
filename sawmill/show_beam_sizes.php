@@ -34,15 +34,8 @@
 							<tr>
 								<th>Nr.p.k</th>
 								<th>Izmērs</th>
-								<?php
-									if(($_SESSION['role'] == "a" || $_SESSION['role'] == "p") && ($_SESSION['active'] == 1))
-									{
-								?>
-										<th>Labot</th>
-										<th>Dzēst</th>
-								<?php
-									}
-								?>
+								<th>Labot</th>
+								<th>Dzēst</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -54,30 +47,23 @@
 							<tr>
 								<th><?=$i++?></th>
 								<td><?=$size['size']?></td>
+								<td>
+									<a href="edit_beam_size?id=<?=$size['id']?>" class="btn btn-info">
+										Labot
+									</a>
+								</td>
+								<td>
 								<?php
-									if(($_SESSION['role'] == "a" || $_SESSION['role'] == "p") && ($_SESSION['active'] == 1))
+									if(!BeamSize::IsSizeUsed($size['id']))
 									{
 								?>
-										<td>
-											<a href="edit_beam_size?id=<?=$size['id']?>" class="btn btn-info">
-												Labot
-											</a>
-										</td>
-										<td>
-										<?php
-											if(!BeamSize::IsSizeUsed($size['id']))
-											{
-										?>
-												<a href="delete_beam_size?id=<?=$size['id']?>" class="btn btn-danger">
-													Dzēst
-												</a>
-										<?php
-											}
-										?>
-										</td>
+										<a href="delete_beam_size?id=<?=$size['id']?>" class="btn btn-danger">
+											Dzēst
+										</a>
 								<?php
 									}
 								?>
+								</td>
 							</tr>
 					<?php
 						}

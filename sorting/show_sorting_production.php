@@ -16,8 +16,8 @@
 	}
 
 ?>
-
-<div class="container-fluid container-scroll">
+<!-- container-scroll  --> <!-- Class for scroll -->
+<div class="container-fluid">
 	<div class="row cont-space">
 		<div class="col-md-12">
 			<div id="message">
@@ -26,9 +26,17 @@
 			<div class="card">
 				<div class="card-body">
 					<h4 class="card-title text-center">Produkcijas periods</h4>
-					<div class="offset-md-4 col-md-4 offset-md-4">
+					<div class="row">
+						<div class="offset-md-4 col-md-4">
 						<?php include_once "sorting_period_select.php"; ?>
+						</div>
+						<div class="col-md-4">
+							<a href="add_sorting_production" class="btn btn-success float-right">
+								Pievienot jaunu produkciju
+							</a>
+						</div>
 					</div>
+					
 				</div>
 				<div id="productions_table">
 					<?php include_once "sorting_productions_period_table.php"; ?>
