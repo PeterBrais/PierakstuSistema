@@ -36,6 +36,14 @@
 
 	//Returns all users data
 	$user = Administrator::GetUsersData($user_id);
+
+
+	//Admin cannot change other admins data except first admin
+	if((($_GET['id'] != $_SESSION['id']) && ($user['role'] == "a") && ($user['active'] == 1)) && ($_SESSION['id'] != 1))
+	{
+		header("Location: 404");
+		exit();
+	}
 ?>
 
 	<!-- Update User data -->

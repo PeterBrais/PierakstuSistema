@@ -38,6 +38,13 @@
 
 	//Returns all users data
 	$user = Administrator::GetUsersData($user_id);
+
+	//Admin cannot block admins except first admin
+	if((($_GET['id'] == $_SESSION['id']) || ($user['id'] == 1)))
+	{
+		header("Location: 404");
+		exit();
+	}
 ?>
 
 	<!-- Block user -->

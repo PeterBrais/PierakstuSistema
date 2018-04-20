@@ -259,7 +259,10 @@
 												}
 										?>
 												<td>
-													<b><?=$currentDay?></b>
+													
+													<div class="btn-group">
+														<button type="button" class="btn btn-secondary"><?=$currentDay?></button>
+													</div>
 													<div class="input-group mt-1">
 														<div class="input-group-prepend">
 															<span class="input-group-text">Stundas</span>

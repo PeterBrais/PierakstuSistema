@@ -63,13 +63,20 @@
 									?>
 									</td>
 									<td>
+									<?php
+										if(($user['id'] == $_SESSION['id']) || ($_SESSION['id'] == 1))
+										{
+									?>
 										<a href="edit_user?id=<?=$user['id']?>" class="btn btn-info">
 											Labot datus
 										</a>
+									<?php
+										}
+									?>
 									</td>
 									<td>
 									<?php
-										if(($user['id']) != ($_SESSION['id']))
+										if((($user['id']) != ($_SESSION['id']) && ($user['id'] != 1)) || ($_SESSION['id'] == 1))
 										{
 									?>
 											<a href="block_user?id=<?=$user['id']?>" class="btn btn-danger">

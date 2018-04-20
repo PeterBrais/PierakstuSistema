@@ -7,6 +7,11 @@ CREATE TABLE users (
 	created DATE NOT NULL
 );
 
+INSERT INTO `users` (`id`, `username`, `password`, `role`, `active`, `created`) VALUES
+(1, 'admin', '$2y$10$nbKB8n2NzFsQ65DOAiSlLevryFOxLCP1NK1HhaPtBUw1we2ueYSVq', 'a', b'1', '2018-02-13'),
+(2, 'rmuser01', '$2y$10$wdfupNyLkaGTG476X4eA3.hOjMlkRUGk9yHj3ozD.6kU26UQESEuu', 'a', b'1', '2018-04-18'),
+(3, 'rmuser02', '$2y$10$vGMXWZ3nDWQImiMNgk.5te6.D.p0WMZOsSsl34rYQ4/Ujd4PIm4Gy', 'a', b'1', '2018-04-18');
+
 CREATE TABLE employees (
 	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(50) NOT NULL,
