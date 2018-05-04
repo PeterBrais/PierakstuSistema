@@ -63,7 +63,7 @@
 	//Check if fields are empty
 	if(empty($sorting_production_id) || empty($date) || empty($time_from) || empty($time_to) || empty($invoice) || empty($thickness) || empty($width) || empty($length) || empty($sawn_count))
 	{
-		$_SESSION['error'] = "Lūdzu aizpildiet visus obligātos laukus!";
+		$_SESSION['error'] = "Lūdzu, aizpildiet visus obligātos laukus!";
 		$_SESSION['edit_sorting_prod'] = $_POST;
 		header("Location: edit_production?id=$sorting_production_id");
 		exit();
@@ -71,7 +71,7 @@
 	//Checks if date is correct, like yyyy/mm/dd or yyyy-mm-dd
 	if(!Validate::IsValidDate($date))
 	{
-		$_SESSION['date'] = "Lūdzu ievadiet korektu datumu, formā: gggg-mm-dd vai gggg/mm/dd!";
+		$_SESSION['date'] = "Lūdzu, ievadiet korektu datumu, formā: gggg-mm-dd vai gggg/mm/dd!";
 		$_SESSION['edit_sorting_prod'] = $_POST;
 		header("Location: edit_production?id=$sorting_production_id");
 		exit();
@@ -80,14 +80,14 @@
 	//Check if sorting times are correct
 	if(!Validate::IsValidTime($time_from))
 	{
-		$_SESSION['time'] = "Lūdzu ievadiet korektu laiku, formā: hh:mm!";
+		$_SESSION['time'] = "Lūdzu, ievadiet korektu laiku, formā: hh:mm!";
 		$_SESSION['edit_sorting_prod'] = $_POST;
 		header("Location: edit_production?id=$sorting_production_id");
 		exit();
 	}
 	if(!Validate::IsValidTime($time_to))
 	{
-		$_SESSION['time'] = "Lūdzu ievadiet korektu laiku, formā: hh:mm!";
+		$_SESSION['time'] = "Lūdzu, ievadiet korektu laiku, formā: hh:mm!";
 		$_SESSION['edit_sorting_prod'] = $_POST;
 		header("Location: edit_production?id=$sorting_production_id");
 		exit();
@@ -167,7 +167,7 @@
 	{
 		if(!Validate::IsValidIntegerNumber($defect_count))
 		{
-			$_SESSION['defect_count'] = "Defektu skaits drīkst sastāvēt tikai no cipariem!";
+			$_SESSION['defect_count'] = "Brāķu skaits drīkst sastāvēt tikai no cipariem!";
 			$_SESSION['edit_sorting_prod'] = $_POST;
 			header("Location: edit_production?id=$sorting_production_id");
 			exit();
@@ -184,7 +184,7 @@
 	{
 		if(empty($types[$i]) || empty($sorted_counts[$i]) || empty($sorted_thicknesses[$i]) || empty($sorted_widths[$i]) || empty($sorted_lengths[$i]))
 		{
-			$_SESSION['error'] = "Lūdzu aizpildiet visus obligātos laukus!";
+			$_SESSION['error'] = "Lūdzu, aizpildiet visus obligātos laukus!";
 			$_SESSION['edit_sorting_prod'] = $_POST;
 			header("Location: edit_production?id=$sorting_production_id");
 			exit();
@@ -193,7 +193,7 @@
 		//Check if sorted production type is choosen
 		if($types[$i] == "0")
 		{
-			$_SESSION['sorted_types'] = "Lūdzu izvēlieties Šķirošanas veidu!";
+			$_SESSION['sorted_types'] = "Lūdzu, izvēlieties Šķirošanas veidu!";
 			$_SESSION['edit_sorting_prod'] = $_POST;
 			header("Location: edit_production?id=$sorting_production_id");
 			exit();
@@ -201,7 +201,7 @@
 
 		if($types[$i] != "1" && $types[$i] != "2" && $types[$i] != "3")
 		{
-			$_SESSION['error'] = "Lūdzu mēģiniet vēlreiz!";
+			$_SESSION['error'] = "Lūdzu, mēģiniet vēlreiz!";
 			$_SESSION['edit_sorting_prod'] = $_POST;
 			header("Location: edit_production?id=$sorting_production_id");
 			exit();
@@ -277,7 +277,7 @@
 		{
 			if(Validate::IsArrayEmptyFromTo($working_hours, $j, $employees_occasion) && Validate::IsArrayEmptyFromTo($nonworking, $j, $employees_occasion))
 			{
-				$_SESSION['error'] = "Lūdzu aizpildiet darbinieku tabulu!";
+				$_SESSION['error'] = "Lūdzu, aizpildiet darbinieku tabulu!";
 				$_SESSION['edit_sorting_prod'] = $_POST;
 				header("Location: edit_production?id=$sorting_production_id");
 				exit();
@@ -295,7 +295,7 @@
 
 				if(!empty($working_hours[$k]) && !empty($nonworking[$k]))
 				{
-					$_SESSION['error'] = "Lūdzu aizpildiet tikai vienu darbinieka ievadlauku!";
+					$_SESSION['error'] = "Lūdzu, aizpildiet tikai vienu darbinieka ievadlauku!";
 					$_SESSION['edit_sorting_prod'] = $_POST;
 					header("Location: edit_production?id=$sorting_production_id");
 					exit();
@@ -484,7 +484,7 @@
 	}
 
 
-	$_SESSION['success'] = "Zāģētavas produkcija pievienota veiksmīgi!";
+	$_SESSION['success'] = "Šķirotavas produkcija atjaunota veiksmīgi!";
 	header("Location: show_sorting_production");
 	exit();
 

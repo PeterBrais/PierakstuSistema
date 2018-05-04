@@ -33,7 +33,7 @@
 	//Check if size and id is set
 	if(empty($size) || empty($size_id))
 	{
-		$_SESSION['update_beam_size'] = "Lūdzu aizpildiet Izmērs lauku!";
+		$_SESSION['update_beam_size'] = "Lūdzu, aizpildiet Izmērs lauku!";
 		$_SESSION['edit_beam_size'] = $_POST;
 		header("Location: edit_beam_size?id=$size_id");
 		exit();

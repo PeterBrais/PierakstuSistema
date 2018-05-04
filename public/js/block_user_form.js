@@ -28,10 +28,10 @@ $(function(){
 			},
 			messages: {
 				pwd: {
-					required: "Lūdzu ievadiet profila paroli!",
+					required: "Lūdzu, ievadiet profila paroli!",
 				},
 				agree: {
-					required: "Lūdzu apstipriniet izvēles rūtiņu!",
+					required: "Lūdzu, apstipriniet izvēles rūtiņu!",
 				},
 			}
 		});

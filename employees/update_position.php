@@ -33,7 +33,7 @@
 	//Check if position and id is set
 	if(empty($position) || empty($position_id))
 	{
-		$_SESSION['update_position'] = "Lūdzu aizpildiet Amats lauku!";
+		$_SESSION['update_position'] = "Lūdzu, aizpildiet Amats lauku!";
 		$_SESSION['edit_position'] = $_POST;
 		header("Location: edit_position?id=$position_id");
 		exit();

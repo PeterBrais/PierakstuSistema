@@ -30,14 +30,14 @@ $(function(){
 			},
 			messages: {
 				usr: {
-					required: "Lūdzu aizpildiet Lietotājvārds lauku!",
+					required: "Lūdzu, aizpildiet Lietotājvārds lauku!",
 					minlength: "Lietotājvārdam jābūt garumā no 3 simboliem līdz 50 simboliem!",
 					maxlength: "Lietotājvārdam jābūt garumā no 3 simboliem līdz 50 simboliem!",
 					IsValidUsername: "Lietotājvārds drīkst saturēt tikai latīņu burtus un ciparus!",
 					remote: "Lietotājvārds jau eksistē!",
 				},
 				role: {
-					ChosenRoleDropdown: "Lūdzu izvēlieties lietotāja lomu!",
+					ChosenRoleDropdown: "Lūdzu, izvēlieties lietotāja lomu!",
 				},
 			}
 		});

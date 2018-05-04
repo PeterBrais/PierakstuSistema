@@ -14,10 +14,10 @@ INSERT INTO `users` (`id`, `username`, `password`, `role`, `active`, `created`) 
 
 CREATE TABLE employees (
 	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(50) NOT NULL,
-    last_name VARCHAR(50) NOT NULL,
+	name VARCHAR(50) NOT NULL,
+	last_name VARCHAR(50) NOT NULL,
 	person_id CHAR(12) NOT NULL,
-    place VARCHAR(12) NOT NULL,
+	place VARCHAR(12) NOT NULL,
 	shift CHAR(2) NULL,
 	capacity_rate DECIMAL(12,2) NULL,
 	hour_rate DECIMAL(12,2) NULL,
@@ -34,8 +34,8 @@ CREATE TABLE positions (
 CREATE TABLE employees_positions (
 	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	employee_id INT NOT NULL,
-    position_id INT NOT NULL,
-    FOREIGN KEY (employee_id) REFERENCES employees(id),
+	position_id INT NOT NULL,
+	FOREIGN KEY (employee_id) REFERENCES employees(id),
 	FOREIGN KEY (position_id) REFERENCES positions(id)
 );
 
@@ -49,7 +49,7 @@ CREATE TABLE times (
 	nonattendace CHAR(2) NULL DEFAULT '0',
 	pregnancy CHAR(2) NULL DEFAULT '0',
 	employee_id INT NOT NULL,
-    FOREIGN KEY (employee_id) REFERENCES employees(id)
+	FOREIGN KEY (employee_id) REFERENCES employees(id)
 );
 
 CREATE TABLE working_times (
@@ -60,7 +60,7 @@ CREATE TABLE working_times (
 	working_hours INT NULL,
 	overtime_hours INT NULL,
 	employee_id INT NOT NULL,
-    FOREIGN KEY (employee_id) REFERENCES employees(id)
+	FOREIGN KEY (employee_id) REFERENCES employees(id)
 );
 
 CREATE TABLE beam_sizes (
@@ -83,7 +83,7 @@ CREATE TABLE sawmill_productions (
 	note VARCHAR(255) NULL,
 	beam_size_id INT NOT NULL,
 	FOREIGN KEY (beam_size_id) REFERENCES beam_sizes(id),
-    UNIQUE (invoice)
+	UNIQUE (invoice)
 );
 
 CREATE TABLE sawmill_maintenance (
@@ -91,15 +91,15 @@ CREATE TABLE sawmill_maintenance (
 	time INT NOT NULL,
 	note VARCHAR(255) NOT NULL,
 	sawmill_production_id INT NOT NULL,
-    FOREIGN KEY (sawmill_production_id) REFERENCES sawmill_productions(id)
+	FOREIGN KEY (sawmill_production_id) REFERENCES sawmill_productions(id)
 );
 
 CREATE TABLE employees_sawmill_productions (
 	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	employee_id INT NOT NULL,
-    sawmill_id INT NOT NULL,
-    FOREIGN KEY (employee_id) REFERENCES employees(id),
-    FOREIGN KEY (sawmill_id) REFERENCES sawmill_productions(id)
+	sawmill_id INT NOT NULL,
+	FOREIGN KEY (employee_id) REFERENCES employees(id),
+	FOREIGN KEY (sawmill_id) REFERENCES sawmill_productions(id)
 );
 
 CREATE TABLE sorting_productions (
@@ -134,7 +134,7 @@ CREATE TABLE sorted_productions (
 CREATE TABLE employees_sorted_productions (
 	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	employee_id INT NOT NULL,
-    sorted_id INT NOT NULL,
-    FOREIGN KEY (employee_id) REFERENCES employees(id),
-    FOREIGN KEY (sorted_id) REFERENCES sorted_productions(id)
+	sorted_id INT NOT NULL,
+	FOREIGN KEY (employee_id) REFERENCES employees(id),
+	FOREIGN KEY (sorted_id) REFERENCES sorted_productions(id)
 );

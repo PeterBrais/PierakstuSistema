@@ -44,7 +44,7 @@
 	//Check if fields are empty
 	if(empty($password) || empty($agree) || empty($user_id) || empty($this_user))
 	{
-		$_SESSION['error'] = "Lūdzu aizpildiet visus obligātos laukus!";
+		$_SESSION['error'] = "Lūdzu, aizpildiet visus obligātos laukus!";
 		header("Location: unblock_user?id=$user_id");
 		exit();
 	}

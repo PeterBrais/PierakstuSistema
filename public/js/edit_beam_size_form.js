@@ -31,7 +31,7 @@ $(function(){
 			},
 			messages: {
 				name: {
-					required: "Lūdzu aizpildiet Izmērs lauku!",
+					required: "Lūdzu, aizpildiet Izmērs lauku!",
 					number: "Izmērs drīkst saturēt tikai ciparus!",
 					min: "Izmēram jābūt lielākam par nulli!",
 					max: "Izmēram jābūt ne vairāk kā 12 ciparus garam",

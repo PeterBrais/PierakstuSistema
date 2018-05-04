@@ -28,7 +28,7 @@
 	//Check if fields are empty
 	if(empty($username) || empty($password) || empty($password2) || empty($role))
 	{
-		$_SESSION['error'] = "Lūdzu aizpildiet visus obligātos laukus!";
+		$_SESSION['error'] = "Lūdzu, aizpildiet visus obligātos laukus!";
 		$_SESSION['register'] = $_POST;
 		header("Location: signup");
 		exit();
@@ -48,7 +48,7 @@
 	}
 	else
 	{
-		$_SESSION['usr_role'] = "Lūdzu izvēlieties lietotāja lomu!";
+		$_SESSION['usr_role'] = "Lūdzu, izvēlieties lietotāja lomu!";
 		$_SESSION['register'] = $_POST;
 		header("Location: signup");
 		exit();

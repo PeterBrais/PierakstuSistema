@@ -27,7 +27,7 @@ $(function(){
 			},
 			messages: {
 				name: {
-					required: "Lūdzu aizpildiet Amats lauku!",
+					required: "Lūdzu, aizpildiet Amats lauku!",
 					minlength: "Amats jābūt garumā no 3 simboliem līdz 40 simboliem!",
 					maxlength: "Amats jābūt garumā no 3 simboliem līdz 40 simboliem!",
 					IsValidText: "Amats drīkst saturēt tikai latīņu burtus, ciparus un speciālos simbolus!",

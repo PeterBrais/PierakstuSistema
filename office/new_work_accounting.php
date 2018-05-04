@@ -56,7 +56,7 @@
 	//Check if fields are empty
 	if(empty($employee_id ) || empty($period))
 	{
-		$_SESSION['error'] = "Lūdzu aizpildiet visus obligātos laukus!";
+		$_SESSION['error'] = "Lūdzu, aizpildiet visus obligātos laukus!";
 		$_SESSION['employee_times'] = $_POST;
 		header("Location: work_accounting?id=$employee_id&period=$period");
 		exit();

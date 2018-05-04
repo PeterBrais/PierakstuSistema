@@ -33,7 +33,7 @@
 
 	if(empty($username) || empty($role) || empty($user_id))
 	{
-		$_SESSION['error'] = "Lūdzu aizpildiet visus obligātos laukus!";
+		$_SESSION['error'] = "Lūdzu, aizpildiet visus obligātos laukus!";
 		$_SESSION['edit_user'] = $_POST;
 		header("Location: edit_user?id=$user_id");
 		exit();
@@ -53,7 +53,7 @@
 	}
 	else
 	{
-		$_SESSION['usr_role'] = "Lūdzu izvēlieties lietotāja lomu!";
+		$_SESSION['usr_role'] = "Lūdzu, izvēlieties lietotāja lomu!";
 		$_SESSION['edit_user'] = $_POST;
 		header("Location: edit_user?id=$user_id");
 		exit();

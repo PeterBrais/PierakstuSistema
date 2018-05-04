@@ -27,11 +27,11 @@ $(function(){
 			},
 			messages: {
 				size: {
-					required: "Lūdzu aizpildiet Izmērs lauku!",
+					required: "Lūdzu, aizpildiet Izmērs lauku!",
 					number: "Izmērs drīkst saturēt tikai ciparus!",
 					min: "Izmēram jābūt lielākam par nulli!",
-					max: "Izmēram jābūt ne vairāk kā 12 ciparus garam",
-					step: "Maksimums 3 cipari aiz komata",
+					max: "Izmēram jābūt ne vairāk kā 12 ciparus garam!",
+					step: "Maksimums 3 cipari aiz komata!",
 					IsValidFloatNumber: "Izmēram jābūt lielākam par nulli!",
 					IsValidFloatNumberWithThreeDigitsAfterDot: "Izmērs drīkst saturēt tikai ciparus ar komatu",
 					remote: "Izmērs jau eksistē!"

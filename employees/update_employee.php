@@ -38,7 +38,7 @@
 
 	if(empty($name) || empty($last_name) || empty($emp_id) || empty($date_from) || empty($person_no))
 	{
-		$_SESSION['error'] = "Lūdzu aizpildiet visus obligātos laukus!";
+		$_SESSION['error'] = "Lūdzu, aizpildiet visus obligātos laukus!";
 		$_SESSION['employee'] = $_POST;
 		header("Location: edit_employee?id=$emp_id");
 		exit();
@@ -83,7 +83,7 @@
 	//Checks if dates iare correct, like yyyy/mm/dd or yyyy-mm-dd
 	if(!Validate::IsValidDate($date_from))
 	{
-		$_SESSION['date_from'] = "Lūdzu ievadiet korektu datumu, formā: gggg-mm-dd vai gggg/mm/dd!";
+		$_SESSION['date_from'] = "Lūdzu, ievadiet korektu datumu, formā: gggg-mm-dd vai gggg/mm/dd!";
 		$_SESSION['employee'] = $_POST;
 		header("Location: edit_employee?id=$emp_id");
 		exit();
@@ -92,7 +92,7 @@
 	{
 		if(!Validate::IsValidDate($date_to))
 		{
-			$_SESSION['date_to'] = "Lūdzu ievadiet korektu datumu, formā: gggg-mm-dd vai gggg/mm/dd!";
+			$_SESSION['date_to'] = "Lūdzu, ievadiet korektu datumu, formā: gggg-mm-dd vai gggg/mm/dd!";
 			$_SESSION['employee'] = $_POST;
 			header("Location: edit_employee?id=$emp_id");
 			exit();
@@ -142,7 +142,7 @@
 
 		if(empty($shift) || empty($capacity_rate) || empty($hour_rate))
 		{
-			$_SESSION['error'] = "Lūdzu aizpildiet visus obligātos laukus!";
+			$_SESSION['error'] = "Lūdzu, aizpildiet visus obligātos laukus!";
 			$_SESSION['employee'] = $_POST;
 			header("Location: edit_employee?id=$emp_id");
 			exit();
@@ -150,7 +150,7 @@
 
 		if($shift != "1" && $shift != "2")
 		{
-			$_SESSION['error'] = "Lūdzu mēģiniet vēlreiz!";
+			$_SESSION['error'] = "Lūdzu, mēģiniet vēlreiz!";
 			$_SESSION['employee'] = $_POST;
 			header("Location: edit_employee?id=$emp_id");
 			exit();
@@ -201,7 +201,7 @@
 	{
 		if(empty($position))
 		{
-			$_SESSION['position'] = "Lūdzu izvēlieties darbinieka amatu/s!";
+			$_SESSION['position'] = "Lūdzu, izvēlieties darbinieka amatu/s!";
 			$_SESSION['employee'] = $_POST;
 			header("Location: edit_employee?id=$emp_id");
 			exit();

@@ -46,7 +46,7 @@
 	//Check if fields are empty
 	if(empty($password) || empty($password2) || empty($current_password) || empty($user_id) || empty($this_user))
 	{
-		$_SESSION['error'] = "Lūdzu aizpildiet visus obligātos laukus!";
+		$_SESSION['error'] = "Lūdzu, aizpildiet visus obligātos laukus!";
 		header("Location: reset?id=$user_id");
 		exit();
 	}

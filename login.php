@@ -18,7 +18,7 @@
 
 		if(empty($username) || empty($password))
 		{
-			$_SESSION['error'] = "Lūdzu aizpildiet visus laukus!";
+			$_SESSION['error'] = "Lūdzu, aizpildiet visus laukus!";
 			$_SESSION['username_login'] = $_POST['usr'];
 			header("Location: /");
 			exit();

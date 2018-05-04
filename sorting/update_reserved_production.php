@@ -40,7 +40,7 @@
 	//Check if fields are empty
 	if(empty($sorting_production_id) || empty($date) || empty($time_from) || empty($time_to) || empty($invoice) || empty($thickness) || empty($width) || empty($length) || empty($sawn_count))
 	{
-		$_SESSION['error'] = "Lūdzu aizpildiet visus obligātos laukus!";
+		$_SESSION['error'] = "Lūdzu, aizpildiet visus obligātos laukus!";
 		$_SESSION['edit_sorting_prod'] = $_POST;
 		header("Location: edit_reserved_production?id=$sorting_production_id");
 		exit();
@@ -49,7 +49,7 @@
 	//Checks if date is correct, like yyyy/mm/dd or yyyy-mm-dd
 	if(!Validate::IsValidDate($date))
 	{
-		$_SESSION['date'] = "Lūdzu ievadiet korektu datumu, formā: gggg-mm-dd vai gggg/mm/dd!";
+		$_SESSION['date'] = "Lūdzu, ievadiet korektu datumu, formā: gggg-mm-dd vai gggg/mm/dd!";
 		$_SESSION['edit_sorting_prod'] = $_POST;
 		header("Location: edit_reserved_production?id=$sorting_production_id");
 		exit();
@@ -58,14 +58,14 @@
 	//Check if sorting times are correct
 	if(!Validate::IsValidTime($time_from))
 	{
-		$_SESSION['time'] = "Lūdzu ievadiet korektu laiku, formā: hh:mm!";
+		$_SESSION['time'] = "Lūdzu, ievadiet korektu laiku, formā: hh:mm!";
 		$_SESSION['edit_sorting_prod'] = $_POST;
 		header("Location: edit_reserved_production?id=$sorting_production_id");
 		exit();
 	}
 	if(!Validate::IsValidTime($time_to))
 	{
-		$_SESSION['time'] = "Lūdzu ievadiet korektu laiku, formā: hh:mm!";
+		$_SESSION['time'] = "Lūdzu, ievadiet korektu laiku, formā: hh:mm!";
 		$_SESSION['edit_sorting_prod'] = $_POST;
 		header("Location: edit_reserved_production?id=$sorting_production_id");
 		exit();
@@ -160,7 +160,7 @@
 	$sortingProduction->Update();
 
 
-	$_SESSION['success'] = "Šķirotavas rezervētā produkcija pievienota veiksmīgi!";
+	$_SESSION['success'] = "Šķirotavas rezervētā produkcija atjaunota veiksmīgi!";
 	header("Location: show_sorting_production");
 	exit();
 

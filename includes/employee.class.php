@@ -20,7 +20,8 @@
 		{
 			global $conn;
 			$this->conn = $conn;
-			$this->working_from = date("Y-m-d");
+			//$this->working_from = date("Y-m-d");
+			$this->working_from = "2000/01/01";
 			$this->working_to = NULL;
 		}
 

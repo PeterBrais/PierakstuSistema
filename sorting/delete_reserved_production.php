@@ -42,7 +42,7 @@
 	$sortingProduction->Delete();
 
 
-	$_SESSION['success'] = "Šķirotavas produkcija izdzēsta!";
+	$_SESSION['success'] = "Šķirotavas rezervētā produkcija izdzēsta!";
 	header("Location: show_sorting_production");
 	exit();
 

@@ -36,14 +36,14 @@ $(function(){
 			},
 			messages: {
 				usr: {
-					required: "Lūdzu aizpildiet Lietotājvārds lauku!",
+					required: "Lūdzu, aizpildiet Lietotājvārds lauku!",
 					minlength: "Lietotājvārds jābūt garumā no 3 simboliem līdz 50 simboliem!",
 					maxlength: "Lietotājvārds jābūt garumā no 3 simboliem līdz 50 simboliem!",
 					IsValidUsername: "Lietotājvārds drīkst saturēt tikai latīņu burtus un ciparus!",
 					remote: "Lietotājvārds jau eksistē!",
 				},
 				pwd: {
-					required: "Lūdzu aizpildiet Parole lauku!",
+					required: "Lūdzu, aizpildiet Parole lauku!",
 					minlength: "Parolei jābūt garumā no 8 simboliem līdz 64 simboliem!",
 					maxlength: "Parolei jābūt garumā no 8 simboliem līdz 64 simboliem!",
 					IsValidPassword: "Parolei jāsastāv vismaz no viena cipara, lielā un mazā latīņu burta un speciālā simbola!",
@@ -52,7 +52,7 @@ $(function(){
 					equalTo: "Ievadītās paroles nesakrīt!",
 				},
 				role: {
-					ChosenRoleDropdown: "Lūdzu izvēlieties lietotāja lomu!",
+					ChosenRoleDropdown: "Lūdzu, izvēlieties lietotāja lomu!",
 				}
 			}
 		});

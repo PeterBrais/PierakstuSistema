@@ -27,10 +27,10 @@ $(function(){
 			},
 			messages: {
 				current_pwd: {
-					required: "Lūdzu ievadiet jūsu pašreizējo konta paroli!",
+					required: "Lūdzu, ievadiet jūsu pašreizējo konta paroli!",
 				},
 				pwd: {
-					required: "Lūdzu aizpildiet Jaunā parole lauku!",
+					required: "Lūdzu, aizpildiet Jaunā parole lauku!",
 					minlength: "Jaunai parolei jābūt garumā no 8 simboliem līdz 64 simboliem!",
 					maxlength: "Jaunai parolei garumā no 8 simboliem līdz 64 simboliem!",
 					IsValidPassword: "Parolei jāsastāv vismaz no viena cipara, lielā un mazā latīņu burta un speciālā simbola!",

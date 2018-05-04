@@ -20,7 +20,7 @@
 	//Checks if input field - size is empty
 	if(empty($size))
 	{
-		$_SESSION['new_beam'] = "Lūdzu aizpildiet Izmērs lauku!";
+		$_SESSION['new_beam'] = "Lūdzu, aizpildiet Izmērs lauku!";
 		$_SESSION['beam'] = $_POST;
 		header("Location: add_beam_size");
 		exit();
@@ -59,7 +59,7 @@
 	$beam->size = $size;
 	$beam->Save();
 
-	$_SESSION['success'] = "Izmērs pievienots!";
+	$_SESSION['success'] = "Kubatūras izmērs pievienots!";
 	header("Location: add_beam_size");
 	exit();
 

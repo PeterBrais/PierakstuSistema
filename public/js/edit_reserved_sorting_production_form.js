@@ -79,27 +79,27 @@ $(function(){
 			},
 			messages: {
 				date: {
-					required: "Lūdzu aizpildiet Datums lauku!",
-					date: "Lūdzu ievadiet korektu datumu (GGGG-MM-DD vai GGGG-MM-DD)!",
-					IsValidDate: "Lūdzu ievadiet korektu datumu (GGGG-MM-DD vai GGGG-MM-DD)!",
+					required: "Lūdzu, aizpildiet Datums lauku!",
+					date: "Lūdzu, ievadiet korektu datumu (GGGG-MM-DD vai GGGG/MM/DD)!",
+					IsValidDate: "Lūdzu, ievadiet korektu datumu (GGGG-MM-DD vai GGGG/MM/DD)!",
 				},
 				time_from: {
-					required: "Lūdzu aizpildiet 'Laiks no' lauku!",
-					IsValidTime: "Lūdzu ievadiet korektu laiku, formā: hh:mm!",
+					required: "Lūdzu, aizpildiet 'Laiks no' lauku!",
+					IsValidTime: "Lūdzu, ievadiet korektu laiku, formā: hh:mm!",
 				},
 				time_to: {
-					required: "Lūdzu aizpildiet 'Laiks līdz' lauku!",
-					IsValidTime: "Lūdzu ievadiet korektu laiku, formā: hh:mm!",
+					required: "Lūdzu, aizpildiet 'Laiks līdz' lauku!",
+					IsValidTime: "Lūdzu, ievadiet korektu laiku, formā: hh:mm!",
 				},
 				invoice: {
-					required: "Lūdzu aizpildiet Pavadzīmes Nr. lauku!",
+					required: "Lūdzu, aizpildiet Pavadzīmes Nr. lauku!",
 					number: "Pavadzīmes Nr. drīkst saturēt tikai ciparus!",
 					min: "Pavadzīmes Nr. jābūt lielākam par nulli!",
 					max: "Pavadzīmes Nr. jābūt ne vairāk kā 12 ciparus garam!",
 					IsValidIntegerNumber: "Pavadzīmes Nr. drīkst saturēt tikai ciparus!",
 				},
 				thick: {
-					required: "Lūdzu aizpildiet 'Biezums' lauku!",
+					required: "Lūdzu, aizpildiet 'Biezums' lauku!",
 					number: "Biezums drīkst saturēt tikai ciparus!",
 					min: "Biezums jābūt lielākam par nulli!",
 					max: "Biezums jābūt ne vairāk kā 12 ciparus garam!",
@@ -107,7 +107,7 @@ $(function(){
 					IsValidInteger: "Biezums jābūt lielākam par nulli!",
 				},
 				width: {
-					required: "Lūdzu aizpildiet 'Platums' lauku!",
+					required: "Lūdzu, aizpildiet 'Platums' lauku!",
 					number: "Platums skaits drīkst saturēt tikai ciparus!",
 					min: "Platums jābūt lielākam par nulli!",
 					max: "Platums jābūt ne vairāk kā 12 ciparus garam!",
@@ -115,7 +115,7 @@ $(function(){
 					IsValidInteger: "Platums jābūt lielākam par nulli!",
 				},
 				length: {
-					required: "Lūdzu aizpildiet 'Garums' lauku!",
+					required: "Lūdzu, aizpildiet 'Garums' lauku!",
 					number: "Garums drīkst saturēt tikai ciparus!",
 					min: "Garums jābūt lielākam par nulli!",
 					max: "Garums jābūt ne vairāk kā 12 ciparus garam!",
@@ -123,7 +123,7 @@ $(function(){
 					IsValidInteger: "Garums jābūt lielākam par nulli!",
 				},
 				sawn_count: {
-					required: "Lūdzu aizpildiet 'Skaits' lauku!",
+					required: "Lūdzu, aizpildiet 'Skaits' lauku!",
 					number: "Skaits drīkst saturēt tikai ciparus!",
 					min: "Skaits jābūt lielākam par nulli!",
 					max: "Skaits jābūt ne vairāk kā 12 ciparus garam!",

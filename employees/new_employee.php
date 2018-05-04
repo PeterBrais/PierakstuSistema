@@ -31,7 +31,7 @@
 	//Check if fields are empty
 	if(empty($name) || empty($last_name) || empty($place) || empty($person_no))
 	{
-		$_SESSION['error'] = "Lūdzu aizpildiet visus obligātos laukus!";
+		$_SESSION['error'] = "Lūdzu, aizpildiet visus obligātos laukus!";
 		$_SESSION['employee'] = $_POST;
 		header("Location: add_employee");
 		exit();
@@ -65,7 +65,7 @@
 
 		if(empty($shift) || empty($capacity_rate) || empty($hour_rate))
 		{
-			$_SESSION['error'] = "Lūdzu aizpildiet visus obligātos laukus!";
+			$_SESSION['error'] = "Lūdzu, aizpildiet visus obligātos laukus!";
 			$_SESSION['employee'] = $_POST;
 			header("Location: add_employee");
 			exit();
@@ -123,7 +123,7 @@
 	}
 	else
 	{
-		$_SESSION['place'] = "Lūdzu izvēlieties darba vietu!";
+		$_SESSION['place'] = "Lūdzu, izvēlieties darba vietu!";
 		$_SESSION['employee'] = $_POST;
 		header("Location: add_employee");
 		exit();
@@ -134,7 +134,7 @@
 	{
 		if(empty($position))
 		{
-			$_SESSION['position'] = "Lūdzu izvēlieties darbinieka amatu/s!";
+			$_SESSION['position'] = "Lūdzu, izvēlieties darbinieka amatu/s!";
 			$_SESSION['employee'] = $_POST;
 			header("Location: add_employee");
 			exit();
