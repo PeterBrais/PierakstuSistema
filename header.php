@@ -9,14 +9,20 @@ ob_start(); //Output buffering
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<title>Kokzāģētava "Norupe"</title>
+
 	<link rel="shortcut icon" href="/public/images/favicon.ico">
 	<link rel="stylesheet" type="text/css" href="/public/css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="/public/css/mix.css">
-	
+	<link rel="stylesheet" href="/public/css/jquery-ui.css">
+	<link rel="stylesheet" href="/public/css/jquery.timepicker.css">
+
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script src="/public/js/bootstrap.min.js"></script>
 	<script src="/public/js/jquery.validate.js"></script>
 	<script src="/public/js/additional-methods.js"></script>
+	<script src="/public/js/ui/jquery-ui.js"></script>
+	<script src="/public/js/ui/jquery.timepicker.js"></script>
+
 </head>
 <body>
 	<nav class="navbar navbar-expand-md nav-bg">

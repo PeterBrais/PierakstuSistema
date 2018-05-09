@@ -17,7 +17,7 @@
 	$employees_count = Manager::GetSortingEmployees($this_date);
 	$employees_occasion = $employees_count = count($employees_count); //Gets count of sorting employees
 
-	$inputs = ['date', 'time_from', 'time_to', 'invoice', 'thick', 'width', 'length', 'sawn_count', 'defect_count', 'sorted_types', 'sorted_count', 'sorted_thick', 'sorted_width', 'sorted_length', 'id', 'working_hours', 'nonworking'];
+	$inputs = ['date', 'time_from', 'time_to', 'invoice', 'thick', 'width', 'length', 'sawn_count', 'defect_count', 'sorted_types', 'sorted_count', 'sorted_thick', 'sorted_width', 'sorted_length', 'id', 'working'];
 
 	foreach($inputs as $input)
 	{
@@ -46,8 +46,7 @@
 	$sorted_lengths = $_POST['sorted_length'];
 
 	$ids = $_POST['id'];
-	$working_hours = $_POST['working_hours'];
-	$nonworking = $_POST['nonworking'];
+	$working_hours = $_POST['working'];
 
 	//Error handlers
 	//Check if fields are empty
@@ -265,14 +264,6 @@
 
 		if($types[$i] == "1" || $types[$i] == "2")
 		{
-			if(Validate::IsArrayEmptyFromTo($working_hours, $j, $employees_occasion) && Validate::IsArrayEmptyFromTo($nonworking, $j, $employees_occasion))
-			{
-				$_SESSION['error'] = "Lūdzu, aizpildiet darbinieku tabulu!";
-				$_SESSION['sorting_prod'] = $_POST;
-				header("Location: add_sorting_production");
-				exit();
-			}
-
 			for($k = $i*$employees_count; $k < $employees_occasion; $k++)
 			{
 				if(!Employee::ExistsSortingEmployee($ids[$k])) //Checks if employee with this id exists
@@ -283,40 +274,16 @@
 					exit();
 				}
 
-				if(!empty($working_hours[$k]) && !empty($nonworking[$k]))
+				if(!Validate::IsValidDropdownWorkingHoursSortingEmployee($working_hours[$k]))
 				{
-					$_SESSION['error'] = "Lūdzu, aizpildiet tikai vienu darbinieka ievadlauku!";
+					$_SESSION['error'] = "Lūdzu, aizpildiet darbinieku tabulu!";
 					$_SESSION['sorting_prod'] = $_POST;
 					header("Location: add_sorting_production");
 					exit();
 				}
-
-				if(!empty($working_hours[$k]) && empty($nonworking[$k]))
-				{
-					//Check if working hour is number
-					if(!Validate::IsValidHours($working_hours[$k]))
-					{
-						$_SESSION['error'] = "Darbinieka nostrādātās darba stundas drīkst sastāvēt tikai no cipariem!";
-						$_SESSION['sorting_prod'] = $_POST;
-						header("Location: add_sorting_production");
-						exit();
-					}
-				}
-
-				if(empty($working_hours[$k]) && !empty($nonworking[$k]))
-				{
-					//Check nonworking select values
-					if($nonworking[$k] != "1" && $nonworking[$k] != "2" && $nonworking[$k] != "3")
-					{
-						$_SESSION['error'] = "Radās kļūda, lūdzu mēģiniet vēlreiz!";
-						$_SESSION['sorting_prod'] = $_POST;
-						header("Location: add_sorting_production");
-						exit();
-					}
-				}
 			}
 		}
-		else if($types[$i] == "3")
+		else if($types[$i] == "3")	//Soaked production does not have any workers
 		{
 			for($k = $i*$employees_count; $k < $employees_occasion; $k++)
 			{
@@ -392,9 +359,10 @@
 			$employees_sorted_procutions = new EmployeeSortedProductions();
 			$working_times = new WorkingTimes();
 			$times = new Times();
+
 			for($j = $i*$employees_count; $j < $employees_occasion; $j++)
 			{
-				if($working_hours[$j] != '' && $working_hours > 0)
+				if($working_hours[$j] > 0 && $working_hours[$j] < 9)
 				{
 					$employees_sorted_procutions->employee_id = $ids[$j];
 					$employees_sorted_procutions->sorted_id = $sortedProduction->id;
@@ -407,25 +375,25 @@
 					$working_times->employee_id = $ids[$j];
 					$working_times->Save();
 				}
-				else if($working_hours[$j] == '' && !empty($nonworking[$j]))
+				else if($working_hours[$j] >= 9 && $working_hours[$j] < 12)
 				{	
 					$employees_sorted_procutions->employee_id = $ids[$j];
 					$employees_sorted_procutions->sorted_id = $sortedProduction->id;
 					$employees_sorted_procutions->Save();
 
-					if($nonworking[$j] == "1")
+					if($working_hours[$j] == 9)
 					{
 						$times->vacation = "A";
 						$times->sick_leave = NULL;
 						$times->nonattendance = NULL;
 					}
-					else if($nonworking[$j] == "2")
+					else if($working_hours[$j] == 10)
 					{
 						$times->vacation = NULL;
 						$times->sick_leave = "S";
 						$times->nonattendance = NULL;
 					}
-					else if($nonworking[$j] == "3")
+					else if($working_hours[$j] == 11)
 					{
 						$times->vacation = NULL;
 						$times->sick_leave = NULL;

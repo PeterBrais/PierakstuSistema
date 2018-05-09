@@ -79,7 +79,7 @@
 	}
 
 	//Checks if employees input fields are set
-	$inputs = ['id', 'working_hours', 'nonworking'];
+	$inputs = ['id', 'working'];
 	foreach($inputs as $input)
 	{
 		if(!isset($_POST[$input]))
@@ -91,8 +91,7 @@
 
 	//Sets variables
 	$ids = $_POST['id'];
-	$working_hours = $_POST['working_hours'];
-	$nonworking = $_POST['nonworking'];
+	$working_hours = $_POST['working'];
 
 	//Checks if date is correct, like yyyy/mm/dd or yyyy-mm-dd
 	if(!Validate::IsValidDate($date))
@@ -213,7 +212,7 @@
 	//Check maintenances
 	for($i=0; $i < count($maintenance_times); $i++)
 	{
-		if(!empty($maintenance_times[$i]) && !empty($maintenance_notes[$i]))
+		if(!empty($maintenance_times[$i]))
 		{
 			if(!Validate::IsValidIntegerNumber($maintenance_times[$i]))
 			{
@@ -223,66 +222,40 @@
 				exit();
 			}
 
-			if(!Validate::IsValidTextLength($maintenance_notes[$i]))
+			if(!empty($maintenance_notes[$i]))
 			{
-				$_SESSION['maintenance'] = "Piezīme jābūt garumā no 3 simboliem līdz 255 simboliem!";
-				$_SESSION['edit_sawmill_prod'] = $_POST;
-				header("Location: edit_production?id=$sawmill_production_id");
-				exit();
-			}
+				if(!Validate::IsValidTextLength($maintenance_notes[$i]))
+				{
+					$_SESSION['maintenance'] = "Piezīme jābūt garumā no 3 simboliem līdz 255 simboliem!";
+					$_SESSION['edit_sawmill_prod'] = $_POST;
+					header("Location: edit_production?id=$sawmill_production_id");
+					exit();
+				}
 
-			if(!Validate::IsValidText($maintenance_notes[$i]))
-			{
-				$_SESSION['maintenance'] = "Piezīme drīkst saturēt tikai latīņu burtus, ciparus un speciālos simbolus!";
-				$_SESSION['edit_sawmill_prod'] = $_POST;
-				header("Location: edit_production?id=$sawmill_production_id");
-				exit();
+				if(!Validate::IsValidText($maintenance_notes[$i]))
+				{
+					$_SESSION['maintenance'] = "Piezīme drīkst saturēt tikai latīņu burtus, ciparus un speciālos simbolus!";
+					$_SESSION['edit_sawmill_prod'] = $_POST;
+					header("Location: edit_production?id=$sawmill_production_id");
+					exit();
+				}
 			}
 		}
-		else if((empty($maintenance_times[$i]) && !empty($maintenance_notes[$i])) || (!empty($maintenance_times[$i]) && empty($maintenance_notes[$i]))) //One or other is filled
+		else if(empty($maintenance_times[$i]) && !empty($maintenance_notes[$i])) //Minutes not enetered
 		{
-			$_SESSION['maintenance'] = "Lūdzu, ievadiet remonta laiku un piezīmi!";
+			$_SESSION['maintenance'] = "Lūdzu, ievadiet remonta laiku vai remonta laiku un piezīmi!";
 			$_SESSION['edit_sawmill_prod'] = $_POST;
 			header("Location: edit_production?id=$sawmill_production_id");
 			exit();
 		}
 	}
 
-	//Checks employees working fields, only one filled is allowed
-	for($i = 0; $i < count($working_hours); $i++) 
+	//Checks employees working fields
+	for($i = 0; $i < count($ids); $i++) 
 	{
-		if(empty($working_hours[$i]) && empty($nonworking[$i]))
+		if(!Validate::IsValidDropdownWorkingHours($working_hours[$i]))
 		{
 			$_SESSION['shift'] = "Lūdzu, aizpildiet darbinieku tabulu!";
-			$_SESSION['edit_sawmill_prod'] = $_POST;
-			header("Location: edit_production?id=$sawmill_production_id");
-			exit();
-		}
-		else if(!empty($working_hours[$i]) && empty($nonworking[$i]))
-		{
-			//Check if working hour is number
-			if(!Validate::IsValidHours($working_hours[$i]))
-			{
-				$_SESSION['shift'] = "Nostrādātās darba stundas drīkst sastāvēt tikai no cipariem!";
-				$_SESSION['edit_sawmill_prod'] = $_POST;
-				header("Location: edit_production?id=$sawmill_production_id");
-				exit();
-			}
-		}
-		else if(empty($working_hours[$i]) && !empty($nonworking[$i]))
-		{
-			//Check nonworking select values
-			if($nonworking[$i] != "1" && $nonworking[$i] != "2" && $nonworking[$i] != "3")
-			{
-				$_SESSION['error'] = "Lūdzu, mēģiniet vēlreiz!";
-				$_SESSION['edit_sawmill_prod'] = $_POST;
-				header("Location: edit_production?id=$sawmill_production_id");
-				exit();
-			}
-		}
-		else
-		{
-			$_SESSION['shift'] = "Lūdzu, aizpildiet tikai vienu ievadlauku katram darbiniekam!";
 			$_SESSION['edit_sawmill_prod'] = $_POST;
 			header("Location: edit_production?id=$sawmill_production_id");
 			exit();
@@ -318,10 +291,15 @@
 	//Updates sawmill production maintenance times and notes
 	$sawmillMaintenance = new SawmillMaintenance();
 	$sawmillMaintenance->DeleteAllSawmillProductionMaintenances($sawmill_production_id);
-	for($i=0; $i < count($maintenance_times); $i++)
+	for($i = 0; $i < count($maintenance_times); $i++)
 	{
-		if(!empty($maintenance_times[$i]) && !empty($maintenance_notes[$i]))
+		if(!empty($maintenance_times[$i]))
 		{
+			if(empty($maintenance_notes[$i]))
+			{
+				$maintenance_notes[$i] = NULL;
+			}
+
 			$sawmillMaintenance->time = $maintenance_times[$i];
 			$sawmillMaintenance->note = $maintenance_notes[$i];
 			$sawmillMaintenance->sawmill_production_id = $sawmill_production_id;
@@ -345,7 +323,7 @@
 		$employees_sawmill_productions->sawmill_id = $sawmillProduction->id;
 		$employees_sawmill_productions->Save();
 
-		if($working_hours[$i] != '' && $working_hours > 0)
+		if($working_hours[$i] > 0 && $working_hours[$i] < 9)
 		{
 			$working_times->date = $date;
 			$working_times->datetime = $production['datetime'];
@@ -354,21 +332,21 @@
 			$working_times->employee_id = $ids[$i];
 			$working_times->Save();
 		}
-		else if($working_hours[$i] == '')
+		else if($working_hours[$i] >= 9 && $working_hours[$i] < 12)
 		{	
-			if($nonworking[$i] == "1")
+			if($working_hours[$i] == 9)
 			{
 				$times->vacation = "A";
 				$times->sick_leave = NULL;
 				$times->nonattendance = NULL;
 			}
-			else if($nonworking[$i] == "2")
+			else if($working_hours[$i] == 10)
 			{
 				$times->vacation = NULL;
 				$times->sick_leave = "S";
 				$times->nonattendance = NULL;
 			}
-			else if($nonworking[$i] == "3")
+			else if($working_hours[$i] == 11)
 			{
 				$times->vacation = NULL;
 				$times->sick_leave = NULL;

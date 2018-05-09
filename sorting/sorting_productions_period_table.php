@@ -365,16 +365,16 @@
 		{
 	?>
 			<tr>
-				<th rowspan="2"><?=$i++?></th>
-				<td rowspan="2">
+				<th><?=$i++?></th>
+				<td>
 				<?php
 					$emp_serial_number = (($period_month_number * $employee_count)+($i-1));
 					$emp_serial_number = sprintf('%03d', $emp_serial_number);
 					echo $emp_serial_number;
 				?>
 				</td>
-				<td rowspan="2"><?=$employee['name']?> <?=$employee['last_name']?></td>
-				<td rowspan="2">
+				<td><?=$employee['name']?> <?=$employee['last_name']?></td>
+				<td>
 				<?php
 					$positions = Manager::EmployeePositions($employee['id']);
 					foreach($positions as $position)
@@ -386,7 +386,7 @@
 				<td>Šķirots</td>
 				<td>
 				<?php
-					$sorting_hours = Manager::GetSortingEmployeeProductionsSortedHoursWorked($date_string, $employee['id']);
+					$sorting_hours = Manager::GetSortingEmployeeProductionsHoursWorked($date_string, $employee['id']);
 					if(!empty($sorting_hours['working_hours']))
 					{
 						echo $sorting_hours['working_hours'];
@@ -399,9 +399,10 @@
 				</td>
 				<td>
 				<?php
-					if(!empty($sorting_hours['working_hours']))
+					$days_worked = Manager::GetSortingEmployeeProductionsDaysWorked($date_string, $employee['id']);
+					if(!empty($days_worked['working']))
 					{
-						echo round(($sorting_hours['working_hours']/8), 1);
+						echo $days_worked['working'];
 					}
 					else
 					{
@@ -412,17 +413,17 @@
 				<?php
 					$sorted_emp_capacity = Manager::GetSortingEmployeeProductionsSortedCapacity($date_string, $employee['id']);
 				?>
-				<td rowspan="2"><?=$sorted_emp_capacity['cap_one']?></td>
-				<td rowspan="2"><?=$sorted_emp_capacity['cap_two']?></td>
-				<td rowspan="2"><?=$sorted_emp_capacity['cap_three']?></td>
-				<td rowspan="2"><?=$sorted_emp_capacity['total_cap']?></td>
-				<td rowspan="2">
+				<td><?=$sorted_emp_capacity['cap_one']?></td>
+				<td><?=$sorted_emp_capacity['cap_two']?></td>
+				<td><?=$sorted_emp_capacity['cap_three']?></td>
+				<td><?=$sorted_emp_capacity['total_cap']?></td>
+				<td>
 					<a href="report?id=<?=$employee['id']?>&period=<?=$date_string?>&s=<?=$emp_serial_number?>" class="btn btn-success">
 						Skatīt
 					</a>
 				</td>
 			</tr>
-			<tr>
+		<!-- 	<tr>
 				<td>Garināts</td>
 				<td>
 				<?php
@@ -453,7 +454,7 @@
 					}
 				?>
 				</td>
-			</tr>
+			</tr> -->
 	<?php
 		}
 	?>

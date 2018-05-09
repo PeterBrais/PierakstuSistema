@@ -32,7 +32,7 @@
 		{
 			global $conn;
 
-			$sql = $conn->prepare("SELECT id FROM positions WHERE id=?");
+			$sql = $conn->prepare("SELECT id FROM positions WHERE id = ?");
 			$sql->bind_param('i', $id);
 			$sql->execute();
 			$result = $sql->get_result();

@@ -42,7 +42,7 @@
 	//Check position length
 	if(!Validate::IsValidPositionLength($position))
 	{
-		$_SESSION['update_position'] = "Amats jābūt garumā no 3 simboliem līdz 40 simboliem!";
+		$_SESSION['update_position'] = "Amats jābūt garumā no 3 simboliem līdz 255 simboliem!";
 		$_SESSION['edit_position'] = $_POST;
 		header("Location: edit_position?id=$position_id");
 		exit();

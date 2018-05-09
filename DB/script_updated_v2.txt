@@ -28,7 +28,7 @@ CREATE TABLE employees (
 
 CREATE TABLE positions (
 	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-	name VARCHAR(40) NOT NULL
+	name VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE employees_positions (
@@ -89,7 +89,7 @@ CREATE TABLE sawmill_productions (
 CREATE TABLE sawmill_maintenance (
 	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	time INT NOT NULL,
-	note VARCHAR(255) NOT NULL,
+	note VARCHAR(255) NULL,
 	sawmill_production_id INT NOT NULL,
 	FOREIGN KEY (sawmill_production_id) REFERENCES sawmill_productions(id)
 );

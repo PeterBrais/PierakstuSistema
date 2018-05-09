@@ -16,7 +16,7 @@
 							if(!isset($_SESSION['id']))
 							{
 						?>
-								<h4 class="card-title text-center">Autorizācija</h4>
+								<h4 class="card-title text-center">Autentifikācija</h4>
 								<form action="login" method="POST">
 									<div class="form-group row">
 										<label class="col-md-2 offset-md-1 col-form-label">Lietotājvārds</label>

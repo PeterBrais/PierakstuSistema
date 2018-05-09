@@ -2,9 +2,13 @@ $(document).ready(function(){
 
 	//Update efficiency rate
 	var summ = Number($('#summ').html());
+	var efficiency = Number($('#efficiency_rate').val());
+	var total = ((summ/100)*efficiency)+summ;
+	total = total.toFixed(2);
+	$('#total_summ').html(total);
 
 	$('#efficiency_rate').on('input', function(){
-		var efficiency = Number($('#efficiency_rate').val())
+		var efficiency = Number($('#efficiency_rate').val());
 
 		var total = ((summ/100)*efficiency)+summ;
 		if(isNaN(total))
@@ -18,17 +22,9 @@ $(document).ready(function(){
 			$('#total_summ').html(total);
 		}
 	});
-
-	//Input border style change
-	$('#order_input').blur(function(){
-		if ($(this).val()) {
-			$(this).css("border","0");
-			$(this).addClass('bordered');   
-		}
-	});
-	$('#order_input').focus(function(){
-		$(this).removeClass('bordered');
-		$(this).css("border","1px solid #ff0000");
-	});
 	
 });
+
+function printPage() {
+	window.print();
+}

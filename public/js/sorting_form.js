@@ -16,7 +16,7 @@ $(function(){
 				error.addClass('alert alert-danger alert-size mb-1')
 				error.appendTo( element.parent().parent().parent().next() );
 			}
-			else if(element.hasClass( "working_hours_class" ) || element.hasClass( "nonworking_hours_class" ))
+			else if(element.hasClass( "working_class" ))
 			{
 				error.addClass('alert alert-danger alert-size mt-1')
 				error.appendTo( element.parent() );
@@ -127,14 +127,8 @@ $(function(){
 					IsValidIntegerNumber: true,
 					IsValidInteger: true,
 				},
-				"working_hours[]": {
-					number: true,
-					min: 1,
-					max: 24,
-					IsValidHours: true,
-				},
-				"nonworking[]": {
-					ChosenNonWorkingDropdown: true,
+				"working[]": {
+					IsValidDropdownWorkingHoursSorting: true,
 				},
 			},
 			messages: {
@@ -231,14 +225,8 @@ $(function(){
 					IsValidIntegerNumber: "Garums drīkst saturēt tikai ciparus!",
 					IsValidInteger: "Garums jābūt lielākam par nulli!",
 				},
-				"working_hours[]": {
-					number: "Nostrādātās stundas drīkst sastāvēt tikai no cipariem!",
-					min: "Nostrādātām stundām jābūt lielākām par nulli!",
-					max: "Nostrādātās stundas nevar būt vairāk par 24",
-					IsValidHours: "Nostrādātās stundas drīkst sastāvēt tikai no cipariem!",
-				},
-				"nonworking[]": {
-					ChosenNonWorkingDropdown: "Lūdzu, izvēlieties 'Cits iemesls' veidu!",
+				"working[]": {
+					IsValidDropdownWorkingHoursSorting: "Lūdzu, aizpildiet darbinieku tabulu!!",
 				},
 			},
 		});

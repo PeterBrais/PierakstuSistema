@@ -14,7 +14,7 @@ $(function(){
 				name: {
 					required: true,
 					minlength: 3,
-					maxlength: 40,
+					maxlength: 255,
 					IsValidText: true,
 					remote: {
 						url: "current_position_check",
@@ -28,8 +28,8 @@ $(function(){
 			messages: {
 				name: {
 					required: "Lūdzu, aizpildiet Amats lauku!",
-					minlength: "Amats jābūt garumā no 3 simboliem līdz 40 simboliem!",
-					maxlength: "Amats jābūt garumā no 3 simboliem līdz 40 simboliem!",
+					minlength: "Amats jābūt garumā no 3 simboliem līdz 255 simboliem!",
+					maxlength: "Amats jābūt garumā no 3 simboliem līdz 255 simboliem!",
 					IsValidText: "Amats drīkst saturēt tikai latīņu burtus, ciparus un speciālos simbolus!",
 					remote: "Amats jau eksistē!",
 				},

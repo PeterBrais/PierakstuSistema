@@ -348,7 +348,8 @@
 		{
 			global $conn;
 
-			$sql = $conn->prepare("SELECT times.* FROM employees
+			$sql = $conn->prepare("SELECT DISTINCT times.date, times.vacation, times.sick_leave, 
+									times.nonattendace FROM employees
 									JOIN employees_sawmill_productions
 									ON employees_sawmill_productions.employee_id = employees.id
 									JOIN sawmill_productions
@@ -560,7 +561,7 @@
 			return mysqli_fetch_assoc($result);
 		}
 
-		public static function GetSortingEmployeeProductionsSortedHoursWorked($date_string, $id)	//Returns all sorting employees sorted hours worked
+		public static function GetSortingEmployeeProductionsHoursWorked($date_string, $id)	//Returns all sorting employees sorted hours worked
 		{
 			global $conn;
 
@@ -579,8 +580,7 @@
 									AND employees.id = working_times.employee_id
 									AND sorting_productions.date = working_times.date 
 									AND sorted_productions.id = working_times.invoice
-									AND sorting_productions.datetime = working_times.datetime
-									AND sorted_productions.type = 'S'");
+									AND sorting_productions.datetime = working_times.datetime");
 			$sql->bind_param('ss', $id, $date_string);
 			$sql->execute();
 			$result = $sql->get_result();

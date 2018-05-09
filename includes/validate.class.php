@@ -68,7 +68,7 @@
 
 		static function IsValidPositionLength($text)
 		{
-			if(mb_strlen($text) < 3 || mb_strlen($text) > 40)
+			if(mb_strlen($text) < 3 || mb_strlen($text) > 255)
 			{
 				return false;
 			}
@@ -147,6 +147,34 @@
 		static function IsValidOvertimeHours($text)
 		{
 			return preg_match("/^[1-8]?$/", $text);
+		}
+
+		static function IsValidDropdownWorkingHours($value)
+		{
+			for($i = 1; $i <= 11; $i++)
+			{
+				if($value == $i)
+				{
+					return true;
+				}
+			}
+			return false;
+		}
+
+		static function IsValidDropdownWorkingHoursSortingEmployee($value)
+		{
+			if(!empty($value))
+			{
+				for($i = 1; $i <= 11; $i++)
+				{
+					if($value == $i)
+					{
+						return true;
+					}
+				}
+				return false;
+			}
+			return true;
 		}
 	}
 

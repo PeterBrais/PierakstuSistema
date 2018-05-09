@@ -17,7 +17,10 @@
 	{
 		extract($_SESSION['sawmill_prod']);
 	}
+
+	$today_date =  date('Y-m-d');
 ?>
+
 
 	<!-- Add sawmill production -->
 	<div class="container">
@@ -38,7 +41,7 @@
 									</span>
 								</label>
 								<div class="col-md-5">
-									<input class="form-control" type="text" name="date" aria-describedby="dateArea" placeholder="2000/01/01" value="<?php echo isset($_SESSION['sawmill_prod']) ? $date : ''; ?>">
+									<input class="form-control datepicker" type="text" name="date" aria-describedby="dateArea" placeholder="2000/01/01" value="<?php echo isset($_SESSION['sawmill_prod']) ? $date : $today_date; ?>" >
 									<small id="dateArea" class="form-text text-muted">
 										* Satur tikai datumu, piemēram, formātā: GGGG-MM-DD *
 									</small>
@@ -67,10 +70,10 @@
 								<div class="col-md-5">
 									<div class="row">
 										<div class="col-md-6">
-											<input class="form-control" type="time" name="time_from" aria-describedby="timeFromArea" value="<?php echo isset($_SESSION['sawmill_prod']) ? $time_from : ''; ?>">
+											<input class="form-control timepicker" type="text" name="time_from" aria-describedby="timeFromArea" value="<?php echo isset($_SESSION['sawmill_prod']) ? $time_from : ''; ?>">
 										</div>
 										<div class="col-md-6">
-											<input class="form-control" type="time" name="time_to" aria-describedby="timeFromArea" value="<?php echo isset($_SESSION['sawmill_prod']) ? $time_to : ''; ?>">
+											<input class="form-control timepicker" type="text" name="time_to" aria-describedby="timeFromArea" value="<?php echo isset($_SESSION['sawmill_prod']) ? $time_to : ''; ?>">
 										</div>
 									</div>
 									<small id="timeFromArea" class="form-text text-muted">
@@ -289,7 +292,7 @@
 								<div class="col-md-5">
 									<?php include "shift_select.php"; ?> 
 								</div>
-								<div class="col-md-4">
+								<div class="col-md-4" id="employee_table_error">
 									<?php
 										if(isset($_SESSION['shift']))
 										{
@@ -318,8 +321,10 @@
 		</div>
 	</div>
 
+
 <script src="../public/js/add_sawmill_production.js"></script>
 <script src="../public/js/sawmill_form.js"></script>
+<script src="../public/js/dates.js"></script>
 
 <?php
 	unset($_SESSION['sawmill_prod']);

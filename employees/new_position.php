@@ -29,7 +29,7 @@
 	//Check position length
 	if(!Validate::IsValidPositionLength($position))
 	{
-		$_SESSION['new_position'] = "Amats jābūt garumā no 3 simboliem līdz 40 simboliem!";
+		$_SESSION['new_position'] = "Amats jābūt garumā no 3 simboliem līdz 255 simboliem!";
 		$_SESSION['position'] = $_POST;
 		header("Location: add_position");
 		exit();

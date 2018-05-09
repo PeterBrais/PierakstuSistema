@@ -63,87 +63,86 @@
 					<?php include "../message.php"; ?>
 				</div>
 				<div class="card">
+					<div class="card-header">
+						<button class="float-right" onclick="printPage()">Printēt!</button>
+					</div>
 					<div class="card-body row">
 						<div class="offset-md-1 col-md-6">
 							<p class="font-weight-bold">SIA "Rīgas Meži" <br> Struktūrvienība: kokzāģētava "Norupe"</p>
 						</div>
 						<div class="col-md-5">
-							<p class="font-weight-normal">Apstiprinu: <br> Kokzāģētavas vadītājs (Andris Bērziņš)</p>
+							<p class="font-weight-normal">Apstiprinu: <br> Kokzāģētavas vadītājs (Vārds Uzvārds)</p>
+						</div>
+						<div class="offset-md-1 col-md-6">
+							<p class="font-weight-bold">
+								DARBU NODOŠANAS - PIEŅEMŠANAS AKTS Nr. DNA
+								<?=$serial_number?> /420-<?=$period_year_number?>
+							</p>
+						</div>
+						<div class="col-md-5">
+							<p class="font-weight-normal">
+								Rīkojums SRM-16-1277-rp- no 28.09.2016.
+							</p>								
 						</div>
 						<div class="offset-md-1 col-md-11">
-							<div class="row">
-								<div class="col-md-6">
-									<p class="font-weight-bold">
-										DARBU NODOŠANAS - PIEŅEMŠANAS AKTS Nr. DNA
-										<?=$serial_number?> /420-<?=$period_year_number?>
-									</p>
-								</div>
-								<div class="col-md-6">
-									<p class="font-weight-normal">
-										<input type="text" id="order_input" style="width:350px; border:1px solid #ff0000;" placeholder="Rīkojuma Nr.">
-									</p>								
-								</div>
-								<div class="col-md-12">
-									<p class="font-weight-bold">
-										<u>
-										<?php
-											$period_month = date('F', strtotime($period));
-											$period_year = date('Y', strtotime($period));
+							<p class="font-weight-bold">
+								<u>
+								<?php
+									$period_month = date('F', strtotime($period));
+									$period_year = date('Y', strtotime($period));
 
-											echo $period_year.". gada ";
-											if($period_month == "January")
-											{
-												echo "janvārī";
-											}
-											else if($period_month == "February")
-											{
-												echo "februārī";
-											}
-											else if($period_month == "March")
-											{
-												echo "martā";
-											}
-											else if($period_month == "April")
-											{
-												echo "aprīlī";
-											}
-											else if($period_month == "May")
-											{
-												echo "maijā";
-											}
-											else if($period_month == "June")
-											{
-												echo "jūnijā";
-											}
-											else if($period_month == "July")
-											{
-												echo "jūlijā";
-											}
-											else if($period_month == "August")
-											{
-												echo "augustā";
-											}
-											else if($period_month == "September")
-											{
-												echo "septembrī";
-											}
-											else if($period_month == "October")
-											{
-												echo "oktobrī";
-											}
-											else if($period_month == "November")
-											{
-												echo "novembrī";
-											}
-											else if($period_month == "December")
-											{
-												echo "decembrī";
-											}
-										?>
-										</u>
-									</p>
-								</div>
-							</div>
+									echo $period_year.". gada ";
+									if($period_month == "January")
+									{
+										echo "janvārī";
+									}
+									else if($period_month == "February")
+									{
+										echo "februārī";
+									}
+									else if($period_month == "March")
+									{
+										echo "martā";
+									}
+									else if($period_month == "April")
+									{
+										echo "aprīlī";
+									}
+									else if($period_month == "May")
+									{
+										echo "maijā";
+									}
+									else if($period_month == "June")
+									{
+										echo "jūnijā";
+									}
+									else if($period_month == "July")
+									{
+										echo "jūlijā";
+									}
+									else if($period_month == "August")
+									{
+										echo "augustā";
+									}
+									else if($period_month == "September")
+									{
+										echo "septembrī";
+									}
+									else if($period_month == "October")
+									{
+										echo "oktobrī";
+									}
+									else if($period_month == "November")
+									{
+										echo "novembrī";
+									}
+									else if($period_month == "December")
+									{
+										echo "decembrī";
+									}
+								?>
+								</u>
+							</p>
 						</div>
 						<div class="offset-md-1 col-md-4">
 							<p class="font-weight-normal">
@@ -239,28 +238,6 @@
 										</td>
 									</tr>
 									<tr>
-										<th>5</th>
-										<td>Garināšana virstundas</td>
-										<td>h</td>
-										<td>
-										<?php 
-											if(!empty($stretch_hours['overtime_hours']))
-											{
-												echo $stretch_hours['overtime_hours'];
-											}
-										?>
-										</td>
-										<td>7,80</td>
-										<td id="lengthening_overtime">
-										<?php 
-											if(!empty($stretch_hours['overtime_hours']))
-											{
-												echo round(($stretch_hours['overtime_hours']*7.8), 2);
-											}
-										?>
-										</td>
-									</tr>
-									<tr>
 										<td colspan="3" class="text-right">Kopā m<sup>3</sup>:</td>
 										<td><?=$sorted_capacity['total_cap']?></td>
 										<td></td>
@@ -315,7 +292,7 @@
 						<div class="col-md-6 pt-5 px-5">
 							<p>
 								Darbu pieņēma <input type="text" class="signature"><br><br>
-								Zāģēšanas iecirkņa vadītājs: J.Zemītis
+								Šķirotavas vadītājs: Vārds Uzvārds
 							</p>
 						</div>
 

@@ -381,7 +381,6 @@
 														<th>Vārds</th>
 														<th>Uzvārds</th>
 														<th>Nostrādātas stundas</th>
-														<th>Cits iemesls</th>
 													</tr>
 												</thead>
 												<tbody>
@@ -398,40 +397,19 @@
 														<td><?=$employee['name']?></td>
 														<td><?=$employee['last_name']?></td>
 														<td>
-															<input class="form-control working_hours_class" type="number" min="1" max="24" step="1" name="working_hours[]" value="<?=$worked_hours['working_hours']?>">
-														</td>
-														<td>
-															<select class="custom-select nonworking_hours_class" name="nonworking[]">
-														<?php
-															if($nonworked['vacation'] == 'A')
-															{	
-																echo '<option value="" style="font-weight:bold;">Izvēlēties citu iemeslu</option>';
-																echo '<option value="1" selected>Atvaļinājums</option>';
-																echo '<option value="2">Slimības lapa</option>';
-																echo '<option value="3">Neapmeklējums</option>';
-															}
-															else if($nonworked['sick_leave'] == 'S')
-															{
-																echo '<option value="" style="font-weight:bold;">Izvēlēties citu iemeslu</option>';
-																echo '<option value="1">Atvaļinājums</option>';
-																echo '<option value="2" selected>Slimības lapa</option>';
-																echo '<option value="3">Neapmeklējums</option>';
-															}
-															else if($nonworked['nonattendace'] == 'N')
-															{
-																echo '<option value="" style="font-weight:bold;">Izvēlēties citu iemeslu</option>';
-																echo '<option value="1">Atvaļinājums</option>';
-																echo '<option value="2">Slimības lapa</option>';
-																echo '<option value="3" selected>Neapmeklējums</option>';
-															}
-															else
-															{
-																echo '<option value="" selected style="font-weight:bold;">Izvēlēties citu iemeslu</option>';
-																echo '<option value="1">Atvaļinājums</option>';
-																echo '<option value="2">Slimības lapa</option>';
-																echo '<option value="3">Neapmeklējums</option>';
-															}
-														?>
+															<select class="custom-select working_class" name="working[]">
+																<option selected value="" style="font-weight:bold;">Izvēlēties nostrādātās stundas vai citu iemeslu</option>
+																<option value="1" <?php echo ($worked_hours['working_hours'] == "1") ? 'selected' : ''; ?> >1 Stunda</option>
+																<option value="2" <?php echo ($worked_hours['working_hours'] == "2") ? 'selected' : ''; ?> >2 Stundas</option>
+																<option value="3" <?php echo ($worked_hours['working_hours'] == "3") ? 'selected' : ''; ?> >3 Stundas</option>
+																<option value="4" <?php echo ($worked_hours['working_hours'] == "4") ? 'selected' : ''; ?> >4 Stundas</option>
+																<option value="5" <?php echo ($worked_hours['working_hours'] == "5") ? 'selected' : ''; ?> >5 Stundas</option>
+																<option value="6" <?php echo ($worked_hours['working_hours'] == "6") ? 'selected' : ''; ?> >6 Stundas</option>
+																<option value="7" <?php echo ($worked_hours['working_hours'] == "7") ? 'selected' : ''; ?> >7 Stundas</option>
+																<option value="8" <?php echo ($worked_hours['working_hours'] == "8") ? 'selected' : ''; ?> >8 Stundas</option>
+																<option value="9" <?php echo ($nonworked['vacation'] == 'A') ? 'selected' : ''; ?> >Atvaļinājums</option>
+																<option value="10" <?php echo ($nonworked['sick_leave'] == 'S') ? 'selected' : ''; ?> >Slimības lapa</option>
+																<option value="11" <?php echo ($nonworked['nonattendace'] == 'N') ? 'selected' : ''; ?> >Neapmeklējums</option>
 															</select>
 														</td>
 													</tr>
@@ -571,7 +549,6 @@
 														<th>Vārds</th>
 														<th>Uzvārds</th>
 														<th>Nostrādātas stundas</th>
-														<th>Cits iemesls</th>
 													</tr>
 												</thead>
 												<tbody>
@@ -588,40 +565,19 @@
 														<td><?=$employee['name']?></td>
 														<td><?=$employee['last_name']?></td>
 														<td>
-															<input class="form-control working_hours_class" type="number" min="1" max="24" step="1" name="working_hours[]" value="<?=$worked_hours['working_hours']?>">
-														</td>
-														<td>
-															<select class="custom-select nonworking_hours_class" name="nonworking[]">
-														<?php
-															if($nonworked['vacation'] == 'A')
-															{	
-																echo '<option value="" style="font-weight:bold;">Izvēlēties citu iemeslu</option>';
-																echo '<option value="1" selected>Atvaļinājums</option>';
-																echo '<option value="2">Slimības lapa</option>';
-																echo '<option value="3">Neapmeklējums</option>';
-															}
-															else if($nonworked['sick_leave'] == 'S')
-															{
-																echo '<option value="" style="font-weight:bold;">Izvēlēties citu iemeslu</option>';
-																echo '<option value="1">Atvaļinājums</option>';
-																echo '<option value="2" selected>Slimības lapa</option>';
-																echo '<option value="3">Neapmeklējums</option>';
-															}
-															else if($nonworked['nonattendace'] == 'N')
-															{
-																echo '<option value="" style="font-weight:bold;">Izvēlēties citu iemeslu</option>';
-																echo '<option value="1">Atvaļinājums</option>';
-																echo '<option value="2">Slimības lapa</option>';
-																echo '<option value="3" selected>Neapmeklējums</option>';
-															}
-															else
-															{
-																echo '<option value="" selected style="font-weight:bold;">Izvēlēties citu iemeslu</option>';
-																echo '<option value="1">Atvaļinājums</option>';
-																echo '<option value="2">Slimības lapa</option>';
-																echo '<option value="3">Neapmeklējums</option>';
-															}
-														?>
+															<select class="custom-select working_class" name="working[]">
+																<option selected value="" style="font-weight:bold;">Izvēlēties nostrādātās stundas vai citu iemeslu</option>
+																<option value="1" <?php echo ($worked_hours['working_hours'] == "1") ? 'selected' : ''; ?> >1 Stunda</option>
+																<option value="2" <?php echo ($worked_hours['working_hours'] == "2") ? 'selected' : ''; ?> >2 Stundas</option>
+																<option value="3" <?php echo ($worked_hours['working_hours'] == "3") ? 'selected' : ''; ?> >3 Stundas</option>
+																<option value="4" <?php echo ($worked_hours['working_hours'] == "4") ? 'selected' : ''; ?> >4 Stundas</option>
+																<option value="5" <?php echo ($worked_hours['working_hours'] == "5") ? 'selected' : ''; ?> >5 Stundas</option>
+																<option value="6" <?php echo ($worked_hours['working_hours'] == "6") ? 'selected' : ''; ?> >6 Stundas</option>
+																<option value="7" <?php echo ($worked_hours['working_hours'] == "7") ? 'selected' : ''; ?> >7 Stundas</option>
+																<option value="8" <?php echo ($worked_hours['working_hours'] == "8") ? 'selected' : ''; ?> >8 Stundas</option>
+																<option value="9" <?php echo ($nonworked['vacation'] == 'A') ? 'selected' : ''; ?> >Atvaļinājums</option>
+																<option value="10" <?php echo ($nonworked['sick_leave'] == 'S') ? 'selected' : ''; ?> >Slimības lapa</option>
+																<option value="11" <?php echo ($nonworked['nonattendace'] == 'N') ? 'selected' : ''; ?> >Neapmeklējums</option>
 															</select>
 														</td>
 													</tr>

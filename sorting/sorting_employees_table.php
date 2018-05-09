@@ -11,7 +11,6 @@
 				<th>Vārds</th>
 				<th>Uzvārds</th>
 				<th>Nostrādātas stundas</th>
-				<th>Cits iemesls</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -26,14 +25,19 @@
 				<td><?=$employee['name']?></td>
 				<td><?=$employee['last_name']?></td>
 				<td>
-					<input class="form-control working_hours_class" type="number" min="1" max="24" step="1" name="working_hours[]">
-				</td>
-				<td>
-					<select class="custom-select nonworking_hours_class" name="nonworking[]">
-						<option selected value="" style="font-weight:bold;">Izvēlēties citu iemeslu</option>
-						<option value="1">Atvaļinājums</option>
-						<option value="2">Slimības lapa</option>
-						<option value="3">Neapmeklējums</option>
+					<select class="custom-select working_class" name="working[]">
+						<option selected value="" style="font-weight:bold;">Izvēlēties nostrādātās stundas vai citu iemeslu</option>
+						<option value="1">1 Stunda</option>
+						<option value="2">2 Stundas</option>
+						<option value="3">3 Stundas</option>
+						<option value="4">4 Stundas</option>
+						<option value="5">5 Stundas</option>
+						<option value="6">6 Stundas</option>
+						<option value="7">7 Stundas</option>
+						<option value="8">8 Stundas</option>
+						<option value="9">Atvaļinājums</option>
+						<option value="10">Slimības lapa</option>
+						<option value="11">Neapmeklējums</option>
 					</select>
 				</td>
 			</tr>

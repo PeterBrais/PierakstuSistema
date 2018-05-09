@@ -77,3 +77,11 @@ jQuery.validator.addMethod("IsValidWorkingHours", function(value, element) {
 jQuery.validator.addMethod("IsValidOvertimeHours", function(value, element) {
 	return this.optional(element) || /^[1-8]?$/.test(value);
 }, "Enter valid hours or options");
+
+jQuery.validator.addMethod("IsValidDropdownWorkingHours", function(value, element) {
+	return (value == "1" || value == "2" || value == "3" || value == "4" || value == "5" || value == "6" || value == "7" || value == "8" || value == "9" || value == "10" || value == "11");
+}, "Please choose value");
+
+jQuery.validator.addMethod("IsValidDropdownWorkingHoursSorting", function(value, element) {
+	return (value == "" || value == "1" || value == "2" || value == "3" || value == "4" || value == "5" || value == "6" || value == "7" || value == "8" || value == "9" || value == "10" || value == "11");
+}, "Please choose value");

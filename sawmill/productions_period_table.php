@@ -177,9 +177,9 @@
 					<td>
 					<?php
 						$worked = Manager::GetEmployeeProductionsDaysWorked($date_string, $employee['id']);
-						echo $worked['all_productions'];
-						echo " / ";
 						echo $worked['working'];
+						echo " / ";
+						echo $worked['all_productions'];
 					?>
 					</td>
 					<td>
@@ -273,9 +273,9 @@
 					<td>
 					<?php
 						$worked = Manager::GetEmployeeProductionsDaysWorked($date_string, $employee['id']);
-						echo $worked['all_productions'];
-						echo " / ";
 						echo $worked['working'];
+						echo " / ";
+						echo $worked['all_productions'];
 					?>
 					</td>
 					<td>

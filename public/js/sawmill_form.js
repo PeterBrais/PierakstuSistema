@@ -16,10 +16,10 @@ $(function(){
 				error.addClass('alert alert-danger alert-size mb-1')
 				error.appendTo( element.parent().next().next() );
 			}
-			else if(element.hasClass( "working_hours_class" ) || element.hasClass( "nonworking_hours_class" ))
+			else if(element.hasClass( "working_class" ))
 			{
-				error.addClass('alert alert-danger alert-size mt-1')
-				error.appendTo( element.parent() );
+				error.addClass('alert alert-danger alert-size')
+				error.appendTo("#employee_table_error");
 			}
 			else
 			{
@@ -91,14 +91,12 @@ $(function(){
 					IsValidText: true,
 				},
 				"maintenance_times[]": {
-					required: "maintenance_notes_class:filled",
 					number: true,
 					min: 0,
 					max: 99999999999,
 					IsValidIntegerNumber: true,
 				},
 				"maintenance_notes[]": {
-					required: "maintenance_times_class:filled",
 					minlength: 3,
 					maxlength: 255,
 					IsValidText: true,
@@ -106,14 +104,9 @@ $(function(){
 				shifts: {
 					required: true,
 				},
-				"working_hours[]": {
-					number: true,
-					min: 1,
-					max: 24,
-					IsValidHours: true,
-				},
-				"nonworking[]": {
-					ChosenNonWorkingDropdown: true,
+				"working[]": {
+					required: true,
+					IsValidDropdownWorkingHours: true,
 				},
 			},
 			messages: {
@@ -170,14 +163,12 @@ $(function(){
 					IsValidText: "Citas piezīmes drīkst saturēt tikai latīņu burtus, ciparus un speciālos simbolus!", 
 				},
 				"maintenance_times[]": {
-					required: "Lūdzu, aizpildiet 'Minūtes' lauku!",
 					number: "Remonta minūtes drīkst saturēt tikai ciparus!",
 					min: "Remonta minūtēm jābūt lielākam par nulli!",
 					max: "Remonta minūtēm jābūt ne vairāk kā 11 ciparus garam!",
 					IsValidIntegerNumber: "Remonta minūtes drīkst saturēt tikai ciparus!",
 				},
 				"maintenance_notes[]": {
-					required: "Lūdzu, aizpildiet 'Piezīmes' lauku!",
 					minlength: "Remonta piezīmei jābūt garumā no 3 simboliem līdz 255 simboliem!",
 					maxlength: "Remonta piezīmei jābūt garumā no 3 simboliem līdz 255 simboliem!",
 					IsValidText: "Remonta piezīme drīkst saturēt tikai latīņu burtus, ciparus un speciālos simbolus!",
@@ -185,14 +176,9 @@ $(function(){
 				shifts: {
 					required: "Lūdzu, izvēlieties maiņu!",
 				},
-				"working_hours[]": {
-					number: "Nostrādātās stundas drīkst sastāvēt tikai no cipariem!",
-					min: "Nostrādātām stundām jābūt lielākām par nulli!",
-					max: "Nostrādātās stundas nevar būt vairāk par 24!",
-					IsValidHours: "Nostrādātās stundas drīkst sastāvēt tikai no cipariem!",
-				},
-				"nonworking[]": {
-					ChosenNonWorkingDropdown: "Lūdzu, izvēlieties 'Cits iemesls' veidu!",
+				"working[]": {
+					required: "Lūdzu, aizpildiet darbinieku tabulu!",
+					IsValidDropdownWorkingHours: "Lūdzu, aizpildiet darbinieku tabulu!",
 				},
 			}
 		});

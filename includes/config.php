@@ -4,6 +4,7 @@ $DBServer = "localhost";
 $DBUser = "root";
 $DBPassword = "";
 $DBName = "pieraksts";
+// $DBName = "pierakststest";	//test database
 
 //Creating connection with Database
 $conn = new mysqli($DBServer, $DBUser, $DBPassword, $DBName);
