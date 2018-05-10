@@ -101,10 +101,10 @@
 								<div class="col-md-5">
 									<div class="row">
 										<div class="col-md-6">
-											<input class="form-control" type="time" name="time_from" aria-describedby="timeFromArea" value="<?php echo isset($_SESSION['edit_sawmill_prod']) ? $time_from : $production['time_from']; ?>">
+											<input class="form-control timepicker" type="text" name="time_from" aria-describedby="timeFromArea" value="<?php echo isset($_SESSION['edit_sawmill_prod']) ? $time_from : $production['time_from']; ?>">
 										</div>
 										<div class="col-md-6">
-											<input class="form-control" type="time" name="time_to" aria-describedby="timeFromArea" value="<?php echo isset($_SESSION['edit_sawmill_prod']) ? $time_to : $production['time_to']; ?>">
+											<input class="form-control timepicker" type="text" name="time_to" aria-describedby="timeFromArea" value="<?php echo isset($_SESSION['edit_sawmill_prod']) ? $time_to : $production['time_to']; ?>">
 										</div>
 									</div>
 									<small id="timeFromArea" class="form-text text-muted">

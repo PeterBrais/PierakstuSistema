@@ -64,7 +64,7 @@
 				</div>
 				<div class="card">
 					<div class="card-header">
-						<button class="float-right" onclick="printPage()">Printēt!</button>
+						<button class="float-right" onclick="printPage()">Drukāt!</button>
 					</div>
 					<div class="card-body row">
 						<div class="offset-md-1 col-md-6">

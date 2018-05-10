@@ -74,7 +74,7 @@
 									</span>
 								</label>
 								<div class="col-md-5">
-									<input class="form-control" type="text" name="date" aria-describedby="dateArea" placeholder="2000/01/01" value="<?php echo isset($_SESSION['edit_sorting_prod']) ? $date : $production['date']; ?>">
+									<input class="form-control datepicker" type="text" name="date" aria-describedby="dateArea" placeholder="2000/01/01" value="<?php echo isset($_SESSION['edit_sorting_prod']) ? $date : $production['date']; ?>">
 									<small id="dateArea" class="form-text text-muted">
 										* Satur tikai datumu, piemēram, formātā: GGGG-MM-DD *
 									</small>
@@ -103,10 +103,10 @@
 								<div class="col-md-5">
 									<div class="row">
 										<div class="col-md-6">
-											<input class="form-control" type="time" name="time_from" aria-describedby="timeFromArea" value="<?php echo isset($_SESSION['edit_sorting_prod']) ? $time_from : $production['time_from']; ?>">
+											<input class="form-control timepicker" type="text" name="time_from" aria-describedby="timeFromArea" value="<?php echo isset($_SESSION['edit_sorting_prod']) ? $time_from : $production['time_from']; ?>">
 										</div>
 										<div class="col-md-6">
-											<input class="form-control" type="time" name="time_to" aria-describedby="timeFromArea" value="<?php echo isset($_SESSION['edit_sorting_prod']) ? $time_to : $production['time_to']; ?>">
+											<input class="form-control timepicker" type="text" name="time_to" aria-describedby="timeFromArea" value="<?php echo isset($_SESSION['edit_sorting_prod']) ? $time_to : $production['time_to']; ?>">
 										</div>
 									</div>
 									<small id="timeFromArea" class="form-text text-muted">
@@ -615,6 +615,7 @@
 
 <script src="../public/js/edit_sorting_production.js"></script>
 <script src="../public/js/edit_sorting_production_form.js"></script>
+<script src="../public/js/dates.js"></script>
 
 <?php
 	unset($_SESSION['edit_sorting_prod']);
