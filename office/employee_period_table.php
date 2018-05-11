@@ -1,16 +1,7 @@
 <?php
 	include_once "../includes/office.class.php";
-	include_once "../includes/validate.class.php";
 	include_once "../includes/manager.class.php";
 
-	$date_string = isset($_GET['p']) ? $_GET['p'] : date('Y-m');
-
-	//Checks if year and month is correct
-	if(!Validate::IsValidPeriod($date_string))
-	{
-		header("Location: 404");
-		exit();
-	}
 	
 	//Returns all bureau employee data
 	$employees = Office::GetOfficeEmployeesByDate($date_string);

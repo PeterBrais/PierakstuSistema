@@ -19,7 +19,7 @@
 	$date_string = isset($_GET['p']) ? $_GET['p'] : date('Y-m');
 	$date_string_formated = date('F Y', strtotime($date_string));
 
-	// Checks if year and month is correct
+	//Checks if year and month is correct
 	if(!Validate::IsValidPeriod($date_string))
 	{
 		header("Location: 404");

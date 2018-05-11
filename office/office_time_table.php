@@ -2,6 +2,7 @@
 
 	include_once "../header.php";
 	include_once "../includes/manager.class.php";
+	include_once "../includes/validate.class.php";
 
 	if(!isset($_SESSION['id']) && !isset($_SESSION['role']))	//Check if user is logged in
 	{
@@ -10,6 +11,16 @@
 	}
 
 	if((($_SESSION['role'] != "a") && ($_SESSION['role'] != "p")) || ($_SESSION['active'] != 1))	//Check if user have permission
+	{
+		header("Location: 404");
+		exit();
+	}
+
+	$date_string = isset($_GET['p']) ? $_GET['p'] : date('Y-m');
+	$date_string_formated = date('F Y', strtotime($date_string));
+
+	//Checks if year and month is correct
+	if(!Validate::IsValidPeriod($date_string))
 	{
 		header("Location: 404");
 		exit();

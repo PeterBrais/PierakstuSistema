@@ -72,7 +72,7 @@ class User
 	{
 		global $conn;
 
-		$sql = $conn->prepare("SELECT username FROM users WHERE username=?");
+		$sql = $conn->prepare("SELECT username FROM users WHERE username = ?");
 		$sql->bind_param('s', $username); //Binds parameter, transforms to string
 		$sql->execute();
 		$result = $sql->get_result();
@@ -82,7 +82,7 @@ class User
 		return $resultCheck >= 1;
 	}
 
-	public static function CurrentUserUsernameExists($username, $id)	//Returns true if username from other user in DB already exists
+	public static function CurrentUserUsernameExists($username, $id)	//Returns true if username from other users in DB already exists
 	{
 		global $conn;
 
@@ -96,18 +96,21 @@ class User
 		return $resultCheck >= 1;
 	}
 
-	function SetPassword($password)
+	function SetPassword($password)		//Hashes passowrd
 	{
 		$this->password = password_hash($password, PASSWORD_DEFAULT);
 	}
 
-	function Save()
+	function Save()		//Saves user data into database
 	{
 		try
 		{
 			$sql = $this->conn->prepare("INSERT INTO users VALUES (DEFAULT, ?, ?, ?, ?, ?)");
 			$sql->bind_param('sssis', $this->username, $this->password, $this->role, $this->active, $this->created);
 			$sql->execute();
+
+			$this->id = $this->conn->insert_id;
+			$sql->close();
 		}
 		catch(mysqli_sql_exception $e)
 		{	
@@ -134,7 +137,7 @@ class User
 		}
 	}
 
-	function Delete()
+	function Delete()	//Blocks / unblocks user
 	{
 		try
 		{
@@ -151,7 +154,7 @@ class User
 		}
 	}
 
-	function UpdatePassword()
+	function UpdatePassword()	//Updates password
 	{
 		try
 		{
