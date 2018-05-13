@@ -18,7 +18,7 @@
 		{
 			global $conn;
 
-			$sql = $conn->prepare("SELECT name FROM positions WHERE name=?");
+			$sql = $conn->prepare("SELECT name FROM positions WHERE name = ?");
 			$sql->bind_param('s', $name);
 			$sql->execute();
 			$result = $sql->get_result();
@@ -100,6 +100,8 @@
 				$sql = $this->conn->prepare("INSERT INTO positions VALUES (DEFAULT, ?)");
 				$sql->bind_param('s', $this->name);
 				$sql->execute();
+
+				$this->id = $this->conn->insert_id;
 				$sql->close();
 			}
 			catch(mysqli_sql_exception $e)

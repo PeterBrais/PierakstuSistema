@@ -1,13 +1,15 @@
 <?php
 
 require_once "C:\wamp64\www\pieraksts\includes\user.class.php";
+require_once "C:\wamp64\www\pieraksts\includes\administrator.class.php";
 
 use PHPUnit\Framework\TestCase;
 
-		//Testam ir trīs daļas
-		//1. Arrange - sagtavo datus
-		//2. Act
-		//3. Assert
+//Test is divided in 3 parts:
+//1. Arrange - prepares data
+//2. Act - sets data
+//3. Assert - tests data
+
 
 class UserTests extends TestCase
 {
@@ -16,6 +18,8 @@ class UserTests extends TestCase
 	*/
 	public function When_Save_New_User_Then_It_Exists_In_Database()		//Tests Exists function
 	{
+		global $conn;
+		$conn->query("DELETE FROM users");	//Clears DB
 		//Arrange
 		$user = new User();
 		$user->username = "Vards";
@@ -50,15 +54,19 @@ class UserTests extends TestCase
 		$userTwo->Save();
 
 		//Assert
-		$this->assertFalse(User::CurrentUserUsernameExists($userOne->username, $userOne->id));
-		$this->assertTrue(User::CurrentUserUsernameExists($userOne->username, $userTwo->id));
+		//Gets data from table
+		$resultOne = Administrator::GetUsersData($userOne->id);
+		$resultTwo = Administrator::GetUsersData($userTwo->id);
+		$this->assertFalse(User::CurrentUserUsernameExists($resultOne['username'], $userOne->id));
+		$this->assertTrue(User::CurrentUserUsernameExists($resultOne['username'], $userTwo->id));
 	}
 
 	/**
 	* @test
 	*/
-	public function When_Save_New_User_Then_Its_Data_Can_Be_Updated()	
+	public function When_Save_New_User_Then_Its_Data_Can_Be_Updated()	//Test Update function
 	{
+		//Arranga
 		$user = new User();
 		$user->username = "Lietotajvards";
 		$user->role = "l";
@@ -67,15 +75,68 @@ class UserTests extends TestCase
 		$userUpdate = new User();
 		$userUpdate->username = "LietotajaVards";
 		$userUpdate->role = "l";
-		$userUpdate->id = $user->id;
 
+		//Act
 		$user->Save();
+		$userUpdate->id = $user->id;
 		$userUpdate->Update();
 
-		$this->assertNotEquals($userUpdate->username, $user->username);
+		//Assert
+		//Gets data from table
+		$result = Administrator::GetUsersData($user->id);
+
+		$this->assertNotEquals($result['username'], $user->username);
 	}
 
-	public function getTearDownOperation() {
-		return PHPUnit_Extensions_Database_Operation_Factory::TRUNCATE();
+	/**
+	* @test
+	*/
+	public function When_Save_New_User_Then_It_Can_Be_Blocked_Or_Unblocked()	//Tests Delete function
+	{
+		//Arrange
+		$user = new User();
+		$user->username = "Username1";
+		$user->role = "a";
+		$user->SetPassword("Password1");
+
+		$userDelete = new User();
+		$userDelete->active = 0;
+
+		//Act
+		$user->Save();
+		$userDelete->id = $user->id;
+		$userDelete->Delete();
+
+		//Assert
+		//Gets data from table
+		$result = Administrator::GetUsersData($user->id);
+
+		$this->assertEquals($userDelete->active, $result['active']);
+	}
+
+	/**
+	* @test
+	*/
+	public function When_Save_New_User_Then_Its_Password_Can_Be_Changed()	//Tests UpdatePassword function
+	{
+		//Arrange
+		$user = new User();
+		$user->username = "RUserR100";
+		$user->role = "p";
+		$user->SetPassword("Sg8Hs*alnYhha");
+
+		$userNew = new User();
+		$userNew->SetPassword("Ch@n5eDp@ssW046");
+
+		//Act
+		$user->Save();
+		$userNew->id = $user->id;
+		$userNew->UpdatePassword();
+
+		//Assert
+		//Gets data from table
+		$result = Administrator::GetUsersData($user->id);
+
+		$this->assertNotEquals($user->SetPassword("Sg8Hs*alnYhha"), $result['password']);
 	}
 }

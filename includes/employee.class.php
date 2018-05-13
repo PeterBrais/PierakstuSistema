@@ -20,7 +20,6 @@
 		{
 			global $conn;
 			$this->conn = $conn;
-			//$this->working_from = date("Y-m-d");
 			$this->working_from = "2000/01/01";
 			$this->working_to = NULL;
 		}
@@ -34,6 +33,7 @@
 				$sql->execute();
 
 				$this->id = $this->conn->insert_id;
+				$sql->close();
 			}
 			catch(mysqli_sql_exception $e)
 			{	

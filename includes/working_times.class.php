@@ -33,10 +33,12 @@
 			return mysqli_fetch_assoc($result);
 		}
 
-		function DeleteAllWorkingEmployees($invoice, $date, $timestamp){	//Deletes all employee working times
+		function DeleteAllWorkingEmployees($invoice, $date, $timestamp)	//Deletes all employee working times
+		{
 			try
 			{
-				$sql = $this->conn->prepare("DELETE FROM working_times WHERE invoice = ? AND date = ? AND datetime = ?");
+				$sql = $this->conn->prepare("DELETE FROM working_times WHERE invoice = ? 
+					AND date = ? AND datetime = ?");
 				$sql->bind_param('iss', $invoice, $date, $timestamp);
 				$sql->execute();
 				$sql->close();
@@ -49,11 +51,13 @@
 			}
 		}
 
-		function DeleteAllWorkingBureauEmployees($id, $period){	//Deletes all bureau employee working times
+		function DeleteAllWorkingBureauEmployees($id, $period)	//Deletes all bureau employee period working times
+		{
 			try
 			{
-				$sql = $this->conn->prepare("DELETE FROM working_times WHERE invoice IS NULL AND employee_id = ?
-												AND DATE_FORMAT(working_times.date, '%Y-%m') = ?");
+				$sql = $this->conn->prepare("DELETE FROM working_times 
+					WHERE invoice IS NULL AND employee_id = ? AND
+					DATE_FORMAT(working_times.date, '%Y-%m') = ?");
 				$sql->bind_param('ss', $id, $period);
 				$sql->execute();
 				$sql->close();
@@ -75,6 +79,7 @@
 				$sql->execute();
 
 				$this->id = $this->conn->insert_id;
+				$sql->close();
 			}
 			catch(mysqli_sql_exception $e)
 			{
