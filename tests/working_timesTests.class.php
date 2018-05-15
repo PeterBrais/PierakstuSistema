@@ -86,7 +86,7 @@ class WorkingTimesTests extends TestCase
 	{
 		//Arrange
 		$employee = new Employee();
-		$employee->name = "Nugge";
+		$employee->name = "Nugel";
 		$employee->last_name = "Immerse";
 		$employee->person_id = "125144-12514";
 		$employee->place = "Birojs";
@@ -188,7 +188,7 @@ class WorkingTimesTests extends TestCase
 	/**
 	* @test
 	*/
-	public function When_Save_New_Employee_WorkingTimes_Then_Its_Data_Can_Loaded()	//Tests GetWorkersWorkingTime function
+	public function When_Save_New_Employee_WorkingTimes_Then_Its_Data_Can_Be_Loaded()	//Tests GetWorkersWorkingTime function
 	{
 		//Arrange
 		$employee = new Employee();

@@ -65,7 +65,7 @@
 			return mysqli_fetch_all($sql, MYSQLI_ASSOC);
 		}
 
-		public static function EmployeePositions($employee_id)	//Returns employees with ID all positions
+		public static function EmployeePositions($employee_id)	//Returns employees all positions
 		{
 			global $conn;
 
@@ -89,7 +89,7 @@
 			return mysqli_fetch_all($sql, MYSQLI_ASSOC);
 		}
 
-		public static function GetEmployeesByShift($shift, $date_string)	//Returns all employees with selected shift
+		public static function GetEmployeesByShift($shift, $date_string)	//Returns all employees with selected shift and working dates by month
 		{
 			global $conn;
 
@@ -116,18 +116,6 @@
 			$resultCheck = mysqli_num_rows($result);
 
 			return $resultCheck >= 1;
-		}
-
-		public static function AllSawmillPeriods()
-		{
-			global $conn;
-
-			$sql = $conn->query("SELECT DISTINCT DATE_FORMAT(date, '%Y-%m') AS date,
-									DATE_FORMAT(date, '%M %Y') AS month_year
-									FROM sawmill_productions 
-									ORDER BY date DESC");
-
-			return mysqli_fetch_all($sql, MYSQLI_ASSOC);
 		}
 
 		public static function GetSawmillProductionsByDate($date_string) //Returns all chosen month sawmill productions
@@ -369,7 +357,7 @@
 			return mysqli_fetch_all($result, MYSQLI_ASSOC);
 		}
 
-		public static function GetSortingEmployees($date_string)	//Returns all employees with selected shift
+		public static function GetSortingEmployees($date_string)	//Returns all sorting employees
 		{
 			global $conn;
 
@@ -382,18 +370,6 @@
 			$result = $sql->get_result();
 
 			return mysqli_fetch_all($result, MYSQLI_ASSOC);
-		}
-
-		public static function AllSortingPeriods()
-		{
-			global $conn;
-
-			$sql = $conn->query("SELECT DISTINCT DATE_FORMAT(date, '%Y-%m') AS date,
-									DATE_FORMAT(date, '%M %Y') AS month_year
-									FROM sorting_productions 
-									ORDER BY date DESC");
-
-			return mysqli_fetch_all($sql, MYSQLI_ASSOC);
 		}
 
 		public static function GetSortingProductionsByInvoice($date_string) //Returns all invoices and their sorting productions

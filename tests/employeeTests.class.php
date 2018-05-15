@@ -136,7 +136,7 @@ class EmployeeTests extends TestCase
 		$employeeTwo->working_to = NULL;
 
 		//Act
-		$employeeTwo->Save();
+		$employeeOne->Save();
 		$employeeTwo->Save();
 
 		//Assert

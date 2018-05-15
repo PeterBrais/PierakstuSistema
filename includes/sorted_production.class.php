@@ -30,6 +30,7 @@
 				$sql->execute();
 
 				$this->id = $this->conn->insert_id; //Sets object id
+				$sql->close();
 			}
 			catch(mysqli_sql_exception $e)
 			{	

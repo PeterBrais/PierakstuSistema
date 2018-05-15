@@ -100,6 +100,8 @@
 				$sql = $this->conn->prepare("INSERT INTO beam_sizes VALUES (DEFAULT, ?)");
 				$sql->bind_param('d', $this->size);
 				$sql->execute();
+				
+				$this->id = $this->conn->insert_id;
 				$sql->close();
 			}
 			catch(mysqli_sql_exception $e)

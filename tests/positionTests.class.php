@@ -3,6 +3,7 @@
 require_once "C:/wamp64/www/pieraksts/includes/employee_position.class.php";
 require_once "C:/wamp64/www/pieraksts/includes/employee.class.php";
 require_once "C:/wamp64/www/pieraksts/includes/position.class.php";
+require_once "C:/wamp64/www/pieraksts/includes/manager.class.php";
 
 use PHPUnit\Framework\TestCase;
 
@@ -174,12 +175,7 @@ class PositionTests extends TestCase
 		$position->Save();
 
 		//Assert
-		global $conn;
-		$sql = $conn->prepare("SELECT positions.* FROM positions WHERE id = ?");
-		$sql->bind_param('s', $position->id);
-		$sql->execute();
-		$result = $sql->get_result();
-		$result = mysqli_fetch_assoc($result);
+		$result = Manager::GetPositionData($position->id);
 
 		$this->assertEquals($result['name'], $position->name);
 	}
@@ -202,12 +198,7 @@ class PositionTests extends TestCase
 		$positionUpdate->Update();
 
 		//Assert
-		global $conn;
-		$sql = $conn->prepare("SELECT positions.* FROM positions WHERE id = ?");
-		$sql->bind_param('s', $position->id);
-		$sql->execute();
-		$result = $sql->get_result();
-		$result = mysqli_fetch_assoc($result);
+		$result = Manager::GetPositionData($position->id);
 
 		$this->assertEquals($result['name'], $positionUpdate->name);
 		$this->assertNotEquals($result['name'], $position->name);
@@ -230,15 +221,8 @@ class PositionTests extends TestCase
 		$positionDelete->Delete();
 
 		//Assert
-		global $conn;
-		$sql = $conn->prepare("SELECT positions.* FROM positions WHERE id = ?");
-		$sql->bind_param('s', $position->id);
-		$sql->execute();
-		$result = $sql->get_result();
-		$result = mysqli_fetch_assoc($result);
+		$result = Manager::GetPositionData($position->id);
 
 		$this->assertEquals(0, count($result));
 	}
-
-
 }

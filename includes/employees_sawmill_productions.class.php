@@ -24,6 +24,7 @@
 				$sql->execute();
 
 				$this->id = $this->conn->insert_id;
+				$sql->close();
 			}
 			catch(mysqli_sql_exception $e)
 			{
@@ -40,6 +41,7 @@
 				$sql = $this->conn->prepare("DELETE FROM employees_sawmill_productions WHERE sawmill_id = ?");
 				$sql->bind_param('s', $id);
 				$sql->execute();
+				$sql->close();
 			}
 			catch(mysqli_sql_exception $e)
 			{
