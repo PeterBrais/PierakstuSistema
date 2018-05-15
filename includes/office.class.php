@@ -12,30 +12,6 @@
 			$this->conn = $conn;
 		}
 
-		public static function AllOfficePeriods($month)	//Returns all office periods (from times and working_times tables with UNION)
-		{
-			global $conn;
-
-			$sql = $conn->prepare("SELECT DISTINCT DATE_FORMAT(date, '%Y-%m') AS date,
-									DATE_FORMAT(date, '%M %Y') AS month_year
-									FROM working_times
-									WHERE working_times.invoice IS NULL AND 
-									DATE_FORMAT(working_times.date, '%Y-%m') < ?
-									UNION
-									SELECT DISTINCT DATE_FORMAT(date, '%Y-%m') AS date,
-									DATE_FORMAT(date, '%M %Y') AS month_year
-									FROM times
-									WHERE times.invoice IS NULL AND 
-									DATE_FORMAT(times.date, '%Y-%m') < ?
-									ORDER BY date DESC");
-
-			$sql->bind_param('ss', $month, $month);
-			$sql->execute();
-			$result = $sql->get_result();
-
-			return mysqli_fetch_all($result, MYSQLI_ASSOC);
-		}
-
 		public static function GetOfficeEmployeesByDate($date_string)	//Returns all office employees
 		{
 			global $conn;
